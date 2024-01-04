@@ -38,38 +38,37 @@
                         <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">نام دسته بندی</th>
-                            <th class="text-center width-16-rem">دسته والد</th>
+                            <th class="text-center width-16-rem">توضیحات</th>
+                            <th class="text-center width-16-rem">تصویر</th>
+                            <th class="text-center width-16-rem">وضعیت</th>
+                            <th class="text-center width-16-rem">اسلاگ</th>
+                            <th class="text-center width-16-rem">تگ ها</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($postCategories as $postCategory)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">نمایشگر	</td>
-                            <td class="text-center">کالای الکترونیکی</td>
+                            <th class="text-center">{{$postCategory->id}}</th>
+                            <td class="text-center">{{$postCategory->name}}</td>
+                            <td class="text-center">{{$postCategory->description}}</td>
+                            <td class="text-center"><img src="{{asset($postCategory->image)}}" alt="" width="50px" height="50px"/></td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                <input type="checkbox" @if($postCategory->status === 1) {{'checked'}} @endif />
+                            </td>
+                            <td class="text-center">{{$postCategory->slug}}</td>
+                            <td class="text-center">{{$postCategory->tags}}</td>
+                            <td class="text-center">
+                                <a href="{{route('admin.content.category.edit', $postCategory->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+
+                                <form action="{{route('admin.content.category.destroy', $postCategory->id)}}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                <button type="submit" class="btn btn-danger btn-sm" ><i class="fa fa-trash-alt"></i> حذف</button>
+                                </form>
                             </td>
                         </tr>
-                        <tr>
-                            <th class="text-center">2</th>
-                            <td class="text-center">نمایشگر	</td>
-                            <td class="text-center">کالای الکترونیکی</td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-center">3</th>
-                            <td class="text-center">نمایشگر	</td>
-                            <td class="text-center">کالای الکترونیکی</td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>
