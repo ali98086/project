@@ -36,7 +36,7 @@ class CategoryController extends Controller
         $inputs['slug']= str_replace('','-',$inputs['name']).'-'.Str::random(5);
         $inputs['image']='image';
         PostCategory::create($inputs);
-        return redirect()->route('admin.content.category.index');
+        return redirect()->route('admin.content.category.index')->with('swal-success','دسته بندی مورد نظر با موفقیت ثبت شد');
     }
 
     /**
@@ -65,7 +65,7 @@ class CategoryController extends Controller
         $inputs= $request->all();
         $inputs['image']= 'image';
         $postCategory->update($inputs);
-        return redirect()->route('admin.content.category.index');
+        return redirect()->route('admin.content.category.index')->with('swal-success','دسته بندی با موفقیت ویرایش شد');
     }
 
     /**
@@ -74,6 +74,30 @@ class CategoryController extends Controller
     public function destroy(PostCategory $postCategory)
     {
         $postCategory->delete();
-        return redirect()->route('admin.content.category.index');
+        return redirect()->route('admin.content.category.index')->with('swal-success','دسته بندی با موفقیت حذف شد');
+    }
+
+    public function status(PostCategory $postCategory){
+
+        $postCategory->status= $postCategory->status == 0 ? 1 : 0;
+        //update status column in table database by save method
+        $result= $postCategory->save();
+
+        if($result){
+            if($postCategory->status == 0){
+                //after save status if status equal 0 , checked equal false and send json response to ajax java script for handle
+                return response()->json(['status'=> true , 'checked'=> false]);
+            }
+            else{
+                //after save status if status equal 1 , checked equal true and send json response to ajax java script for handle
+                return response()->json(['status'=> true , 'checked'=> true]);
+            }
+        }
+        else{
+
+            return response()->json(['status'=> false]);
+
+        }
+
     }
 }

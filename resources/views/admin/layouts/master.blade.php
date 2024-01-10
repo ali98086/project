@@ -3,18 +3,19 @@
 
 <head>
 
-@include('admin.layouts.head-tag')
-@yield('head-tag')
+    @include('admin.layouts.head-tag')
+    @yield('head-tag')
 
 </head>
 
 <body dir="rtl">
 
-@include('admin.layouts.header')
+    @include('admin.layouts.header')
 
     <section class="body-container">
 
-    @include('admin.layouts.sidebar')
+
+        @include('admin.layouts.sidebar')
 
         <section id="main-body" class="main-body">
 
@@ -26,6 +27,16 @@
 
     @include('admin.layouts.scripts')
     @yield('script')
+
+
+    <section id="container-alerts" class="toast-wrapper flex-column-reverse">
+        @include('admin.alerts.toast.success')
+        @include('admin.alerts.toast.error')
+    </section>
+
+    @include('admin.alerts.sweetalert.success')
+    @include('admin.alerts.sweetalert.error')
+
 
 </body>
 
