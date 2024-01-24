@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PostCategory extends Model
+class FAQ extends Model
 {
     use HasFactory, SoftDeletes, Sluggable;
 
@@ -17,11 +17,13 @@ class PostCategory extends Model
         return [
 
             'slug' => [
-                'source' => 'name'
+                'source' => 'question'
             ]
 
         ];
     }
 
-    protected $fillable = ['name', 'slug', 'description', 'image', 'status', 'tags'];
+
+    protected $fillable= ['question','answer','tags','slug','status'];
+    protected $table= 'faqs';
 }

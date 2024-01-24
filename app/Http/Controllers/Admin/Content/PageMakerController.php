@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Content;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Content\PageRequest;
+use App\Models\Content\Page;
 use Illuminate\Http\Request;
 
 class PageMakerController extends Controller
@@ -12,7 +14,8 @@ class PageMakerController extends Controller
      */
     public function index()
     {
-        return view('admin.content.page-maker.index');
+        $pages= Page::orderBy('created_at','desc')->simplePaginate(15);
+        return view('admin.content.page-maker.index', compact('pages'));
     }
 
     /**
@@ -26,9 +29,11 @@ class PageMakerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PageRequest $request)
     {
-        //
+        $inputs= $request->all();
+        Page::create($inputs);
+        return redirect()->route('admin.content.page-maker.index')->with('swal-success','پیج مورد نظر ایجاد شد');
     }
 
     /**
@@ -42,24 +47,55 @@ class PageMakerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Page $page)
     {
-        //
+        return view('admin.content.page-maker.edit', compact('page'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PageRequest $request, Page $page)
     {
-        //
+        $inputs= $request->all(); 
+        $inputs['slug']= null;
+        $page->update($inputs);
+        return redirect()->route('admin.content.page-maker.index')->with('swal-success','پیج مورد نظر با موفقیت ویرایش شد');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Page $page)
     {
-        //
+        $page->delete();
+        return redirect()->route('admin.content.page-maker.index')->with('swal-success','پیج مورد نظر با موفقیت حذف شد');
+    }
+
+    public function status(Page $page){
+
+        $page->status= $page->status == 0 ? 1 : 0 ;
+        $result= $page->save();
+
+        if($result){
+            if($page->status == 0){
+
+                return response()->json(['status'=> true , 'checked'=> false]);
+
+            }
+            else{
+
+                return response()->json(['status'=> true , 'checked'=>true]);
+
+            }
+
+
+        }
+        else{
+
+            return response()->json(['status'=> false]);
+
+        }
+
     }
 }

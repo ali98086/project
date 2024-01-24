@@ -16,7 +16,7 @@
             });
 
             swalWithBootstrapButtons.fire({
-                     title: 'آیا از حذف کردن داده مطمن هستید؟',
+                     title: 'آیا از حذف کردن داده مطمئن هستید؟',
                         text: "شما میتوانید درخواست خود را لغو نمایید",
                          icon: 'warning',
                          showCancelButton: true,

@@ -34,7 +34,7 @@
             </section>
 
             <section>
-                <form action="{{route('admin.content.category.update', $postCategory->id)}}" id="form" method="post" enctype="mutipart/form-data">
+                <form action="{{route('admin.content.category.update', $postCategory->id)}}" id="form" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <section class="row">
@@ -57,7 +57,7 @@
                                 <label for="tags">تگ ها</label>
                                 <input id="tags" name="tags" type="hidden" class="form-control form-control-sm" value="{{old('tags', $postCategory->tags)}}">
                                 <select class="select2 form-control form-control-sm" id="select_tags" multiple>
-                                    
+
                                 </select>
                             </div>
 
@@ -87,6 +87,18 @@
                             <div class="form-group">
                                 <label for="image">تصویر</label>
                                 <input id="image" type="file" name="image" class="form-control form-control-sm">
+                                <section class="mt-2">
+                                    <img src="{{asset($postCategory->image)}}" width="150px" height="150px"/>
+                                </section>
+                                <section class="mt-2">
+                                <p>تغییر سایز تصویر : (دلخواه)</p>
+                                <input type="radio" id="size1" name="size" value="small">
+                                <label for="size1">120*160 - کوچک</label><br>
+                                <input type="radio" id="size2" name="size" value="medium">
+                                <label for="size2">240*320 - متوسط</label><br>
+                                <input type="radio" id="size3" name="size" value="large">
+                                <label for="size3">600*800 - بزرگ</label>
+                            </section>
                             </div>
                             @error('image')
                             <span class="text-white bg-danger rounded">
@@ -127,31 +139,30 @@
     CKEDITOR.replace('description');
 </script>
 <script>
-        $(document).ready(function () {
-            var tags_input = $('#tags');
-            var select_tags = $('#select_tags');
-            var default_tags = tags_input.val();
-            var default_data = null;
+    $(document).ready(function() {
+        var tags_input = $('#tags');
+        var select_tags = $('#select_tags');
+        var default_tags = tags_input.val();
+        var default_data = null;
 
-            if(tags_input.val() !== null && tags_input.val().length > 0)
-            {
-                default_data = default_tags.split(',');
+        if (tags_input.val() !== null && tags_input.val().length > 0) {
+            default_data = default_tags.split(',');
+        }
+
+        select_tags.select2({
+            placeholder: 'لطفا تگ های خود را وارد نمایید',
+            tags: true,
+            data: default_data
+        });
+        select_tags.children('option').attr('selected', true).trigger('change');
+
+
+        $('#form').submit(function(event) {
+            if (select_tags.val() !== null && select_tags.val().length > 0) {
+                var selectedSource = select_tags.val().join(',');
+                tags_input.val(selectedSource)
             }
-
-            select_tags.select2({
-                placeholder : 'لطفا تگ های خود را وارد نمایید',
-                tags: true,
-                data: default_data
-            });
-            select_tags.children('option').attr('selected', true).trigger('change');
-
-
-            $('#form').submit(function ( event ){
-                if(select_tags.val() !== null && select_tags.val().length > 0){
-                    var selectedSource = select_tags.val().join(',');
-                    tags_input.val(selectedSource)
-                }
-            })
         })
+    })
 </script>
 @endsection

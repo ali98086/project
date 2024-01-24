@@ -6,7 +6,7 @@
 
 @endsection
 
-@section('title','ایجاد پست جدید')
+@section('title','ویرایش پست')
 
 
 
@@ -18,7 +18,7 @@
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش محتوا</a></li>
         <li class="breadcrumb-item"> <a href="#">پست ها</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> ایجاد پست جدید</li>
+        <li class="breadcrumb-item active" aria-current="page"> ویرایش پست</li>
     </ol>
 </nav>
 
@@ -27,7 +27,7 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                    ایجاد پست جدید
+                    ویرایش پست
                 </h5>
             </section>
 
@@ -39,14 +39,15 @@
             </section>
 
             <section>
-                <form action="{{route('admin.content.post.store')}}" id="form" method="post" enctype="multipart/form-data">
+                <form action="{{route('admin.content.post.update', $post->id)}}" id="form" method="post" enctype="multipart/form-data">
                     @csrf
+                    @method('put')
                     <section class="row">
 
-                        <section class="col-12 col-md-6 my-2">
+                    <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
                                 <label for="">عنوان پست</label>
-                                <input type="text" name="title" class="form-control form-control-sm" value="{{old('title')}}">
+                                <input type="text" name="title" class="form-control form-control-sm" value="{{$post->title}}">
                             </div>
                             @error('title')
                             <span class="text-white bg-danger rounded">
@@ -63,7 +64,7 @@
                                     <option value="">دسته را انتخاب کنید</option>
                                     @foreach($postCategories as $postCategory)
 
-                                    <option value="{{$postCategory->id}}" @if(old('category_id')==$postCategory->id) selected @endif>{{$postCategory->name}}</option>
+                                    <option value="{{$postCategory->id}}" @if(old('category_id', $post->category_id)== $postCategory->id) {{'selected'}} @endif>{{$postCategory->name}}</option>
 
                                     @endforeach
                                 </select>
@@ -74,18 +75,16 @@
                             </span>
                             @enderror
                         </section>
+
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
-                                <label for="">تصویر</label>
-                                <input type="file" name="image" class="form-control form-control-sm" onchange="document.getElementById('imagesize').classList.add('d-block')">
-                            </div>
-                            @error('image')
-                            <span class="text-white bg-danger rounded">
-                                {{$message}}
-                            </span>
-                            @enderror
-                            <section id="imagesize" class="mt-2 d-none">
-                                <p>انتخاب سایز تصویر : (دلخواه)</p>
+                                <label for="image">تصویر</label>
+                                <input id="image" type="file" name="image" class="form-control form-control-sm">
+                                <section class="mt-2">
+                                    <img src="{{asset($post->image)}}" width="150px" height="100px"/>
+                                </section>
+                                <section class="mt-2">
+                                <p>تغییر سایز تصویر : (دلخواه)</p>
                                 <input type="radio" id="size1" name="size" value="small">
                                 <label for="size1">120*160 - کوچک</label><br>
                                 <input type="radio" id="size2" name="size" value="medium">
@@ -93,11 +92,18 @@
                                 <input type="radio" id="size3" name="size" value="large">
                                 <label for="size3">600*800 - بزرگ</label>
                             </section>
+                            </div>
+                            @error('image')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
+
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
                                 <label for="tags">تگ ها</label>
-                                <input id="tags" name="tags" type="hidden" class="form-control form-control-sm" value="{{old('tags')}}">
+                                <input id="tags" name="tags" type="hidden" class="form-control form-control-sm" value="{{$post->tags}}">
                                 <select class="select2 form-control form-control-sm" id="select_tags" multiple>
 
                                 </select>
@@ -109,13 +115,13 @@
                             </span>
                             @enderror
                         </section>
-                        <section class="col-12 col-md-6 my-2">
 
+                        <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
-                                <label for="">وضعیت</label>
-                                <select class="form-control form-control-sm" name="status">
-                                    <option value="0" @if(old('status')==0) 'selected' @endif>غیر فعال</option>
-                                    <option value="1" @if(old('status')==1) 'selected' @endif>فعال</option>
+                                <label for="status">وضعیت</label>
+                                <select name="status" id="status" class="form-control form-control-sm">
+                                    <option value="0" @if($post->status == 0) {{'selected'}} @endif>غیر فعال</option>
+                                    <option value="1" @if($post->status == 1) {{'selected'}} @endif>فعال</option>
                                 </select>
                             </div>
                             @error('status')
@@ -125,13 +131,14 @@
                             @enderror
                         </section>
 
+                        
                         <section class="col-12 col-md-6 my-2">
 
                             <div class="form-group">
                                 <label for="">امکان درج نظر</label>
                                 <select class="form-control form-control-sm" name="commentable">
-                                    <option value="0" @if(old('commentable')==0) 'selected' @endif>غیر فعال</option>
-                                    <option value="1" @if(old('commentable')==1) 'selected' @endif>فعال</option>
+                                    <option value="0" @if($post->commentable == 0) {{'selected'}} @endif>غیر فعال</option>
+                                    <option value="1" @if($post->commentable == 1) {{'selected'}} @endif>فعال</option>
                                 </select>
                             </div>
                             @error('commentable')
@@ -144,8 +151,8 @@
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
                                 <label for="">تاریخ انتشار</label>
-                                <input type="text" id="published_at" name="published_at" class="form-control form-control-sm d-none">
-                                <input type="text" id="published_at_view" class="form-control form-control-sm">
+                                <input type="text" id="published_at" name="published_at"  class="form-control form-control-sm d-none">
+                                <input type="text" id="published_at_view" class="form-control form-control-sm" value="{{$post->published_at}}">
                             </div>
                             @error('published_at')
                             <span class="text-white bg-danger rounded">
@@ -157,7 +164,7 @@
                         <section class="col-12 my-2">
                             <div class="form-group">
                                 <label for="">خلاصه پست</label>
-                                <textarea id="summary" name="summary" type="text" class="form-control form-control-sm" rows="4">{{old('summary')}}</textarea>
+                                <textarea id="summary" name="summary" type="text" class="form-control form-control-sm" rows="4">{{$post->summary}}</textarea>
                             </div>
                             @error('summary')
                             <span class="text-white bg-danger rounded">
@@ -169,7 +176,7 @@
                         <section class="col-12 my-2">
                             <div class="form-group">
                                 <label for="">متن پست</label>
-                                <textarea id="body" name="body" type="text" class="form-control form-control-sm" rows="4">{{old('body')}}</textarea>
+                                <textarea id="body" name="body" type="text" class="form-control form-control-sm" rows="4">{{$post->body}}</textarea>
                             </div>
                             @error('body')
                             <span class="text-white bg-danger rounded">
@@ -177,7 +184,8 @@
                             </span>
                             @enderror
                         </section>
-                        <section class="col-12 my-2">
+
+                        <section class="col-12 mt-4">
                             <button class="btn btn-primary btn-sm">ثبت</button>
                         </section>
                     </section>
@@ -196,8 +204,8 @@
 <script src="{{asset('admin-assets/jalalidatepicker/persian-date.min.js')}}"></script>
 <script src="{{asset('admin-assets/jalalidatepicker/persian-datepicker.min.js') }}"></script>
 <script>
-    CKEDITOR.replace('body');
     CKEDITOR.replace('summary');
+    CKEDITOR.replace('body');
 </script>
 
 <script>
@@ -208,7 +216,6 @@
         })
     });
 </script>
-
 
 <script>
     $(document).ready(function() {
@@ -237,5 +244,4 @@
         })
     })
 </script>
-
 @endsection

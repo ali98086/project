@@ -1,7 +1,12 @@
 @extends('admin.layouts.master')
 
+@section('head-tag')
 
-@section('title','ایجاد پیج جدید')
+<link rel="stylesheet" href="{{asset('admin-assets/jalalidatepicker/persian-datepicker.min.css')}}" />
+
+@endsection
+
+@section('title','ویرایش پست')
 
 
 
@@ -12,8 +17,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش محتوا</a></li>
-        <li class="breadcrumb-item"> <a href="#">پیج ساز</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> ایجاد پیج جدید</li>
+        <li class="breadcrumb-item"> <a href="#">سوالات متداول</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> ویرایش سوال</li>
     </ol>
 </nav>
 
@@ -22,29 +27,29 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                    ایجاد پیج جدید
+                    ویرایش سوال
                 </h5>
             </section>
 
             <section class="d-flex justify-content-between align-items-center border-bottom mt-4 mb-3 pb-2">
-                <a href="{{route('admin.content.page-maker.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
+                <a href="{{route('admin.content.faq.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
                 <div class="width-16-rem">
                     <input class="form-control form-control-sm form-text" list="datalistOptions" id="exampleDataList" placeholder="جستجو">
                 </div>
             </section>
 
             <section>
-                <form action="{{route('admin.content.page-maker.store')}}" id="form" method="post">
+                <form action="{{route('admin.content.faq.update', $faq->id)}}" id="form" method="post">
                     @csrf
+                    @method('put')
                     <section class="row">
 
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
-                                <label for="">عنوان</label>
-                                <input type="text" name="title" class="form-control form-control-sm" value="{{old('title')}}">
+                                <label for="">پرسش</label>
+                                <input type="text" name="question" class="form-control form-control-sm" value="{{$faq->question}}">
                             </div>
-
-                            @error('title')
+                            @error('question')
                             <span class="text-white bg-danger rounded">
                                 {{$message}}
                             </span>
@@ -52,25 +57,9 @@
                         </section>
 
                         <section class="col-12 col-md-6 my-2">
-
-                            <div class="form-group">
-                                <label for="">وضعیت</label>
-                                <select class="form-control form-control-sm" name="status">
-                                    <option value="0" @if(old('status')==0) 'selected' @endif>غیر فعال</option>
-                                    <option value="1" @if(old('status')==1) 'selected' @endif>فعال</option>
-                                </select>
-                            </div>
-                            @error('status')
-                            <span class="text-white bg-danger rounded">
-                                {{$message}}
-                            </span>
-                            @enderror
-                        </section>
-
-                        <section class="col-12 my-2">
                             <div class="form-group">
                                 <label for="tags">تگ ها</label>
-                                <input id="tags" name="tags" type="hidden" class="form-control form-control-sm" value="{{old('tags')}}">
+                                <input id="tags" name="tags" type="hidden" class="form-control form-control-sm" value="{{old('tags',$faq->tags)}}">
                                 <select class="select2 form-control form-control-sm" id="select_tags" multiple>
 
                                 </select>
@@ -83,18 +72,35 @@
                             @enderror
                         </section>
 
-                        <section class="col-12 my-2">
+                        <section class="col-12 col-md-6 my-2">
+
                             <div class="form-group">
-                                <label for="">محتوا</label>
-                                <textarea class="form-control form-control-sm" rows="4" name="body" id="body">{{old('body')}}</textarea>
+                                <label for="">وضعیت</label>
+                                <select class="form-control form-control-sm" name="status">
+                                    <option value="0" @if($faq->status == 0) {{'selected'}} @endif>غیر فعال</option>
+                                    <option value="1" @if($faq->status == 1) {{'selected'}} @endif>فعال</option>
+                                </select>
                             </div>
-                            @error('body')
+                            @error('status')
                             <span class="text-white bg-danger rounded">
                                 {{$message}}
                             </span>
                             @enderror
                         </section>
+
                         <section class="col-12 my-2">
+                            <div class="form-group">
+                                <label for="">پاسخ</label>
+                                <textarea class="form-control form-control-sm" name="answer" id="body">{{$faq->answer}}</textarea>
+                            </div>
+                            @error('answer')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
+                        </section>
+
+                        <section class="col-12 mt-4">
                             <button class="btn btn-primary btn-sm">ثبت</button>
                         </section>
                     </section>
@@ -110,8 +116,9 @@
 @section('script')
 
 <script src="{{asset('admin-assets/ckeditor/ckeditor.js')}}"></script>
+
 <script>
-    CKEDITOR.replace('body');
+    CKEDITOR.replace('answer');
 </script>
 
 <script>
@@ -141,5 +148,4 @@
         })
     })
 </script>
-
 @endsection

@@ -40,20 +40,31 @@
                             <th class="text-center width-16-rem">نام منو</th>
                             <th class="text-center width-16-rem">منوی والد</th>
                             <th class="text-center width-16-rem">لینک منو</th>
+                            <th class="text-center width-16-rem">وضعیت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
+
+                    @foreach($menus as $key=>$menu)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">خانه</td>
-                            <td class="text-center">خانه</td>
-                            <td class="text-center">http://localhost:8000/category/کالای-الکترونیکی</td>
+                            <th class="text-center">{{++$key}}</th>
+                            <td class="text-center">{{$menu->name}}</td>
+                            <td class="text-center">{{$menu->parent_id ? $menu->parent->name : 'منوی اصلی'}}</td>
+                            <td class="text-center">{{$menu->url}}</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                <input type="checkbox" id="{{$menu->id}}" onchange="changeStatus('{{ $menu->id }}')" data-url="{{route('admin.content.menu.status', $menu->id)}}" @if($menu->status===1) {{'checked'}} @endif/>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{route('admin.content.menu.edit', $menu->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                <form action="{{route('admin.content.menu.destroy',$menu->id)}}" class="d-inline" id="form" method="post">
+                                    @csrf
+                                    @method('delete')
+                                <button class="btn btn-danger btn-sm delete" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                </form>
                             </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </section>
@@ -61,4 +72,81 @@
         </section>
     </section>
 </section>
+@endsection
+
+
+@section('script')
+
+<script type="text/javascript">
+    function changeStatus(id) {
+
+        var element = $('#' + id);
+        var url = element.attr('data-url');
+        var elementValue = !element.prop('checked');
+
+        $.ajax({
+
+            url: url,
+            type: "GET",
+            success: function(response) {
+                if (response.status) {
+                    if (response.checked) {
+                        element.prop('checked', true);
+                        successToast('منو با موفقیت فعال شد');
+                    } else {
+
+                        element.prop('checked', false);
+                        successToast('منو با موفقیت غیر فعال شد');
+                    }
+                } else {
+
+                    element.prop('checked', elementValue);
+                    errorToast('امکان تغییر وضعیت منو وجود ندارد')
+
+                }
+            }
+
+        })
+
+        function successToast(message) {
+
+            var successToastTag = '<div class="toast bg-success mb-0" data-delay="5000">\n' +
+                '<div class="toast-body d-flex bg-success text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast" aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(successToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+
+        function errorToast(message) {
+
+            var errorToastTag = '<div class="toast bg-danger mb-0" data-delay="5000" >\n' +
+                '<div class="toast-body d-flex bg-danger text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast"  aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(errorToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+    }
+    
+</script>
+
+@include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
+
 @endsection

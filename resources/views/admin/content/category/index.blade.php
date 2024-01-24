@@ -48,9 +48,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($postCategories as $postCategory)
+                        @foreach($postCategories as $key=>$postCategory)
                         <tr>
-                            <th class="text-center">{{$postCategory->id}}</th>
+                            <th class="text-center">{{++$key}}</th>
                             <td class="text-center">{{$postCategory->name}}</td>
                             <td class="text-center">{{$postCategory->description}}</td>
                             <td class="text-center"><img src="{{asset($postCategory->image)}}" alt="" width="50px" height="50px" /></td>

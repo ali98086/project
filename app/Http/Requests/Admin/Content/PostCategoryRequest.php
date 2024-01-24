@@ -25,12 +25,11 @@ class PostCategoryRequest extends FormRequest
 
         return [
 
-            'name'=>'required|min:3',
-            'tags'=>'required',
+            'name'=>'required|min:3|max:120|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?؟]+$/u',
+            'tags'=>'required|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?؟]+$/u',
             'status'=> 'required|numeric|in:0,1',
-            'image'=>'required',
-            'description'=>'required|min:3',
-            'slug'=>'nullable'
+            'image'=>'required|image|mimes:png,jpg,jpeg,gif',
+            'description'=>'required|min:3|max:500|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?؟]+$/u',
 
         ];
 
@@ -39,12 +38,11 @@ class PostCategoryRequest extends FormRequest
 
         return [
 
-            'name'=>'required|min:3',
-            'tags'=>'required',
+            'name'=>'required|min:3|max:120|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?؟]+$/u',
+            'tags'=>'required|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?؟]+$/u',
             'status'=> 'required|numeric|in:0,1',
-            'image'=>'',
-            'description'=>'required|min:3',
-            'slug'=>'nullable'
+            'image'=>'image|mimes:png,jpg,jpeg,gif',
+            'description'=>'required|min:3|max:500|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?؟]+$/u',
 
         ];
 

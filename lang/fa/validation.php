@@ -38,7 +38,7 @@ return [
     "email"            => "فرمت :attribute معتبر نیست.",
     "exists"           => ":attribute انتخاب شده، معتبر نیست.",
     "filled"           => "فیلد :attribute الزامی است",
-    "image"            => ":attribute باید تصویر باشد.",
+    "image"            => "این فایل معتبر نمی باشد.",
     "in"               => ":attribute انتخاب شده، معتبر نیست.",
     "integer"          => ":attribute باید نوع داده ای عددی (integer) باشد.",
     "ip"               => ":attribute باید IP آدرس معتبر باشد.",
@@ -134,7 +134,7 @@ return [
         "hour"                      => "ساعت",
         "minute"                    => "دقیقه",
         "second"                    => "ثانیه",
-        "title"                     => "عنوان کالا",
+        "title"                     => "عنوان",
         "text"                      => "متن",
         "content"                   => "محتوا",
         "description"               => "توضیحات کالا",
@@ -147,7 +147,7 @@ return [
         "fullname"                  => "نام کامل",
         "postal_code"               => "کد پستی",
         "comment"                   => "نظر",
-        "body"                      => "متن اصلی",
+        "body"                      => "متن پست",
         "image"                     => "تصویر",
         "photos"                    => "تصاویر",
         "photo"                     => "تصویر",
@@ -156,7 +156,9 @@ return [
         "reference_id"              => "ارجاع",
         "priority_id"               => "اولویت",
         "category_id"               => "دسته بندی",
-        "tags"                      => "تگ ها"
-        
+        "tags"                      => "تگ ها",
+        "summary"                   => "خلاصه",
+        "question"                   => "پرسش",
+        "answer"                   => "پاسخ",
     ],
 ];

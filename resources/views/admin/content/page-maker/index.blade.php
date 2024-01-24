@@ -38,20 +38,30 @@
                         <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">عنوان پیج</th>
-                            <th class="text-center width-16-rem">آدرس پیج</th>
+                            <th class="text-center width-16-rem">تگ ها</th>
+                            <th class="text-center width-16-rem">وضعیت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($pages as $key=>$page)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">درباره ما</td>
-                            <td class="text-center">about</td>
+                            <th class="text-center">{{$key+=1}}</th>
+                            <td class="text-center">{{$page->title}}</td>
+                            <td class="text-center">{{$page->tags}}</td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                <input type="checkbox" id="{{$page->id}}" onchange="changeStatus('{{ $page->id }}')" data-url="{{route('admin.content.page-maker.status', $page->id)}}" @if($page->status===1) {{'checked'}} @endif/>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{route('admin.content.page-maker.edit', $page->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                <form action="{{route('admin.content.page-maker.destroy', $page->id)}}" class="d-inline" method="post">
+                                    @csrf
+                                    @method('delete')
+                                <button class="btn btn-danger btn-sm delete" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                </form>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>
@@ -59,4 +69,82 @@
         </section>
     </section>
 </section>
+@endsection
+
+
+@section('script')
+
+<script type="text/javascript">
+    function changeStatus(id) {
+
+        var element = $('#' + id);
+        var url = element.attr('data-url');
+        var elementValue = !element.prop('checked');
+
+        $.ajax({
+
+            url: url,
+            type: "GET",
+            success: function(response) {
+                if (response.status) {
+                    if (response.checked) {
+                        element.prop('checked', true);
+                        successToast('پیج با موفقیت فعال شد');
+                    } else {
+
+                        element.prop('checked', false);
+                        successToast('پیج با موفقیت غیر فعال شد');
+                    }
+                } else {
+
+                    element.prop('checked', elementValue);
+                    errorToast('امکان تغییر وضعیت پیج وجود ندارد')
+
+                }
+            }
+
+        })
+
+        function successToast(message) {
+
+            var successToastTag = '<div class="toast bg-success mb-0" data-delay="5000">\n' +
+                '<div class="toast-body d-flex bg-success text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast" aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(successToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+
+        function errorToast(message) {
+
+            var errorToastTag = '<div class="toast bg-danger mb-0" data-delay="5000" >\n' +
+                '<div class="toast-body d-flex bg-danger text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast"  aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(errorToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+    }
+    
+</script>
+
+@include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
+
+
 @endsection
