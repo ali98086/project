@@ -39,42 +39,43 @@
                         <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">کد کاربر</th>
+                            <th class="text-center width-16-rem">متن نظر</th>
                             <th class="text-center width-16-rem">نویسنده نظر</th>
-                            <th class="text-center width-16-rem">کد کالا</th>
-                            <th class="text-center width-16-rem">کالا</th>
-                            <th class="text-center width-16-rem">وضعیت</th>
+                            <th class="text-center width-16-rem">کد پست</th>
+                            <th class="text-center width-16-rem">پست</th>
+                            <th class="text-center width-16-rem">پاسخ به</th>
+                            <th class="text-center width-16-rem">وضعیت تایید</th>
+                            <th class="text-center width-16-rem">وضعیت نظر</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($comments as $key=>$comment)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">4784562</td>
-                            <td class="text-center">سهیل کاشانی</td>
-                            <td class="text-center">6543219</td>
-                            <td class="text-center">شارژر Type C</td>
-                            <td class="text-center">در انتظار تایید</td>
+                            <th class="text-center">{{$key + 1 }}</th>
+                            <td class="text-center">{{$comment->author_id}}</td>
+                            <td class="text-center">{{$comment->body}}</td>
+                            <td class="text-center">{{$comment->user->full_name}}</td>
+                            <td class="text-center">{{$comment->commentable_id}}</td>
+                            <td class="text-center">{{$comment->commentable->title}}</td>
+                            <td class="text-center">{{$comment->parent == null ? '' : Str::limit($comment->parent->body, 10)}}</td>
+                            <td class="text-center">{{$comment->approved == 1 ? 'تایید شده' : 'تایید نشده' }}</td>
                             <td class="text-center">
+                                <input type="checkbox" id="{{$comment->id}}" onchange="changeStatus('{{ $comment->id }}')" data-url="{{route('admin.content.comment.status', $comment->id)}}" @if($comment->status===1) {{'checked'}} @endif/>
+                            </td>
+                            <td class="text-center d-flex pr-0">
 
-                                <a href="{{route('admin.market.comment.show')}}" class="btn btn-info btn-sm" type="submit"><i class="fa fa-eye"></i> نمایش</a>
-                                <a href="#" class="btn btn-success btn-sm"><i class="fa fa-check"></i> تایید</a>
+                                <a href="{{route('admin.content.comment.show', $comment->id)}}" class="btn btn-info btn-sm" type="submit"><i class="fa fa-eye"></i> نمایش</a>
 
+                                @if($comment->approved == 1)
+                                <a href="{{route('admin.content.comment.approved', $comment->id)}}" class="btn btn-warning btn-sm mr-1"><i class="fa fa-clock"></i> عدم تایید</a>
+                                @else
+                                <a href="{{route('admin.content.comment.approved', $comment->id)}}" class="btn btn-success btn-sm text-white mr-1"><i class="fa fa-check"></i> تایید</a>
+                                @endif
                             </td>
                         </tr>
-                        <tr>
-                            <th class="text-center">2</th>
-                            <td class="text-center">4722262</td>
-                            <td class="text-center">ملیکا ترابی</td>
-                            <td class="text-center">8526554</td>
-                            <td class="text-center">شارژر معمولی</td>
-                            <td class="text-center">تایید شده</td>
-                            <td class="text-center">
+                        @endforeach
 
-                                <a href="#" class="btn btn-info btn-sm" type="submit"><i class="fa fa-eye"></i> نمایش</a>
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-clock"></i> عدم تایید</a>
-
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </section>
@@ -82,5 +83,82 @@
         </section>
     </section>
 </section>
+
+@endsection
+
+
+@section('script')
+
+<script type="text/javascript">
+    function changeStatus(id) {
+
+        var element = $('#' + id);
+        var url = element.attr('data-url');
+        var elementValue = !element.prop('checked');
+
+        $.ajax({
+
+            url: url,
+            type: "GET",
+            success: function(response) {
+                if (response.status) {
+                    if (response.checked) {
+                        element.prop('checked', true);
+                        successToast('نظر با موفقیت فعال شد');
+                    } else {
+
+                        element.prop('checked', false);
+                        successToast('نظر با موفقیت غیر فعال شد');
+                    }
+                } else {
+
+                    element.prop('checked', elementValue);
+                    errorToast('امکان تغییر وضعیت نظر وجود ندارد')
+
+                }
+            }
+
+        })
+
+        function successToast(message) {
+
+            var successToastTag = '<div class="toast bg-success mb-0" data-delay="5000">\n' +
+                '<div class="toast-body d-flex bg-success text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast" aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(successToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+
+        function errorToast(message) {
+
+            var errorToastTag = '<div class="toast bg-danger mb-0" data-delay="5000" >\n' +
+                '<div class="toast-body d-flex bg-danger text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast"  aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(errorToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+    }
+    
+</script>
+
+
 
 @endsection

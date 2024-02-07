@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Content\PostRequest;
 use App\Models\Content\Post;
 use App\Models\Content\PostCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -40,6 +41,12 @@ class PostController extends Controller
         $realTimeStampStart= substr($request->published_at, 0, 10);
         $inputs['published_at']= date('Y-m-d H:i:s', $realTimeStampStart);
 
+        if(!File::isDirectory(public_path('images'.DIRECTORY_SEPARATOR.'posts'))){
+
+            File::makeDirectory(public_path('images'.DIRECTORY_SEPARATOR.'posts'),0755,true); 
+
+        }
+        
         if ($request->hasFile('image')) {
             
             $manager = new ImageManager(new Driver()); 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Notify;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Notify\EmailRequest;
+use App\Models\Notify\Email;
 use Illuminate\Http\Request;
 
 class EmailController extends Controller
@@ -12,7 +14,8 @@ class EmailController extends Controller
      */
     public function index()
     {
-        return view('admin.notify.email.index');
+        $emails= Email::orderBy('created_at','desc')->simplePaginate(15);
+        return view('admin.notify.email.index', compact('emails'));
     }
 
     /**
@@ -26,9 +29,14 @@ class EmailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmailRequest $request)
     {
-        //
+        $inputs = $request->all();
+        $realTimeStampStart= substr($request->published_at, 0, 10);
+        $inputs['published_at']= date('Y-m-d H:i:s', $realTimeStampStart);
+
+        Email::create($inputs);
+        return redirect()->route('admin.notify.email.index')->with('swal-success','اطلاعیه ایمیلی مورد نظر با موفقیت ثبت شد');
     }
 
     /**
@@ -42,24 +50,57 @@ class EmailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Email $email)
     {
-        //
+        return view('admin.notify.email.edit', compact('email'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EmailRequest $request, Email $email)
     {
-        //
+        $inputs = $request->all();
+        $realTimeStampStart= substr($request->published_at, 0, 10);
+        $inputs['published_at']= date('Y-m-d H:i:s', $realTimeStampStart);
+
+        $email->update($inputs);
+        return redirect()->route('admin.notify.email.index')->with('swal-success','اطلاعیه ایمیلی مورد نظر با موفقیت ویرایش شد');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Email $email)
     {
-        //
+        $email->delete();
+        return redirect()->route('admin.notify.email.index')->with('swal-success','اطلاعیه ایمیلی مورد نظر با موفقیت حذف شد');
+    }
+
+    public function status(Email $email){
+
+        $email->status= $email->status == 0 ? 1 : 0 ;
+        $result= $email->save();
+
+        if($result){
+            if($email->status == 0){
+
+                return response()->json(['status'=> true , 'checked'=> false]);
+
+            }
+            else{
+
+                return response()->json(['status'=> true , 'checked'=>true]);
+
+            }
+
+
+        }
+        else{
+
+            return response()->json(['status'=> false]);
+
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 
-@section('title','اطلاعیه پیامکی')
+@section('title','فایل های اطلاعیه ایمیلی')
 
 
 @section('content')
@@ -11,7 +11,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">اطلاع رسانی</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> اطلاعیه پیامکی</li>
+        <li class="breadcrumb-item"> <a href="#">اطلاعیه ایمیلی</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> فایل اطلاعیه ایمیلی</li>
     </ol>
 </nav>
 
@@ -21,13 +22,14 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                    اطلاعیه پیامکی
+                    فایل اطلاعیه ایمیلی
                 </h5>
             </section>
 
-            <section class="d-flex justify-content-between align-items-center border-bottom mt-4 mb-3 pb-2">
-                <a href="{{route('admin.notify.sms.create')}}" class="btn btn-primary btn-sm">ایجاد اطلاعیه پیامکی</a>
-                <div class="width-16-rem">
+            <section class="d-flex align-items-center border-bottom mt-4 mb-3 pb-2">
+                <a href="{{route('admin.notify.email.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
+                <a href="{{route('admin.notify.email-file.create', $email->id)}}" class="btn btn-primary btn-sm mr-2">ایجاد فایل اطلاعیه ایمیلی</a>
+                <div class="width-16-rem mr-auto">
                     <input class="form-control form-control-sm form-text" list="datalistOptions" id="exampleDataList" placeholder="جستجو">
                 </div>
             </section>
@@ -35,31 +37,30 @@
             <section class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
-                        <tr>
+                    <tr>
                             <th class="text-center width-16-rem">#</th>
-                            <th class="text-center width-16-rem">عنوان اطلاعیه</th>
-                            <th class="text-center width-16-rem">متن اطلاعیه</th>
-                            <th class="text-center width-16-rem">تاریخ ارسال</th>
+                            <th class="text-center width-16-rem">عنوان ایمیل</th>
+                            <th class="text-center width-16-rem">سایز فایل</th>
+                            <th class="text-center width-16-rem">نوع فایل</th>
                             <th class="text-center width-16-rem">وضعیت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach($allSms as $key=>$sms)
+                    @foreach($email->files as $key=>$file)
                         <tr>
                             <th class="text-center">{{++$key}}</th>
-                            <td class="text-center">{{$sms->title}}</td>
-                            <td class="text-center">{{$sms->body}}</td>
-                            <td class="text-center date">{{Morilog\Jalali\Jalalian::forge($sms->published_at)->format('H:i:s Y-m-d')}}</td>
+                            <td class="text-center">{{$email->subject}}</td>
+                            <td class="text-center">{{$file->file_size}}</td>
+                            <td class="text-center">{{$file->file_type}}</td>
                             <td class="text-center">
-                                <input type="checkbox" id="{{$sms->id}}" onchange="changeStatus('{{ $sms->id }}')" data-url="{{route('admin.notify.sms.status', $sms->id)}}" @if($sms->status===1) {{'checked'}} @endif/>
+                                <input type="checkbox" id="{{$file->id}}" onchange="changeStatus('{{ $file->id }}')" data-url="{{route('admin.notify.email-file.status', $file->id)}}" @if($file->status===1) {{'checked'}} @endif/>
                             </td>
                             <td class="text-center w-25">
 
-                                <a href="{{route('admin.notify.sms.edit', $sms->id)}}" class="btn btn-primary" href="#"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
+                                <a href="{{route('admin.notify.email-file.edit', $file->id)}}" class="btn btn-primary"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
 
-                                <form action="{{route('admin.notify.sms.destroy', $sms->id)}}" method="post" class="d-inline">
+                                <form action="{{route('admin.notify.email-file.destroy', $file->id)}}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                 <button class="btn btn-danger delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
@@ -75,6 +76,7 @@
     </section>
 </section>
 @endsection
+
 
 @section('script')
 
@@ -107,16 +109,16 @@
                 if (response.status) {
                     if (response.checked) {
                         element.prop('checked', true);
-                        successToast('اطلاعیه پیامکی با موفقیت فعال شد');
+                        successToast('فایل اطلاعیه ایمیلی با موفقیت فعال شد');
                     } else {
 
                         element.prop('checked', false);
-                        successToast('اطلاعیه پیامکی با موفقیت غیر فعال شد');
+                        successToast('فایل اطلاعیه ایمیلی با موفقیت غیر فعال شد');
                     }
                 } else {
 
                     element.prop('checked', elementValue);
-                    errorToast('امکان تغییر وضعیت اطلاعیه پیامکی وجود ندارد')
+                    errorToast('امکان تغییر وضعیت فایل اطلاعیه ایمیلی وجود ندارد')
 
                 }
             }

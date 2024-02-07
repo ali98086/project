@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Content;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Content\PostCategoryRequest;
 use App\Models\Content\PostCategory;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -35,6 +36,12 @@ class CategoryController extends Controller
     public function store(PostCategoryRequest $request)
     { 
         $inputs = $request->all();
+
+        if (!File::isDirectory(public_path('images'.DIRECTORY_SEPARATOR.'post-categories'))) {
+
+            File::makeDirectory(public_path('images'.DIRECTORY_SEPARATOR.'post-categories'),0755,true);
+        }
+
         if ($request->hasFile('image')) {
             
             $manager = new ImageManager(new Driver()); 
@@ -84,8 +91,7 @@ class CategoryController extends Controller
 
         if($request->hasFile('image')){
 
-
-            unlink(public_path($postCategory->image));
+            File::delete(public_path($postCategory->image));
             $manager = new ImageManager(new Driver()); 
             $img = $manager->read($request->file('image'));
             $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
@@ -113,7 +119,7 @@ class CategoryController extends Controller
 
             if($request->size){
             
-                unlink(public_path($postCategory->image));    
+                File::delete(public_path($postCategory->image));   
 
             if($request->size == 'small'){
                 $img->resize(160,120);

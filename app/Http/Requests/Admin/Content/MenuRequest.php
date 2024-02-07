@@ -25,7 +25,7 @@ class MenuRequest extends FormRequest
             return [
                 'name'=>'required|min:3|max:120',
                 'parent_id'=>'nullable|regex:/^[0-9]+$/u|exists:menus,id',
-                'url'=>'required|min:3|max:500|url:http,https',
+                'url'=>'required|min:3|max:100000000|url:http,https',
                 'status'=> 'required|numeric|in:0,1',
                 
             ];
@@ -33,8 +33,8 @@ class MenuRequest extends FormRequest
             
             return [
                 'name'=>'required|min:3|max:120',
-                'parent_id'=>'',
-                'url'=>'required|min:3|max:500|url:http,https',
+                'parent_id'=>'nullable|regex:/^[0-9]+$/u|exists:menus,id',
+                'url'=>'required|min:3|max:100000000|url:http,https',
                 'status'=> 'required|numeric|in:0,1',
                 
             ];

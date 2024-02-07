@@ -27,7 +27,7 @@
             </section>
 
             <section class="d-flex justify-content-between align-items-center border-bottom mt-4 mb-3 pb-2">
-                <a href="{{route('admin.market.comment.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
+                <a href="{{route('admin.content.comment.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
                 <div class="width-16-rem">
                     <input class="form-control form-control-sm form-text" list="datalistOptions" id="exampleDataList" placeholder="جستجو">
                 </div>
@@ -37,13 +37,13 @@
 
                 <section class="card-header ">
 
-                    <h6 class="mb-0">4784562 - سهیل کاشانی</h6>
+                    <h6 class="mb-0">{{$comment->user->id}} - {{$comment->user->full_name}}</h6>
 
                 </section>
                 <section class="card-body">
 
-                    <h4>مشخصات کالا : شارژر Type C کد کالا: 6543219</h4>
-                    <p class="mb-0">به نظر من شارژر خوبیه ولی قیمتش گرونه</p>
+                    <h4>کد کالا: {{$comment->commentable->id}} _ مشخصات کالا : {{$comment->commentable->title}} </h4>
+                    <p class="mb-0">{{$comment->body}}</p>
 
                 </section>
 
@@ -51,12 +51,13 @@
 
             <section>
 
-                <form>
+                <form action="{{route('admin.content.comment.answer', $comment->id)}}" method="post">
+                    @csrf
                     <section class="row">
                         <section class="col-12 mt-3">
                             <section class="form-group">
                                 <label for="">پاسخ ادمین</label>
-                                <textarea class="form-control form-control-sm" id="" rows="4"></textarea>
+                                <textarea class="form-control form-control-sm" id="" name="body" rows="4"></textarea>
                                 <button class="btn btn-primary btn-sm mt-3">ثبت</button>
                             </section>
                         </section>

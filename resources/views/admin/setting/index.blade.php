@@ -10,7 +10,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
-        <li class="breadcrumb-item"> <a href="#"> تنظیمات</a></li>
         <li class="breadcrumb-item active" aria-current="page"> تنظیمات</li>
     </ol>
 </nav>
@@ -37,21 +36,25 @@
                     <thead>
                         <tr>
                             <th class="text-center width-16-rem">#</th>
-                            <th class="text-center width-16-rem">نام سایت</th>
                             <th class="text-center width-16-rem">عنوان سایت</th>
-                            <th class="text-center width-16-rem">کلمات کلیدی</th>
+                            <th class="text-center width-16-rem">توضیحات سایت</th>
+                            <th class="text-center width-16-rem">کلمات کلیدی سایت</th>
+                            <th class="text-center width-16-rem">لوگوی سایت</th>
+                            <th class="text-center width-16-rem">آیکون سایت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
-                    <tbody class="h-150px">
+                    <tbody>
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">فروشگاه</td>
-                            <td class="text-center">فروشگاه</td>
-                            <td class="text-center">سایت فروشگاهی،فروش انواع محصولات، محصولات ارزان</td>
+                            <th class="text-center">{{$setting->id}}</th>
+                            <td class="text-center">{{$setting->title}}</td>
+                            <td class="text-center">{{$setting->description}}</td>
+                            <td class="text-center">{{$setting->keywords}}</td>
+                            <td class="text-center"><img src="{{asset($setting->logo)}}" width="100px" height="60px"/></td>
+                            <td class="text-center"><img src="{{asset($setting->icon)}}" width="100px" height="60px"/></td>
                             <td class="text-center w-25">
 
-                                <a class="btn btn-primary" href="#"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
+                                <a class="btn btn-primary" href="{{route('admin.setting.edit', $setting->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
 
                             </td>
                         </tr>
