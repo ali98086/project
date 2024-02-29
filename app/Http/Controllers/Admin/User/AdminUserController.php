@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\User\CustomerRequest;
+use App\Http\Requests\Admin\User\AdminUserRequest;
 use App\Http\Services\File\FileService;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class CustomerController extends Controller
+class AdminUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users= User::where('user_type', 0)->orderBy('id','desc')->get();
-        return view('admin.user.customer.index', compact('users'));
+        $admins= User::where('user_type', 1)->orderBy('id', 'desc')->get();
+        return view('admin.user.admin.index', compact('admins'));
     }
 
     /**
@@ -25,13 +25,13 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('admin.user.customer.create');
+        return view('admin.user.admin.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CustomerRequest $request, FileService $fileService)
+    public function store(AdminUserRequest $request, FileService $fileService)
     {
         $inputs= $request->all();
 
@@ -46,15 +46,16 @@ class CustomerController extends Controller
 
             if(!$resultUpload){
 
-                return redirect()->route('admin.user.customer.index')->with('swal-error','خطا در آپلود تصویر!');
+                return redirect()->route('admin.user.admin.index')->with('swal-error','خطا در آپلود تصویر!');
 
             }
     }
 
-        $inputs['user_type'] = 0 ;
+        $inputs['user_type'] = 1 ;
         $inputs['password']= Hash::make($request->password);
         User::create($inputs);
-        return redirect()->route('admin.user.customer.index')->with('swal-success','کاربر مشتری جدید با موفقیت ثبت شد');
+        return redirect()->route('admin.user.admin.index')->with('swal-success','ادمین جدید با موفقیت ثبت شد');
+
     }
 
     /**
@@ -70,13 +71,13 @@ class CustomerController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.user.customer.edit', compact('user'));
+        return view('admin.user.admin.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CustomerRequest $request, User $user, FileService $fileService)
+    public function update(AdminUserRequest $request, User $user, FileService $fileService)
     {
         $inputs= $request->all();
 
@@ -92,13 +93,15 @@ class CustomerController extends Controller
 
             if(!$resultUpload){
 
-                return redirect()->route('admin.user.customer.index')->with('swal-error','خطا در آپلود تصویر!');
+                return redirect()->route('admin.user.admin.index')->with('swal-error','خطا در آپلود تصویر!');
 
             }
     }
 
         $user->update($inputs);
-        return redirect()->route('admin.user.customer.index')->with('swal-success','کاربر مشتری مورد نظر با موفقیت ویرایش شد');
+        return redirect()->route('admin.user.admin.index')->with('swal-success','کاربر ادمین مورد نظر با موفقیت ویرایش شد');
+
+
     }
 
     /**
@@ -114,9 +117,8 @@ class CustomerController extends Controller
 
         }
 
-        return redirect()->route('admin.user.customer.index')->with('swal-success','کاربر مشتری مورد نظر با موفقیت حذف شد');
+        return redirect()->route('admin.user.admin.index')->with('swal-success','کاربر ادمین مورد نظر با موفقیت حذف شد');
     }
-
 
     public function activation(User $user){
 

@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 
-@section('title','ایجاد ادمین جدید')
+@section('title','ایجاد کاربر مشتری جدید')
 
 
 
@@ -12,8 +12,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#"> بخش کاربران</a></li>
-        <li class="breadcrumb-item "><a href="#"> کاربران ادمین</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> ایجاد ادمین جدید</li>
+        <li class="breadcrumb-item "><a href="#"> مشتریان</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> ایجاد کاربر مشتری جدید</li>
     </ol>
 </nav>
 
@@ -22,16 +22,16 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                    ایجاد ادمین جدید
+                    ایجاد کاربر مشتری جدید
                 </h5>
             </section>
 
             <section class="d-flex justify-content-between align-items-center border-bottom mt-4 mb-3 pb-2">
-                <a href="{{route('admin.user.admin.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
+                <a href="{{route('admin.user.customer.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
             </section>
 
             <section>
-                <form action="{{route('admin.user.admin.store')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('admin.user.customer.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <section class="row">
 

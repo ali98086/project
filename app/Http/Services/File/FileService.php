@@ -27,7 +27,7 @@ class FileService{
 
     public function setPathFile(string $path){
 
-        $this->pathFile= $path;
+        $this->pathFile= $path.date('Y').DIRECTORY_SEPARATOR.date('m').DIRECTORY_SEPARATOR.date('d').DIRECTORY_SEPARATOR;
 
     }
 
@@ -68,21 +68,16 @@ class FileService{
 
     public function saveFileToStorage($file){
 
+        $filePath= $this->getPathFile();
         $fileName= $this->getNameFile();
-        $save= Storage::putFileAs('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR , $file , $fileName);
+        $save= Storage::putFileAs($filePath , $file , $fileName);
         return $save ? true : false;
 
     }
 
 
 
-    public function fullPath($place = 'public'){
-
-        if($place != 'public'){
-
-            return storage_path('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR.$this->getNameFile());
-
-        }
+    public function fullPath(){
 
         return $this->getPathFile().$this->getNameFile();
 
@@ -112,6 +107,72 @@ class FileService{
     public function getFormatFile($file){
 
         return $file->getClientOriginalExtension();
+
+    }
+
+
+
+    public function deleteFile($path){
+
+        if(File::exists(public_path($path))){
+
+            return File::delete($path);
+
+        }
+        elseif(Storage::exists($path)){
+
+            return Storage::delete($path);
+
+        }
+
+    }
+
+
+    public function checkPlaceSavedFile($path){
+
+        if(File::exists(public_path($path))){
+
+            return 'public';
+
+        }
+        elseif(Storage::exists($path)){
+
+            return 'storage';
+
+        }
+
+
+    }
+
+
+    public function saveFileTo($file, $place){
+
+        if($place == 'public'){
+
+            return $this->saveFileToPublic($file);
+
+        }
+        elseif($place == 'storage'){
+
+            return $this->saveFileToStorage($file);
+
+        }
+
+    }
+
+
+    public function changeFileDirectory($path){
+
+        if(File::exists(public_path($path))){
+
+            return File::move(public_path($path) ,storage_path('app'.DIRECTORY_SEPARATOR.$path)); 
+
+        }
+        elseif(Storage::exists($path)){
+
+            return File::move(storage_path('app'.DIRECTORY_SEPARATOR.$path) ,public_path($path));
+
+        }
 
     }
     

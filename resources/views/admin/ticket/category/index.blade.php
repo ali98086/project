@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 
-@section('title','اطلاعیه ایمیلی')
+@section('title','دسته بندی')
 
 
 @section('content')
@@ -10,8 +10,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
-        <li class="breadcrumb-item"> <a href="#">اطلاع رسانی</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> اطلاعیه ایمیلی</li>
+        <li class="breadcrumb-item"><a href=""> تیکت ها</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> دسته بندی</li>
     </ol>
 </nav>
 
@@ -21,12 +21,12 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                    اطلاعیه ایمیلی
+                    دسته بندی
                 </h5>
             </section>
 
             <section class="d-flex justify-content-between align-items-center border-bottom mt-4 mb-3 pb-2">
-                <a href="{{route('admin.notify.email.create')}}" class="btn btn-primary btn-sm">ایجاد اطلاعیه ایمیلی</a>
+                <a href="{{route('admin.ticket.category.create')}}" class="btn btn-primary btn-sm">ایجاد دسته بندی جدید</a>
                 <div class="width-16-rem">
                     <input class="form-control form-control-sm form-text" list="datalistOptions" id="exampleDataList" placeholder="جستجو">
                 </div>
@@ -35,35 +35,31 @@
             <section class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
-                    <tr>
+                        <tr>
                             <th class="text-center width-16-rem">#</th>
-                            <th class="text-center width-16-rem">عنوان اطلاعیه</th>
-                            <th class="text-center width-16-rem">متن اطلاعیه</th>
-                            <th class="text-center width-16-rem">تاریخ ارسال</th>
+                            <th class="text-center width-16-rem">نام دسته</th>
                             <th class="text-center width-16-rem">وضعیت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($emails as $key=>$email)
+                        @foreach($ticketCategories as $key=>$ticketCategory)
                         <tr>
                             <th class="text-center">{{++$key}}</th>
-                            <td class="text-center">{{$email->subject}}</td>
-                            <td class="text-center">{{$email->body}}</td>
-                            <td class="text-center date">{{Morilog\Jalali\Jalalian::forge($email->published_at)->format('H:i:s Y-m-d')}}</td>
+                            <td class="text-center">{{$ticketCategory->name}}</td>
                             <td class="text-center">
-                                <input type="checkbox" id="{{$email->id}}" onchange="changeStatus('{{ $email->id }}')" data-url="{{route('admin.notify.email.status', $email->id)}}" @if($email->status===1) {{'checked'}} @endif/>
+
+                                <input type="checkbox" id="{{$ticketCategory->id}}" onchange="changeStatus('{{ $ticketCategory->id }}')" data-url="{{route('admin.ticket.category.status', $ticketCategory->id)}}" @if($ticketCategory->status===1) {{'checked'}} @endif/>
+                            
                             </td>
                             <td class="text-center w-25">
 
-                                <a href="{{route('admin.notify.email-file.index', $email->id)}}" class="btn btn-sm btn-warning mr-1"><i class="fa fa-file"></i> فایل ها</a>
+                                <a href="{{route('admin.ticket.category.edit', $ticketCategory->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
 
-                                <a href="{{route('admin.notify.email.edit', $email->id)}}" class="btn btn-sm btn-primary"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
-
-                                <form action="{{route('admin.notify.email.destroy', $email->id)}}" method="post" class="d-inline">
+                                <form action="{{route('admin.ticket.category.destroy', $ticketCategory->id)}}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
-                                <button class="btn btn-sm btn-danger delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
+                                    <button class="btn btn-sm btn-danger delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
                                 </form>
                             </td>
                         </tr>
@@ -76,7 +72,6 @@
     </section>
 </section>
 @endsection
-
 
 @section('script')
 
@@ -109,16 +104,16 @@
                 if (response.status) {
                     if (response.checked) {
                         element.prop('checked', true);
-                        successToast('اطلاعیه ایمیلی با موفقیت فعال شد');
+                        successToast('دسته بندی تیکت با موفقیت فعال شد');
                     } else {
 
                         element.prop('checked', false);
-                        successToast('اطلاعیه ایمیلی با موفقیت غیر فعال شد');
+                        successToast('دسته بندی تیکت با موفقیت غیر فعال شد');
                     }
                 } else {
 
                     element.prop('checked', elementValue);
-                    errorToast('امکان تغییر وضعیت اطلاعیه ایمیلی وجود ندارد')
+                    errorToast('امکان تغییر وضعیت دسته بندی تیکت وجود ندارد')
 
                 }
             }

@@ -39,28 +39,43 @@
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">نام</th>
                             <th class="text-center width-16-rem">نام خانوادگی</th>
-                            <th class="text-center width-16-rem">ایمیل</th>
+                            <th class="text-center width-16-rem">پست الکترونیکی</th>
                             <th class="text-center width-16-rem">کد ملی</th>
                             <th class="text-center width-16-rem">شماره موبایل</th>
+                            <th class="text-center width-16-rem">فعال سازی</th>
+                            <th class="text-center width-16-rem">وضعیت</th>
+                            <th class="text-center width-16-rem">نقش</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
-                    <tbody class="h-150px">
+                    <tbody>
+                        @foreach($admins as $key=>$admin)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">محمد</td>
-                            <td class="text-center">کرمانی</td>
-                            <td class="text-center">mmd65@yahoo.com</td>
-                            <td class="text-center">0371523365</td>
-                            <td class="text-center">09352698741</td>
+                            <th class="text-center">{{$key+=1}}</th>
+                            <td class="text-center">{{$admin->first_name}}</td>
+                            <td class="text-center">{{$admin->last_name}}</td>
+                            <td class="text-center">{{$admin->email}}</td>
+                            <td class="text-center">{{$admin->national_code}}</td>
+                            <td class="text-center">{{$admin->mobile}}</td>
+                            <td class="text-center">
+                                <input type="checkbox" id="{{$admin->id}}" onchange="changeActivationStatus('{{ $admin->id }}')" data-url="{{route('admin.user.admin.activation', $admin->id)}}" @if($admin->activation===1) {{'checked'}} @endif />
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" id="{{'status'.$admin->id}}" onchange="changeStatus('{{ $admin->id }}')" data-url="{{route('admin.user.admin.status', $admin->id)}}" @if($admin->status===1) {{'checked'}} @endif />
+                            </td>
+                            <td class="text-center">سوپر ادمین</td>
                             <td class="text-center w-25">
 
-                                    <a class="btn btn-warning" href="#"><i class="fa fa-edit" aria-hidden="true"></i> نقش ها</a>
-                                    <a class="btn btn-primary" href="#"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
-                                    <button class="btn btn-danger" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>     
-
+                                    <a class="btn btn-sm btn-warning" href="#"><i class="fa fa-edit" aria-hidden="true"></i> نقش</a>
+                                    <a class="btn btn-sm btn-primary" href="{{route('admin.user.admin.edit', $admin->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
+                                    <form action="{{route('admin.user.admin.destroy', $admin->id)}}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('delete')
+                                    <button class="btn btn-sm btn-danger delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>     
+                                    </form>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>
@@ -68,4 +83,163 @@
         </section>
     </section>
 </section>
+@endsection
+
+@section('script')
+
+<script>
+    var arabicNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    $('.date').text(function(i, v) {
+        var chars = v.split('');
+        for (var i = 0; i < chars.length; i++) {
+            if (/\d/.test(chars[i])) {
+                chars[i] = arabicNumbers[chars[i]];
+            }
+        }
+        return chars.join('');
+    })
+</script>
+
+
+<script type="text/javascript">
+    function changeActivationStatus(id) {
+
+        var element = $('#' + id);
+        var url = element.attr('data-url');
+        var elementValue = !element.prop('checked');
+
+        $.ajax({
+
+            url: url,
+            type: "GET",
+            success: function(response) {
+                if (response.activation) {
+                    if (response.checked) {
+                        element.prop('checked', true);
+                        successToast('ادمین با موفقیت فعال سازی شد');
+                    } else {
+
+                        element.prop('checked', false);
+                        successToast('ادمین با موفقیت غیر فعال شد');
+                    }
+                } else {
+
+                    element.prop('checked', elementValue);
+                    errorToast('امکان تغییر وضعیت فعال سازی ادمین وجود ندارد')
+
+                }
+            }
+
+        })
+
+        function successToast(message) {
+
+            var successToastTag = '<div class="toast bg-success mb-0" data-delay="5000">\n' +
+                '<div class="toast-body d-flex bg-success text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast" aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(successToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+
+        function errorToast(message) {
+
+            var errorToastTag = '<div class="toast bg-danger mb-0" data-delay="5000" >\n' +
+                '<div class="toast-body d-flex bg-danger text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast"  aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(errorToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+    }
+
+
+
+    function changeStatus(id) {
+
+var element = $('#status' + id);
+var url = element.attr('data-url');
+var elementValue = !element.prop('checked');
+
+$.ajax({
+
+    url: url,
+    type: "GET",
+    success: function(response) {
+        if (response.status) {
+            if (response.checked) {
+                element.prop('checked', true);
+                successToastMsg('وضعیت ادمین با موفقیت فعال شد');
+            } else {
+
+                element.prop('checked', false);
+                successToastMsg('وضعیت ادمین با موفقیت غیر فعال شد');
+            }
+        } else {
+
+            element.prop('checked', elementValue);
+            errorToastMsg('امکان تغییر وضعیت ادمین وجود ندارد')
+
+        }
+    }
+
+})
+
+function successToastMsg(message) {
+
+    var successToastTag = '<div class="toast bg-success mb-0" data-delay="5000">\n' +
+        '<div class="toast-body d-flex bg-success text-white rounded">\n' +
+        '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+        '<button type="button" class="btn-close pl-0" data-dismiss="toast" aria-close="Close">\n' +
+        '<span aria-hidden="true">&times;</span>\n' +
+        '</button>\n' +
+        '</div>\n' +
+        '</div>';
+
+    $('#container-alerts').append(successToastTag);
+    $('.toast').toast('show').delay(5500).queue(function() {
+        $(this).remove();
+    })
+
+}
+
+function errorToastMsg(message) {
+
+    var errorToastTag = '<div class="toast bg-danger mb-0" data-delay="5000" >\n' +
+        '<div class="toast-body d-flex bg-danger text-white rounded">\n' +
+        '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+        '<button type="button" class="btn-close pl-0" data-dismiss="toast"  aria-close="Close">\n' +
+        '<span aria-hidden="true">&times;</span>\n' +
+        '</button>\n' +
+        '</div>\n' +
+        '</div>';
+
+    $('#container-alerts').append(errorToastTag);
+    $('.toast').toast('show').delay(5500).queue(function() {
+        $(this).remove();
+    })
+
+}
+}
+    
+</script>
+
+@include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
+
 @endsection

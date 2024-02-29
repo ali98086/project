@@ -54,11 +54,12 @@ class EmailFileController extends Controller
             }
         }
         
-        else{
+        elseif($request->placeSave == 'storage'){
 
+            $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
             $fileService->setNameFile($request->file('file'));
             $resultUpload= $fileService->saveFileToStorage($request->file('file'));
-            $fullFilePath= $fileService->fullPath('storage');
+            $fullFilePath= $fileService->fullPath();
 
             if(!$resultUpload){
 
@@ -99,21 +100,52 @@ class EmailFileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(EmailFileRequest $request, EmailFile $file)
+    public function update(EmailFileRequest $request, EmailFile $file, FileService $fileService)
     {
         $inputs= $request->all();
 
         if($request->hasFile('file')){
 
-            File::delete(public_path($file->file_path));
-            $filePath = 'files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR;
-            $fileName = uniqid() . '.' . $request->file('file')->getClientOriginalExtension();
-            $request->file('file')->move($filePath, $fileName);
-            $fullFilePath= $filePath.$fileName;
-            $inputs['file_path']= $fullFilePath;
-            $inputs['file_size']= File::size($fullFilePath);
-            $inputs['file_type']= $request->file('file')->getClientOriginalExtension();
 
+            $fileService->deleteFile($file->file_path);
+
+            if($request->placeSave == 'public'){
+
+                $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
+                $fileService->setNameFile($request->file('file'));
+                $resultUpload= $fileService->saveFileToPublic($request->file('file'));
+                $fullPath= $fileService->fullPath();
+
+            }
+            elseif($request->placeSave == 'storage'){
+
+                $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
+                $fileService->setNameFile($request->file('file'));
+                $resultUpload= $fileService->saveFileToStorage($request->file('file'));
+                $fullPath= $fileService->fullPath();
+
+            }
+            if(!$resultUpload){
+
+                return redirect()->route('admin.notify.email-file.index' , $file->email->id)->with('swal-error','خطا در آپلود فایل!');
+    
+            }
+
+            $inputs['file_path']= $fullPath;
+            $inputs['file_size']= $fileService->getSizeFile($fullPath, $request->placeSave);
+            $inputs['file_type']= $fileService->getFormatFile($request->file('file'));
+
+        }
+
+        else{
+
+            $placeSavedFile= $fileService->checkPlaceSavedFile($file->file_path);
+
+            if($placeSavedFile != $request->placeSave){
+                
+                $fileService->changeFileDirectory($file->file_path);
+
+            }
         }
 
         $file->update($inputs);

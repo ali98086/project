@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Ticket\TicketAdmin;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -18,6 +20,7 @@ class User extends Authenticatable
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
+    use SoftDeletes;
     use TwoFactorAuthenticatable;
 
     /**
@@ -26,9 +29,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
+        'national_code',
+        'mobile',
         'password',
+        'activation',
+        'profile_photo_path',
+        'user_type',
+        'status',
     ];
 
     /**
@@ -67,5 +77,11 @@ class User extends Authenticatable
             get: fn() => $this->first_name.' '.$this->last_name
         );
     }
+
+    public function ticketAdmin(){
+
+        return $this->hasOne(TicketAdmin::class);
+    }
+
 
 }
