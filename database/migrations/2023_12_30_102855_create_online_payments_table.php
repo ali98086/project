@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('amount_price', 20 , 3);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(0)->comment('0 => noPaid, 1 => Paid , 2 => canceld , 3 => returned');
             $table->string('gateway')->nullable()->comment('what bank gateway (mellat, melli ,...)');
             $table->string('transaction_id')->nullable();
             $table->text('bank_first_response')->nullable();

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(0)->comment('0 => noPaid, 1 => Paid , 2 => canceld , 3 => returned');
             $table->tinyInteger('type')->default(0)->comment('0 = online , 1 = offline , 2 = cash');
             $table->unsignedBigInteger('paymentable_id');
             $table->string('paymentable_type');

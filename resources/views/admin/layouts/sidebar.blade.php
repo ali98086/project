@@ -2,7 +2,7 @@
     <section class="sidebar-container">
         <section class="sidebar-wrapper">
 
-            <a href="#" class="sidebar-link">
+            <a href="{{route('admin.home')}}" class="sidebar-link">
                 <i class="fas fa-home"></i>
                 <span>خانه</span>
             </a>
@@ -12,7 +12,7 @@
             <section class="sidebar-group-link">
                 <section class="sidebar-dropdown-toggle">
                     <i class="fas fa-chart-bar icon"></i>
-                    <span>ویترین</span>
+                    <span>فروش (ویترین)</span>
                     <i class="fas fa-angle-left angle"></i>
                 </section>
                 <section class="sidebar-dropdown">
@@ -51,7 +51,7 @@
                     <a href="{{route('admin.market.payment.index')}}">تمام پرداخت ها</a>
                     <a href="{{route('admin.market.payment.onlinePayments')}}">پرداخت های آنلاین</a>
                     <a href="{{route('admin.market.payment.offlinePayments')}}">پرداخت های آفلاین</a>
-                    <a href="#">پرداخت در محل</a>
+                    <a href="{{route('admin.market.payment.cashPayments')}}">پرداخت در محل</a>
                 </section>
             </section>
 
@@ -62,7 +62,7 @@
                     <i class="fas fa-angle-left angle"></i>
                 </section>
                 <section class="sidebar-dropdown">
-                    <a href="{{route('admin.market.discount.copan')}}">کوپن تخفیف</a>
+                    <a href="{{route('admin.market.discount.copanDiscount')}}">کوپن تخفیف</a>
                     <a href="{{route('admin.market.discount.commonDiscount')}}">تخفیف عمومی</a>
                     <a href="{{route('admin.market.discount.amazingSale')}}">فروش شگفت انگیز</a>
                 </section>
@@ -91,6 +91,10 @@
             <a href="{{route('admin.content.menu.index')}}" class="sidebar-link">
                 <i class="fas fa-bars"></i>
                 <span>منو</span>
+            </a>
+            <a href="{{route('admin.content.banner.index')}}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>بنر ها (اسلایدشو)</span>
             </a>
             <a href="{{route('admin.content.faq.index')}}" class="sidebar-link">
                 <i class="fas fa-bars"></i>

@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Market\Payment;
 use App\Models\Ticket\TicketAdmin;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +33,8 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'email_verified_at',
+        'mobile_verified_at',
         'national_code',
         'mobile',
         'password',
@@ -81,6 +84,12 @@ class User extends Authenticatable
     public function ticketAdmin(){
 
         return $this->hasOne(TicketAdmin::class);
+    }
+
+    public function payments(){
+
+        return $this->hasMany(Payment::class);
+
     }
 
 

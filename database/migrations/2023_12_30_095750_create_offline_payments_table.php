@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->decimal('amount_price', 20 , 3);
             $table->string('transaction_id')->nullable();
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(0)->comment('0 => noPaid, 1 => Paid , 2 => canceld , 3 => returned');
             $table->timestamp('pay_date');
             $table->timestamps();
             $table->softDeletes();

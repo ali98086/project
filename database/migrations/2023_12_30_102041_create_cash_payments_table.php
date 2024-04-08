@@ -16,7 +16,7 @@ return new class extends Migration
             $table->decimal('amount_price', 20 , 3);
             $table->string('receiver_name')->nullable()->comment('The name of the person who received the cash');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('status')->default(0)->comment('0 => noPaid, 1 => Paid , 2 => canceld , 3 => returned');
             $table->timestamp('pay_date');
             $table->timestamps();
             $table->softDeletes();

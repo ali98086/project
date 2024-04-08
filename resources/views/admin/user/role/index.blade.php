@@ -34,50 +34,48 @@
             </section>
 
             <section class="table-responsive">
-                <table class="table table-striped table-hover ">
+                <table class="table table-striped table-hover mb-0">
                     <thead>
                         <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">نام نقش</th>
+                            <th class="text-center width-16-rem">توضیح نقش</th>
                             <th class="text-center width-16-rem">دسترسی ها</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
 
+                    @foreach($roles as $key=>$role)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">پشتیبان فروش</td>
-                            <td class="text-center">1-مشاهده سفارشات<br>
-                                2-مشاهده پرداخت ها<br>
-                                3-مشاهده تخفیف ها
+                            <th class="text-center">{{$key += 1}}</th>
+                            <td class="text-center">{{$role->name}}</td>
+                            <td class="text-center">{{$role->description}}</td>
+                            <td class="text-center">
+
+                                @if($role->permissions()->get()->toArray() == null)
+                                
+                                <span class="text-danger">بدون سطح دسترسی</span>
+
+                                @else
+
+                                @foreach($role->permissions as $permission)
+                                {{$permission->name}}<br>
+                                @endforeach
+
+                                @endif
                             </td>
                             <td class="text-center w-25">
 
-                                <a href="#" class="btn btn-success btn-sm"><i class="fa fa-user-graduate"></i> دسترسی ها</a>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                <a href="{{route('admin.user.role.permission', $role->id)}}" class="btn btn-success btn-sm"><i class="fa fa-user-graduate"></i> دسترسی ها</a>
+                                <a href="{{route('admin.user.role.edit', $role->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
                                 <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i> حذف</a>
 
                             </td>
 
                         </tr>
-
-                        <tr>
-                            <th class="text-center">2</th>
-                            <td class="text-center">مدیر محتوا</td>
-                            <td class="text-center">1-مشاهده پست ها<br>
-                                2-مشاهده پیج ها<br>
-                                3-مشاهده نظرات
-                            </td>
-                            <td class="text-center w-25">
-
-                                <a href="#" class="btn btn-success btn-sm"><i class="fa fa-user-graduate"></i> دسترسی ها</a>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i> حذف</a>
-
-                            </td>
-
-                        </tr>
+                        @endforeach
+                        
                     </tbody>
                 </table>
             </section>

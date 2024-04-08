@@ -39,25 +39,32 @@
                         <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">نام فرم</th>
-                            <th class="text-center width-16-rem">فرم والد</th>
+                            <th class="text-center width-16-rem">واحد اندازه گیری</th>
+                            <th class="text-center width-16-rem">دسته والد</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
-
+                        @foreach($categoryAttributes as $key=>$categoryAttribute)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">نمایشگر</td>
-                            <td class="text-center">کالای الکترونیکی</td>
+                            <th class="text-center">{{++$key}}</th>
+                            <td class="text-center">{{$categoryAttribute->name}}</td>
+                            <td class="text-center">{{$categoryAttribute->unit}}</td>
+                            <td class="text-center">{{$categoryAttribute->category->name}}</td>
                             <td class="text-center w-25">
 
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> ویژگی ها</a>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-alt"></i> حذف</a>
-
+                                <a href="{{route('admin.market.property.value.index', $categoryAttribute->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> ویژگی ها</a>
+                                <a href="{{route('admin.market.property.edit', $categoryAttribute->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                
+                                <form action="{{route('admin.market.property.destroy', $categoryAttribute->id)}}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <a href="{{route('admin.market.property.destroy', $categoryAttribute->id)}}" class="btn btn-danger btn-sm delete"><i class="fa fa-trash-alt"></i> حذف</a>
+                                </form>
                             </td>
 
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>
@@ -65,5 +72,11 @@
         </section>
     </section>
 </section>
+
+@endsection
+
+@section('script')
+
+@include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
 
 @endsection

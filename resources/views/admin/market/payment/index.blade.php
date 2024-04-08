@@ -12,6 +12,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش فروش</a></li>
+        <li class="breadcrumb-item"> <a href="#">پرداخت ها</a></li>
         <li class="breadcrumb-item active" aria-current="page"> تمام پرداخت ها</li>
     </ol>
 </nav>
@@ -48,40 +49,26 @@
                     </thead>
                     <tbody>
 
+                    @foreach($payments as $key=>$payment)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">4722262</td>
-                            <td class="text-center">ملت</td>
-                            <td class="text-center">کامران محمدی</td>
-                            <td class="text-center">تایید شده</td>
-                            <td class="text-center">آنلاین</td>
+                            <th class="text-center">{{$key += 1}}</th>
+                            <td class="text-center">{{$payment->paymentable->transaction_id ?? '-'}}</td>
+                            <td class="text-center">{{$payment->paymentable->gateway ?? '-'}}</td>
+                            <td class="text-center">{{$payment->user->full_name}}</td>
+                            <td class="text-center">@if($payment->status == 0) پرداخت نشده @elseif($payment->status == 1) پرداخت شده @elseif($payment->status == 2) باطل شده @else برگشت داده شده @endif</td>
+                            <td class="text-center">@if($payment->type == 0) آنلاین @elseif($payment->type == 1) آفلاین @else در محل @endif</td>
 
                             <td class="text-center w-25">
 
-                                <a href="#" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-window-close"></i> باطل کردن</a>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
+                                <a href="{{route('admin.market.payment.show', $payment->id)}}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
+                                <a href="{{route('admin.market.payment.canceled', $payment->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-window-close"></i> باطل کردن</a>
+                                <a href="{{route('admin.market.payment.returned', $payment->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
 
                             </td>
 
                         </tr>
+                        @endforeach
 
-                        <tr>
-                            <th class="text-center">2</th>
-                            <td class="text-center">4724562</td>
-                            <td class="text-center">ملت</td>
-                            <td class="text-center">کرم رضایی</td>
-                            <td class="text-center">تایید شده</td>
-                            <td class="text-center">آفلاین</td>
-
-                            <td class="text-center w-25">
-
-                                <a href="#" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-window-close"></i> باطل کردن</a>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
-
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </section>

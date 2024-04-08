@@ -14,12 +14,12 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $unseenComments= Comment::where('seen', 0)->get();
+        $unseenComments= Comment::where('commentable_type','App\Models\Content\Post')->where('seen', 0)->get();
         foreach($unseenComments as $unseenComment){
             $unseenComment->seen = 1;
             $unseenComment->save();
         }
-        $comments = Comment::orderBy('created_at', 'desc')->simplePaginate('15');
+        $comments = Comment::orderBy('created_at', 'desc')->where('commentable_type','App\Models\Content\Post')->simplePaginate('15');
         return view('admin.content.comment.index', compact('comments'));
     }
 
@@ -31,38 +31,6 @@ class CommentController extends Controller
         return view('admin.content.comment.show', compact('comment'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     public function status(Comment $comment)
     {

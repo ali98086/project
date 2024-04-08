@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش فروش</a></li>
-        <li class="breadcrumb-item"> <a href="#"> فرم کالا</a></li>
+        <li class="breadcrumb-item"> <a href="#"> انبار</a></li>
         <li class="breadcrumb-item active" aria-current="page"> افزودن به انبار</li>
     </ol>
 </nav>
@@ -34,35 +34,62 @@
             </section>
 
             <section>
-                <form action="" method="">
+                <form action="{{route('admin.market.store.store', $product->id)}}" method="post">
+                    @csrf
                     <section class="row">
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="">نام تحویل گیرنده</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <input type="text" class="form-control form-control-sm" name="reciver" value="{{old('reciver')}}">
                             </div>
+                            @error('reciver')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
+
+
                         <section class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="">نام تحویل دهنده</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <input type="text" class="form-control form-control-sm" name="delivier" value="{{old('delivier')}}">
                             </div>
+                            @error('delivier')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
+
+
                         <section class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="">تعداد</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <label for="">تعداد قابل فروش</label>
+                                <input type="text" class="form-control form-control-sm" name="marketable_number" value="{{old('marketable_number')}}">
                             </div>
+                            @error('marketable_number')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
+
+
                         <section class="col-12">
                             <div class="form-group">
                                 <label for="">توضیحات</label>
-                                <textarea class="form-control form-control-sm" rows="4"></textarea>
+                                <textarea class="form-control form-control-sm" name="description" rows="4">{{old('description')}}</textarea>
                             </div>
+                            @error('description')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
 
-                        <section class="col-12">
+                        <section class="col-12 mt-2">
                             <button class="btn btn-primary btn-sm">ثبت</button>
                         </section>
                     </section>

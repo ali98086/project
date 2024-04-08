@@ -11,6 +11,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش فروش</a></li>
+        <li class="breadcrumb-item"> <a href="#">تخفیف ها</a></li>
         <li class="breadcrumb-item active" aria-current="page"> فروش شگفت انگیز</li>
     </ol>
 </nav>
@@ -45,17 +46,23 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($amazingSales as $key=>$amazingSale)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center"> موبایل سامسونگ	A04</td>
-                            <td class="text-center">30%</td>
-                            <td class="text-center">24 اردیبهشت 1402</td>
-                            <td class="text-center">26 اردیبهشت 1402</td>
+                            <th class="text-center">{{++$key}}</th>
+                            <td class="text-center"> {{$amazingSale->product->name}}</td>
+                            <td class="text-center date">{{$amazingSale->percentage}}%</td>
+                            <td class="text-center date">{{jdate($amazingSale->start_date)->format('H:i:s Y-m-d')}}</td>
+                            <td class="text-center date">{{jdate($amazingSale->end_date)->format('H:i:s Y-m-d')}}</td>
                             <td class="text-center">
-                            <a href="" class="btn btn-info btn-sm" type="submit"><i class="fa fa-eye"></i> مشاهده</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                <a href="{{route('admin.market.discount.amazingSale.edit', $amazingSale->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                <form action="{{route('admin.market.discount.amazingSale.destroy', $amazingSale->id)}}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                <button class="btn btn-danger btn-sm delete" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                </form>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>
@@ -63,4 +70,23 @@
         </section>
     </section>
 </section>
+@endsection
+
+@section('script')
+
+<script>
+    var arabicNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    $('.date').text(function(i, v) {
+        var chars = v.split('');
+        for (var i = 0; i < chars.length; i++) {
+            if (/\d/.test(chars[i])) {
+                chars[i] = arabicNumbers[chars[i]];
+            }
+        }
+        return chars.join('');
+    })
+</script>
+
+@include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
+
 @endsection

@@ -106,14 +106,12 @@ class EmailFileController extends Controller
 
         if($request->hasFile('file')){
 
-
-            $fileService->deleteFile($file->file_path);
-
             if($request->placeSave == 'public'){
 
                 $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
                 $fileService->setNameFile($request->file('file'));
                 $resultUpload= $fileService->saveFileToPublic($request->file('file'));
+                $fileService->deleteFile($file->file_path);
                 $fullPath= $fileService->fullPath();
 
             }
@@ -122,6 +120,7 @@ class EmailFileController extends Controller
                 $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
                 $fileService->setNameFile($request->file('file'));
                 $resultUpload= $fileService->saveFileToStorage($request->file('file'));
+                $fileService->deleteFile($file->file_path);
                 $fullPath= $fileService->fullPath();
 
             }

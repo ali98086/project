@@ -34,26 +34,54 @@
             </section>
 
             <section>
-                <form action="" method="">
+                <form action="{{route('admin.market.property.store')}}" method="post">
+                    @csrf
                     <section class="row">
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="">نام فرم</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <input type="text" name="name" class="form-control form-control-sm">
                             </div>
+                            @error('name')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="">فرم والد</label>
-                                <select class="form-control form-control-sm">
-                                    <option>فرم را انتخاب کنید</option>
-                                    <option>وسایل الکترونیکی</option>
+                                <label for="">واحد اندازه گیری</label>
+                                <input type="text" name="unit" class="form-control form-control-sm">
+                            </div>
+                            @error('unit')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
+                        </section>
+
+                        <section class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label for="">دسته والد</label>
+                                <select class="form-control form-control-sm" name="category_id">
+
+                                    <option value="">دسته والد را انتخاب کنید</option>
+
+                                    @foreach($ProductCategories as $category)
+                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @endforeach
+
                                 </select>
                             </div>
+                            @error('category_id')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
-                        <section class="col-12">
+                        <section class="col-12 mt-2">
                             <button class="btn btn-primary btn-sm">ثبت</button>
                         </section>
                     </section>

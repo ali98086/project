@@ -37,39 +37,35 @@
                     <thead>
                         <tr>
                             <th class="text-center width-16-rem">#</th>
-                            <th class="text-center width-16-rem">نام برند</th>
-                            <th class="text-center width-16-rem">لوگو</th>
+                            <th class="text-center width-16-rem">نام فارسی برند</th>
+                            <th class="text-center width-16-rem">نام اصلی برند</th>
+                            <th class="text-center width-16-rem">لوگوی برند</th>
+                            <th class="text-center width-16-rem">وضعیت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($brands as $key=>$brand)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">سامسونگ	</td>
-                            <td class="text-center"><img src="{{asset('admin-assets/images/avatar-2.jpg')}}" class="max-height-2rem"/></td>
+                            <th class="text-center">{{++$key}}</th>
+                            <td class="text-center">{{$brand->persian_name}}</td>
+                            <td class="text-center">{{$brand->orginal_name}}</td>
+                            <td class="text-center"><img src="{{asset($brand->logo)}}" class="max-height-2rem"/></td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+
+                                <input type="checkbox" id="{{$brand->id}}" onchange="changeStatus('{{ $brand->id }}')" data-url="{{route('admin.market.brand.status', $brand->id)}}" @if($brand->status===1) {{'checked'}} @endif />
+
+                            </td>
+                            <td class="text-center">
+                                <a href="{{route('admin.market.brand.edit', $brand->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
+                                <form action="{{route('admin.market.brand.destroy', $brand->id)}}" class="d-inline" method="post">
+                                @csrf
+                                @method('delete')
+                                    <button class="btn btn-danger btn-sm delete" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
+                                </form>
                             </td>
                         </tr>
-                        <tr>
-                            <th class="text-center">2</th>
-                            <td class="text-center">هواوی </td>
-                            <td class="text-center"><img src="{{asset('admin-assets/images/avatar-2.jpg')}}" class="max-height-2rem"/></td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-center">3</th>
-                            <td class="text-center">ال جی </td>
-                            <td class="text-center"><img src="{{asset('admin-assets/images/avatar-2.jpg')}}" class="max-height-2rem"/></td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                <button class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash-alt"></i> حذف</button>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>
@@ -78,3 +74,79 @@
     </section>
 </section>
 @endsection
+
+@section('script')
+
+<script type="text/javascript">
+    function changeStatus(id) {
+
+        var element = $('#' + id);
+        var url = element.attr('data-url');
+        var elementValue = !element.prop('checked');
+
+        $.ajax({
+
+            url: url,
+            type: "GET",
+            success: function(response) {
+                if (response.status) {
+                    if (response.checked) {
+                        element.prop('checked', true);
+                        successToast('برند با موفقیت فعال شد');
+                    } else {
+
+                        element.prop('checked', false);
+                        successToast('برند با موفقیت غیر فعال شد');
+                    }
+                } else {
+
+                    element.prop('checked', elementValue);
+                    errorToast('امکان تغییر وضعیت برند وجود ندارد')
+
+                }
+            }
+
+        })
+
+        function successToast(message) {
+
+            var successToastTag = '<div class="toast bg-success mb-0" data-delay="5000">\n' +
+                '<div class="toast-body d-flex bg-success text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast" aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(successToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+
+        function errorToast(message) {
+
+            var errorToastTag = '<div class="toast bg-danger mb-0" data-delay="5000" >\n' +
+                '<div class="toast-body d-flex bg-danger text-white rounded">\n' +
+                '<strong class="ml-auto font-weight-normal">' + message + '</strong>\n' +
+                '<button type="button" class="btn-close pl-0" data-dismiss="toast"  aria-close="Close">\n' +
+                '<span aria-hidden="true">&times;</span>\n' +
+                '</button>\n' +
+                '</div>\n' +
+                '</div>';
+
+            $('#container-alerts').append(errorToastTag);
+            $('.toast').toast('show').delay(5500).queue(function() {
+                $(this).remove();
+            })
+
+        }
+    }
+    </script>
+
+    @include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
+
+    @endsection
+

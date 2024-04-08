@@ -14,6 +14,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
+        "melipayamak/php": "1.0.0",
         "morilog/jalali": "^3.4"
     },
     "require-dev": {

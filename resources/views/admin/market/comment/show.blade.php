@@ -12,8 +12,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش فروش</a></li>
-        <li class="breadcrumb-item"> <a href="{{route('admin.market.comment.index')}}">نظر ها</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> نمایش نظر ها</li>
+        <li class="breadcrumb-item"> <a href="{{route('admin.market.comment.index')}}">نظرات</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> نمایش نظر </li>
     </ol>
 </nav>
 
@@ -22,7 +22,7 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                    نمایش نظر ها
+                    نمایش نظر 
                 </h5>
             </section>
 
@@ -37,13 +37,13 @@
 
                 <section class="card-header ">
 
-                    <h6 class="mb-0">4784562 - سهیل کاشانی</h6>
+                    <h6 class="mb-0">{{$comment->user->id}} - {{$comment->user->first_name.' '.$comment->user->last_name}}</h6>
 
                 </section>
                 <section class="card-body">
 
-                    <h4>مشخصات کالا : شارژر Type C کد کالا: 6543219</h4>
-                    <p class="mb-0">به نظر من شارژر خوبیه ولی قیمتش گرونه</p>
+                    <h4>کد کالا : {{$comment->commentable->id}} - مشخصات کالا: {{$comment->commentable->name}}</h4>
+                    <p class="mb-0">{{$comment->body}}</p>
 
                 </section>
 
@@ -51,12 +51,13 @@
 
             <section>
 
-                <form>
+                <form action="{{route('admin.market.comment.answer', $comment->id)}}" method="post">
+                    @csrf
                     <section class="row">
                         <section class="col-12 mt-3">
                             <section class="form-group">
                                 <label for="">پاسخ ادمین</label>
-                                <textarea class="form-control form-control-sm" id="" rows="4"></textarea>
+                                <textarea class="form-control form-control-sm" id="" name="body" rows="4"></textarea>
                                 <button class="btn btn-primary btn-sm mt-3">ثبت</button>
                             </section>
                         </section>

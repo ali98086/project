@@ -9,7 +9,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
+        <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#"> بخش کاربران</a></li>
         <li class="breadcrumb-item "><a href="#"> مشتریان</a></li>
         <li class="breadcrumb-item active" aria-current="page"> ویرایش کاربر مشتری</li>

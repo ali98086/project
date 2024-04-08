@@ -12,7 +12,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش فروش</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> پرداخت های آفلاین</li>
+        <li class="breadcrumb-item"> <a href="#">پرداخت ها</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> پرداخت های آنلاین</li>
     </ol>
 </nav>
 
@@ -36,35 +37,34 @@
             <section class="table-responsive">
                 <table class="table table-striped table-hover ">
                     <thead>
+
                         <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">کد تراکنش</th>
                             <th class="text-center width-16-rem">بانک</th>
                             <th class="text-center width-16-rem">پرداخت کننده</th>
                             <th class="text-center width-16-rem">وضعیت پرداخت</th>
-                            <th class="text-center width-16-rem">نوع پرداخت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
-
+                    @foreach($onlinePayments as $key=>$onlinePayment)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">4722262</td>
-                            <td class="text-center">ملت</td>
-                            <td class="text-center">کامران محمدی</td>
-                            <td class="text-center">تایید شده</td>
-                            <td class="text-center">آنلاین</td>
-
+                            <th class="text-center">{{++$key}}</th>
+                            <td class="text-center">{{$onlinePayment->paymentable->transaction_id}}</td>
+                            <td class="text-center">{{$onlinePayment->paymentable->gateway}}</td>
+                            <td class="text-center">{{$onlinePayment->user->full_name}}</td>
+                            <td class="text-center">@if($onlinePayment->status == 0) پرداخت نشده @elseif($onlinePayment->status == 1) پرداخت شده @elseif($onlinePayment->status == 2) باطل شده @else برگشت داده شده @endif</td>
                             <td class="text-center w-25">
 
-                                <a href="#" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
-                                <a href="#" class="btn btn-warning btn-sm"><i class="fa fa-window-close"></i> باطل کردن</a>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
+                                <a href="{{route('admin.market.payment.show', $onlinePayment->id)}}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> مشاهده</a>
+                                <a href="{{route('admin.market.payment.canceled', $onlinePayment->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-window-close"></i> باطل کردن</a>
+                                <a href="{{route('admin.market.payment.returned', $onlinePayment->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-reply"></i> برگرداندن</a>
 
                             </td>
 
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>

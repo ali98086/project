@@ -77,6 +77,11 @@ return [
     'uploaded'             => 'آپلود :attribute با شکست مواجه شد.',
     "url"              => "فرمت آدرس :attribute اشتباه است.",
 
+
+
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -165,6 +170,21 @@ return [
         "logo"                      => "لوگو",
         "icon"                      => "آیکون",
         "placeSave"                 => "مکان ذخیره سازی فایل",
-        "national_code"             => "کد ملی"
+        "national_code"             => "کد ملی",
+        "amount"                    => "هزینه",
+        "delivery_time"             => "زمان ارسال",
+        "delivery_time_unit"        => "واحد زمان ارسال",
+        "weight"                    => "وزن",
+        "length"                    => "طول",
+        "height"                    => "ارتفاع",
+        "width"                     => "عرض",
+        "price"                     => "قیمت",
+        "marketable_number"         => "تعداد قابل فروش",
+        "frozen_number"             => "تعداد رزرو شده",
+        "sold_number"               => "تعداد فروخته شده",
+        'color_name'                => 'نام رنگ',
+        'price_increase'            => 'قیمت',
+        'reciver'                   => 'تحویل گیرنده',
+        'delivier'                  => 'تحویل دهنده'
     ],
 ];

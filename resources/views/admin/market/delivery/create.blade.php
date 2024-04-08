@@ -11,9 +11,9 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
-        <li class="breadcrumb-item"> <a href="#">  بخش فروش</a></li>
-        <li class="breadcrumb-item ">  روش های ارسال</li>
-        <li class="breadcrumb-item active" aria-current="page">  ایجاد روش های ارسال</li>
+        <li class="breadcrumb-item"> <a href="#"> بخش فروش</a></li>
+        <li class="breadcrumb-item "> <a href="#">روش های ارسال</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> ایجاد روش های ارسال</li>
     </ol>
 </nav>
 
@@ -34,29 +34,59 @@
             </section>
 
             <section>
-                <form action="" method="">
+                <form action="{{route('admin.market.delivery.store')}}" method="post">
+                    @csrf
                     <section class="row">
 
-                        <section class="col-12 col-md-6">
+                        <section class="col-12 col-md-6 mb-3">
                             <div class="form-group">
-                                <label for="">نام روش ارسال</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <label for="">روش ارسال</label>
+                                <input type="text" class="form-control form-control-sm" name="name" value="{{old('name')}}">
                             </div>
+                            @error('name')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
 
-                        <section class="col-12 col-md-6">
+                        <section class="col-12 col-md-6 mb-3">
                             <div class="form-group">
                                 <label for="">هزینه ارسال</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <input type="text" class="form-control form-control-sm" name="amount" value="{{old('amount')}}">
                             </div>
+                            @error('amount')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
 
-                        <section class="col-12 col-md-6">
+                        <section class="col-12 col-md-6 mb-3">
                             <div class="form-group">
                                 <label for="">زمان ارسال</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <input type="text" class="form-control form-control-sm" name="delivery_time" value="{{old('delivery_time')}}">
                             </div>
+                            @error('delivery_time')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
                         </section>
+
+                        <section class="col-12 col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="">واحد زمان ارسال</label>
+                                <input type="text" class="form-control form-control-sm" name="delivery_time_unit" value="{{old('delivery_time_unit')}}">
+                            </div>
+                            @error('delivery_time_unit')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
+                        </section>
+
+
 
                         <section class="col-12">
                             <button class="btn btn-primary btn-sm">ثبت</button>

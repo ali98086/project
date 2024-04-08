@@ -38,43 +38,49 @@
                         <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">نام کالا</th>
+                            <th class="text-center width-16-rem">برند کالا</th>
                             <th class="text-center width-16-rem">تصویر کالا</th>
                             <th class="text-center width-16-rem">قیمت</th>
                             <th class="text-center width-16-rem">وزن</th>
                             <th class="text-center width-16-rem">دسته</th>
-                            <th class="text-center width-16-rem">فرم</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody class="h-150px">
+                        @foreach($products as $key=>$product)
                         <tr>
-                            <th class="text-center">1</th>
-                            <td class="text-center">LED سامسونگ	</td>
-                            <td class="text-center"><img src="{{asset('admin-assets/images/avatar-2.jpg')}}" class="max-height-2rem"/></td>
-                            <td class="text-center">12,000,000 تومان</td>
-                            <td class="text-center">13 کیلوگرم</td>
-                            <td class="text-center">کالای صوتی تصویری</td>
-                            <td class="text-center">نمایشگر</td>
+                            <th class="text-center">{{$key += 1 }}</th>
+                            <td class="text-center">{{$product->name}}</td>
+                            <td class="text-center">{{$product->brand->persian_name.' '.$product->brand->orginal_name}}</td>
+                            <td class="text-center"><img src="{{asset($product->image)}}" class="max-height-2rem" alt="تصویر ندارد"/></td>
+                            <td class="text-center">{{number_format($product->price);}} تومان</td>
+                            <td class="text-center">{{Str::of($product->weight)->startsWith('0') ? $product->weight : Str::of($product->weight)->before('.');}} کیلوگرم</td>
+                            <td class="text-center">{{$product->productCategory->name}}</td>
 
                         <td>
                                 <section class="dropdown text-center h-35">
-                                     <a href="#" class="btn btn-success btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false" ><i class="fa fa-wrench" aria-hidden="true"></i>
-                                        عملیات
-                                    </a> 
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li><a class="dropdown-item" href="#"><i class="fa fa-images" aria-hidden="true"></i> گالری</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="fa fa-list-ul" aria-hidden="true"></i> فرم کالا</a></li>
-                                        <li><a class="dropdown-item" href="#"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a></li>
-                                        <form action="" method="post">
-                                        <li><button class="dropdown-item" type="submit"><i class="fa fa-window-close" aria-hidden="true"></i> حذف</button></li>
+                                    <div class="dropdown">
+                                    <a href="#" class="btn btn-success btn-sm btn-block dorpdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-tools"></i> عملیات
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a href="{{route('admin.market.product.gallery.index', $product->id)}}" class="dropdown-item text-right"><i class="fa fa-images"></i> گالری</a>
+                                        <a href="{{route('admin.market.product.color.index', $product->id)}}" class="dropdown-item text-right"><i class="fa fa-list-ul"></i> رنگ کالا</a>
+                                        <a href="{{ route('admin.market.product.edit', $product->id) }}" class="dropdown-item text-right"><i class="fa fa-edit"></i> ویرایش</a>
+                                        <form class="d-inline" action="{{ route('admin.market.product.destroy', $product->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="dropdown-item text-right delete"><i class="fa fa-window-close"></i> حذف</button>
                                         </form>
-                                    </ul>
+                                    </div>
+                                </div>
 
                                 </section>                              
 
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </section>
@@ -82,4 +88,10 @@
         </section>
     </section>
 </section>
+@endsection
+
+@section('script')
+
+@include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
+
 @endsection
