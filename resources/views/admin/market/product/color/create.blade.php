@@ -53,6 +53,19 @@
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
+                                <label for="">کد رنگ</label>
+                                <input type="color" name="color_code" class="form-control form-control-sm" value="{{old('color_code')}}">
+                            </div>
+                            @error('color_code')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
+                        </section>
+
+
+                        <section class="col-12 col-md-6">
+                            <div class="form-group">
                                 <label for=""> قیمت (تومان)</label>
                                 <input type="text" name="price_increase" class="form-control form-control-sm" value="{{old('price_increase')}}">
                             </div>

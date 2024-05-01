@@ -100,9 +100,9 @@
 
                                 <section>
 
-                                    <input id="image" type="file" name="image" class="form-control form-control-sm" onchange="document.getElementById('imagesize').classList.add('d-block')">
+                                    <input id="image" type="file" name="image" class="form-control form-control-sm" onchange="document.getElementById('imagesize').classList.add('d-block'); document.getElementById('img').classList.add('d-none')">
 
-                                    <img src="{{asset($product->image)}}" class="mt-2" width="150px" height="150px" alt="تصویر ندارد" />
+                                    <img src="{{asset($product->image)}}" id="img" class="mt-2" width="150px" height="150px" alt="تصویر ندارد" />
 
                                 </section>
                             </div>
@@ -113,22 +113,25 @@
                             @enderror
 
 
-                            <section id="imagesize" class="mt-2 {{$product->image != null ? '' : 'd-none'}}">
+                            <section id="imagesize" class="mt-2 {{$product->image != null ? 'd-none' : 'd-none'}}">
                                 <p>انتخاب سایز تصویر : (دلخواه)</p>
                                 <input type="radio" id="size1" name="size" value="small">
                                 <label for="size1">120*160 - کوچک</label><br>
                                 <input type="radio" id="size2" name="size" value="medium">
                                 <label for="size2">240*320 - متوسط</label><br>
-                                <input type="radio" id="size3" name="size" value="large">
-                                <label for="size3">600*800 - بزرگ</label>
+                                <input type="radio" id="size3" name="size" value="anotherMedium">
+                                <label for="size3">350*350 - متوسط</label><br>
+                                <input type="radio" id="size4" name="size" value="large">
+                                <label for="size4">600*800 - بزرگ</label>
                             </section>
+                            <hr>
 
                         </section>
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="">وزن (کیلوگرم)</label>
-                                <input type="text" name="weight" class="form-control form-control-sm" value="{{old('weight', Str::of($product->weight)->before('.'))}}">
+                                <input type="text" name="weight" class="form-control form-control-sm" value="{{old('weight', $product->weight)}}">
                             </div>
                             @error('weight')
                             <span class="text-white bg-danger rounded">
@@ -213,7 +216,7 @@
                             @enderror
                         </section>
 
-                        <section class="col-12 col-md-6">
+                        <section class="col-12 col-md-6 mt-2">
                             <div class="form-group">
                                 <label for="status">وضعیت</label>
                                 <select name="status" id="status" class="form-control form-control-sm">

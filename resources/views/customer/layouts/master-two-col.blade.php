@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     @include('customer.layouts.head-tag')
     @yield('head-tag')
 </head>
+
 <body>
 
     @include('customer.layouts.header')
@@ -12,9 +14,12 @@
         @yield('customer.layouts.sidebar')
     </section>
 
+    @include('customer.alerts.alert-message.success')
+    @include('customer.alerts.alert-message.error')
+
     <main id="main-body-one-col" class="main-body">
 
-    @yield('content')
+        @yield('content')
 
     </main>
 
@@ -25,5 +30,21 @@
 
     @include('customer.layouts.script')
     @yield('script')
+
+
+
+        @include('customer.alerts.sweetalert.success')
+        @include('customer.alerts.sweetalert.error')
+
+
+    <script>
+
+        $(".close").click(function() {
+
+            $('.alert').addClass('d-none');
+
+        })
+    </script>
 </body>
+
 </html>

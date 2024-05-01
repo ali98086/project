@@ -183,7 +183,7 @@ return [
         "frozen_number"             => "تعداد رزرو شده",
         "sold_number"               => "تعداد فروخته شده",
         'color_name'                => 'نام رنگ',
-        'price_increase'            => 'قیمت',
+        'price_increase'            => 'افزایش قیمت',
         'reciver'                   => 'تحویل گیرنده',
         'delivier'                  => 'تحویل دهنده'
     ],

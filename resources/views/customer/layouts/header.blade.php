@@ -1,14 +1,20 @@
-    <!-- start header -->
+    <!-- start header --> 
     <header class="header mb-4">
 
-
+        
         <!-- start top-header logo, searchbox and cart -->
         <section class="top-header">
             <section class="container-xxl ">
                 <section class="d-md-flex justify-content-md-between align-items-md-center py-3">
 
+                    @php 
+                        
+                        $setting= App\Models\Setting\Setting::first();
+                
+                    @endphp
+
                     <section class="d-flex justify-content-between align-items-center d-md-block">
-                        <a class="text-decoration-none" href="index.html"><img src="assets/images/logo/8.png" alt="logo"></a>
+                        <a class="text-decoration-none" href="index.html"><img src="{{asset($setting->logo)}}" alt="logo"></a> 
                         <button class="btn btn-link text-dark d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                             <i class="fa fa-bars me-1"></i>
                         </button>
@@ -68,13 +74,13 @@
 
                             
                             <section class="header-cart d-inline ps-3 border-start position-relative">
-                                <a class="btn btn-link position-relative text-dark header-cart-link" href="javascript:void(0)">
+                                <a class="btn btn-link position-relative text-dark header-cart-link" href="{{route('customer.salesProcess.cart')}}">
                                     <i class="fa fa-shopping-cart"></i> <span style="top: 80%;" class="position-absolute start-0 translate-middle badge rounded-pill bg-danger">2</span>
                                 </a>
                                 <section class="header-cart-dropdown">
                                     <section class="border-bottom d-flex justify-content-between p-2">
                                         <span class="text-muted">2 کالا</span>
-                                        <a class="text-decoration-none text-info" href="cart.html">مشاهده سبد خرید </a>
+                                        <a class="text-decoration-none text-info" href="">مشاهده سبد خرید </a>
                                     </section>
                                     <section class="header-cart-dropdown-body">
 

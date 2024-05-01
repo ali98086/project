@@ -152,7 +152,7 @@
                             @enderror
 
                                 
-                                <section id="imagesize" class="mt-2 {{$productcategory->image != null ? '' : 'd-none'}}">
+                                <section id="imagesize" class="mt-2 {{$productcategory->image != null ? 'd-none' : 'd-none'}}">
                                 <p>انتخاب سایز تصویر : (دلخواه)</p>
                                     <input type="radio" id="size1" name="size" value="small">
                                     <label for="size1">120*160 - کوچک</label><br>

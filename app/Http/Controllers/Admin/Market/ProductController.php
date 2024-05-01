@@ -38,7 +38,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(ProductRequest $request, ImageService $imageService)
-    {
+    {  
         $inputs= $request->all();
         $realTimeStampStart= substr($request->published_at, 0, 10);
         $inputs['published_at']= date('Y-m-d H:i:s', $realTimeStampStart);
@@ -50,11 +50,12 @@ class ProductController extends Controller
             $imageService->setNameImage($request->file('image'));
 
         }
-
-        DB::transaction(function() use ($request , $inputs, $imageService){
-
             $fullImagePath= $imageService->fullPath();
             $inputs['image'] = $fullImagePath;
+            
+        DB::transaction(function() use ($request , $inputs, $imageService){
+
+
             $product= Product::create($inputs);
 
             $metas= array_combine($request->meta_key, $request->meta_value);

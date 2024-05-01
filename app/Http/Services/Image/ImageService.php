@@ -34,6 +34,13 @@ class ImageService{
     }
 
 
+    public function setPathSettingImage(string $path){
+
+        $this->pathImage= $path;
+
+    }
+
+
 
     public function getPathImage(){
 
@@ -50,12 +57,34 @@ class ImageService{
     }
 
 
+    public function setSettingLogoImageName($image){
+
+        $this->nameImage= 'logo'.'.'. $image->getClientOriginalExtension();
+
+    }
+
+
+    public function setSettingIconImageName($image){
+
+        $this->nameImage= 'icon'.'.'. $image->getClientOriginalExtension();
+
+    }
+
+
 
     public function getNameImage(){
 
         return $this->nameImage;
 
     }
+
+
+    public function getSettingImageName(){
+
+        return $this->nameImage;
+
+    }
+
 
 
 
@@ -85,6 +114,24 @@ class ImageService{
         $imageName= $this->getNameImage();
 
         $save= $img->save(Storage::putFileAs($imagePath , $image , $imageName));
+        return $save ? true : false;
+
+    }
+
+
+
+    public function saveSettingImageToPublic($image, $size = null){
+
+        $manager = new ImageManager(new Driver()); 
+        $img = $manager->read($image);
+        
+        if($size != null){
+
+            $this->setSizeImage($img, $size);
+
+        }
+
+        $save= $img->save($this->getPathImage().$this->getSettingImageName());
         return $save ? true : false;
 
     }
@@ -201,6 +248,12 @@ class ImageService{
         if($size == 'medium'){
 
             $img->resize(320,240);
+
+        }
+
+        if($size == 'anotherMedium'){
+
+            $img->resize(350,350);
 
         }
 

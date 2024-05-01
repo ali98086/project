@@ -10,7 +10,7 @@ class ProductColor extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable= ['color_name','product_id','status','price_increase','sold_number','marketable_number','frozen_number'];
+    protected $fillable= ['color_name','color_code','product_id','status','price_increase','sold_number','marketable_number','frozen_number'];
 
 
     public function product(){

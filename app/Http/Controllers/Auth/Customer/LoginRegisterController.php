@@ -22,7 +22,7 @@ class LoginRegisterController extends Controller
 
         return view('customer.auth.loginRegister');
 
-    }
+    } 
 
 
     public function LoginRegister(LoginRegisterRequest $request){
@@ -248,7 +248,7 @@ class LoginRegisterController extends Controller
     public function logout(){
 
         Auth::logout();
-        return redirect()->route('auth.customer.login-register-form');
+        return redirect()->route('auth.customer.login-register-form'); 
 
     }
 

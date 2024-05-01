@@ -56,6 +56,7 @@
 
                                 <a class="btn btn-primary" href="{{route('admin.setting.edit', $setting->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
 
+
                             </td>
                         </tr>
                     </tbody>

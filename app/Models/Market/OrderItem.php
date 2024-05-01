@@ -2,9 +2,10 @@
 
 namespace App\Models\Market;
 
-use App\Models\Guarantee;
+use App\Models\Market\Guarantee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class OrderItem extends Model
 {

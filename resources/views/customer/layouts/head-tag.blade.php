@@ -16,4 +16,5 @@
 <link rel="stylesheet" href="{{ asset('customer-assets/css/product.css') }}">
 <link rel="stylesheet" href="{{ asset('customer-assets/css/profile.css') }}">
 <link rel="stylesheet" href="{{ asset('customer-assets/css/login.css') }}">
-<title>فروشگاه آمازون</title>
+<link rel="stylesheet" href="{{asset('customer-assets/sweetalert/sweetalert2.css')}}">
+<title>@yield('title','فروشگاه آمازون')</title>

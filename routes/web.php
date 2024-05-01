@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\Market\ProductColorController;
 use App\Http\Controllers\Admin\Market\ProductController;
 use App\Http\Controllers\Admin\Market\CommentController as ProductCommentController;
 use App\Http\Controllers\Admin\Market\ProductGalleryController;
+use App\Http\Controllers\Admin\Market\GuaranteeController;
 use App\Http\Controllers\Admin\Market\PropertyController;
 use App\Http\Controllers\Admin\Market\PropertyValueController;
 use App\Http\Controllers\Admin\Market\StoreController;
@@ -36,6 +37,10 @@ use App\Http\Controllers\Admin\User\AdminUserController;
 use App\Http\Controllers\Admin\User\CustomerController;
 use App\Http\Controllers\Admin\User\RoleController;
 use App\Http\Controllers\Auth\Customer\LoginRegisterController;
+use App\Http\Controllers\Customer\HomeController;
+use App\Http\Controllers\Customer\Market\ProductController as CustomerProductController;
+use App\Http\Controllers\Customer\Market\SalesProcess\CartController;
+use App\Models\Market\Product;
 use App\Models\Ticket\Ticket;
 use Illuminate\Support\Facades\Route;
 
@@ -79,16 +84,6 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::put('/update/{brand}', [BrandController::class, 'update'])->name('admin.market.brand.update');
             Route::delete('/destroy/{brand}', [BrandController::class, 'destroy'])->name('admin.market.brand.destroy');
             Route::get('/status/{brand}', [BrandController::class , 'status'])->name('admin.market.brand.status');
-        });
-
-        Route::prefix('comment')->group(function () {
-
-            Route::get('/', [CommentController::class, 'index'])->name('admin.market.comment.index');
-            Route::get('/show', [CommentController::class, 'show'])->name('admin.market.comment.show');
-            Route::post('/store', [CommentController::class, 'store'])->name('admin.market.comment.store');
-            Route::get('/edit/{id}', [CommentController::class, 'edit'])->name('admin.market.comment.edit');
-            Route::put('/update/{id}', [CommentController::class, 'update'])->name('admin.market.comment.update');
-            Route::delete('/destroy/{id}', [CommentController::class, 'destroy'])->name('admin.market.comment.destroy');
         });
 
         Route::prefix('delivery')->group(function () {
@@ -177,6 +172,13 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::get('/gallery/create/{product}', [ProductGalleryController::class, 'create'])->name('admin.market.product.gallery.create');
             Route::post('/gallery/store/{product}', [ProductGalleryController::class, 'store'])->name('admin.market.product.gallery.store');
             Route::delete('/gallery/destroy/{product}/{productGallery}', [ProductGalleryController::class, 'destroy'])->name('admin.market.product.gallery.destroy');
+
+            //guarantee
+            Route::get('/guarantee/{product}', [GuaranteeController::class , 'index'])->name('admin.market.product.guarantee.index');
+            Route::get('/guarantee/create/{product}', [GuaranteeController::class , 'create'])->name('admin.market.product.guarantee.create');
+            Route::post('/guarantee/store/{product}', [GuaranteeController::class , 'store'])->name('admin.market.product.guarantee.store');
+            Route::delete('/guarantee/destroy/{product}/{guarantee}', [GuaranteeController::class , 'destroy'])->name('admin.market.product.guarantee.destroy');
+
 
             //comment
             Route::get('/comment', [ProductCommentController::class, 'index'])->name('admin.market.comment.index');
@@ -429,7 +431,6 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::get('/', [SettingController::class, 'index'])->name('admin.setting.index');
             Route::get('/edit/{setting}', [SettingController::class, 'edit'])->name('admin.setting.edit');
             Route::put('/update/{setting}', [SettingController::class, 'update'])->name('admin.setting.update');
-
             
         });
 
@@ -450,12 +451,32 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
 
     });
 
+    Route::get('/', [HomeController::class , 'home'])->name('customer.home');
 
-    Route::get('/', function(){
+            // Route::get('/d', function(){
 
-        return view('customer.home');
+            //     return 'test';
 
-    })->name('customer.home');
+            // });
+
+        Route::prefix('product')->controller(CustomerProductController::class)->group(function(){
+
+            Route::get('/{product}', 'product')->name('customer.market.product');
+            Route::post('/addComment/{product}', 'addComment')->name('customer.market.product.addComment');
+            Route::get('/addToFavorite/{product}', 'addToFavorite')->name('customer.market.product.addToFavorite');
+
+        });   
+
+        //sell bascket
+        Route::prefix('salesProcess')->controller(CartController::class)->group(function(){
+
+            Route::get('/cart', 'cart')->name('customer.salesProcess.cart');
+            Route::post('/cart/update', 'updateCart')->name('customer.salesProcess.updateCart');
+            Route::post('/addToCart/{product}', 'addToCart')->name('customer.salesProcess.addToCart');
+            Route::get('/removeFromCart/{cartItem}', 'removeFromCart')->name('customer.salesProcess.removeFromCart');
+
+        });   
+
 
 
 

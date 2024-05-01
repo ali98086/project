@@ -207,7 +207,7 @@
                         </section>
 
 
-                        <section class="col-12 col-md-6">
+                        <section class="col-12 col-md-6 mt-2">
                             <div class="form-group">
                                 <label for="status">وضعیت</label>
                                 <select name="status" id="status" class="form-control form-control-sm">
@@ -292,11 +292,12 @@
                         </section>
 
                         <section class="col-12 mt-3">
-                            <button class="btn btn-primary btn-sm">ثبت</button>
+                            <button type="submit" class="btn btn-primary btn-sm">ثبت</button>
                         </section>
                     </section>
+                    </form>
             </section>
-            </form>
+            
         </section>
 
     </section>

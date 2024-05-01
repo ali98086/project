@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\admin\ticket;
+namespace App\Http\Requests\Admin\ticket;
 
 use Illuminate\Foundation\Http\FormRequest;
 
