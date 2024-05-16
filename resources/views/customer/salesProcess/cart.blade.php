@@ -30,8 +30,8 @@
                         <section class="row mt-4">
                             <section class="col-md-9 mb-3">
                                 <section class="content-wrapper bg-white p-3 rounded-2">
-                                <form action="" id="cart_items" method="post">
-                                    @csrf
+                                <form action="{{route('customer.salesProcess.updateCart')}}" id="cart_items" method="post">
+                                @csrf
                                     
                                 @php 
                                 
@@ -43,12 +43,12 @@
 
                                 @foreach($cartItems as $cartItem)
 
-                                @php
+                                @php 
 
                                 $totalProductsPrice += $cartItem->cartItemsProductFinalPrice();
                                 $totalProductsDiscount += $cartItem->discountProducts();
 
-                                @endphp
+                                @endphp     
 
                                     <section class="cart-item d-md-flex py-3">
                                         <section class="cart-img align-self-start flex-shrink-1"><img src="{{asset($cartItem->product->image)}}" alt=""></section>
@@ -77,10 +77,10 @@
                                             <section>
                                                 <section class="cart-product-number d-inline-block ">
                                                     <button class="cart-number cart-number-down" type="button">-</button>
-                                                    <input class="number" data-total-product-price="{{$cartItem->cartItemsProductPrice()}}" data-product-discount="{{$cartItem->cartItemsProductDiscount()}}" type="number" min="1" max="{{$cartItem->product->marketable_number}}" step="1" value="{{$cartItem->number}}" readonly="readonly">
+                                                    <input class="number" name="number[{{$cartItem->id}}]" data-total-product-price="{{$cartItem->cartItemsProductPrice()}}" data-product-discount="{{$cartItem->cartItemsProductDiscount()}}" type="number" min="1" max="{{$cartItem->product->marketable_number}}" step="1" value="{{$cartItem->number}}" readonly="readonly">
                                                     <button class="cart-number cart-number-up" type="button">+</button>
                                                 </section>
-                                                <a class="text-decoration-none ms-4 cart-delete" href="#"><i class="fa fa-trash-alt"></i> حذف از سبد</a>
+                                                <a class="text-decoration-none ms-4 cart-delete" href="{{route('customer.salesProcess.removeFromCart' , $cartItem->id)}}"><i class="fa fa-trash-alt"></i> حذف از سبد</a>
                                             </section>
 
                                         </section>
@@ -100,13 +100,19 @@
 
                                 @endforeach
 
+                                @empty($cartItems->count())
+
+                                کالایی در سبد خرید شما وجود ندارد.
+
+                                @endempty
+
                                 </form>
                                 </section>
                             </section>
                             <section class="col-md-3">
                                 <section class="content-wrapper bg-white p-3 rounded-2 cart-total-price">
                                     <section class="d-flex justify-content-between align-items-center">
-                                        <p class="text-muted">قیمت کالاها ({{$cartItems->count()}})</p>
+                                        <p class="text-muted price">قیمت کالاها ({{$cartItems->count()}})</p>
                                         <p class="text-muted price" id="totalProductPrice">{{number_format($totalProductsPrice)}} تومان</p>
                                     </section>
 
@@ -125,8 +131,8 @@
                                     </p>
 
 
-                                    <section class="">
-                                        <a href="address.html" class="btn btn-danger d-block">تکمیل فرآیند خرید</a>
+                                    <section class="d-flex justify-content-center">
+                                        <button class="btn btn-danger d-block w-100" onclick="document.getElementById('cart_items').submit();">تکمیل فرآیند خرید</button>
                                     </section>
 
                                 </section>
@@ -209,7 +215,7 @@
                                             <section class="product-name">
                                                 <h3>{{$relatedProduct->name}}</h3>
                                             </section>
-                                            <section class="product-price-wrapper d-flex align-items-center">
+                                            <section class="product-price-wrapper d-flex align-items-center justify-content-between">
 
                                                 <section class="product-price price">{{number_format($relatedProduct->price).' تومان'}} </section>
 
@@ -302,9 +308,9 @@ var arabicNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
         
         total_products_finalPrice = total_products_price - total_products_discount;
 
-        $('#totalProductPrice').html(toFarsiNumber(total_products_price));
-        $('#totalProductDiscount').html(toFarsiNumber(total_products_discount));
-        $('#totalProductsFinalPrice').html(toFarsiNumber(total_products_finalPrice));
+        $('#totalProductPrice').html(toFarsiNumber(total_products_price) + ' تومان');
+        $('#totalProductDiscount').html(toFarsiNumber(total_products_discount) + ' تومان');
+        $('#totalProductsFinalPrice').html(toFarsiNumber(total_products_finalPrice) + ' تومان');
 
 
 

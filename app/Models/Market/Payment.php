@@ -11,7 +11,7 @@ class Payment extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable= ['user_id','status','type','peymentable_id','peymentable_type'];
+    protected $guarded = ['id'];
 
     public function user(){
 

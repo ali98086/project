@@ -30,8 +30,32 @@ class CartController extends Controller
 
 
 
-    public function updateCart()
+    public function updateCart(Request $request)
     {
+        if(auth()->check()){
+
+        $inputs = $request->all();
+        $cartItems = CartItem::where('user_id' , auth()->user()->id)->get();
+
+        foreach($cartItems as $cartItem){
+
+            if($cartItem->number != $inputs['number'][$cartItem->id]){
+
+                $cartItem->update(['number' => $inputs['number'][$cartItem->id]]);
+
+            }
+        }
+
+        return redirect()->route('customer.salesProcess.address-and-delivery');
+
+        }
+        else{
+            
+            return back();
+
+        }
+        
+
     }
 
 
@@ -114,7 +138,22 @@ class CartController extends Controller
     }
 
 
-    public function removeFromCart()
+    public function removeFromCart(CartItem $cartItem)
     {
+
+        if(Auth::check() && $cartItem->user_id == auth()->user()->id){
+
+            $cartItem->forceDelete();
+            return back();
+
+        }
+
+        else{
+
+            return redirect()->route('auth.customer.login-register-form');
+
+        }
+
+
     }
 }

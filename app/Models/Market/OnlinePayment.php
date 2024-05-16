@@ -11,6 +11,8 @@ class OnlinePayment extends Model
 {
     use HasFactory,SoftDeletes;
 
+    protected $guarded = ['id'];
+
     public function payments(){
 
         return $this->morphMany(Payment::class, 'paymentable');

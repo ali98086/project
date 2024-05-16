@@ -60,7 +60,7 @@ return [
     "regex"            => ":attribute یک فرمت معتبر نیست.",
     "required"         => "فیلد :attribute الزامی است.",
     "required_if"      => "فیلد :attribute هنگامی که :other برابر با :value است، الزامیست.",
-    "required_with"    => ":attribute الزامی است زمانی که :values موجود است.",
+    "required_with"    => ":attribute الزامی است زمانی که گیرنده سفارش خودم نیستم را انتخاب کرده اید.",
     "required_with_all" => ":attribute الزامی است زمانی که :values موجود است.",
     "required_without" => ":attribute الزامی است زمانی که :values موجود نیست.",
     "required_without_all" => ":attribute الزامی است زمانی که :values موجود نیست.",
@@ -148,7 +148,7 @@ return [
         "time"                      => "زمان",
         "available"                 => "موجود",
         "size"                      => "اندازه",
-		"file"                      => "فایل",
+        "file"                      => "فایل",
         "fullname"                  => "نام کامل",
         "postal_code"               => "کد پستی",
         "comment"                   => "نظر",
@@ -185,6 +185,15 @@ return [
         'color_name'                => 'نام رنگ',
         'price_increase'            => 'افزایش قیمت',
         'reciver'                   => 'تحویل گیرنده',
-        'delivier'                  => 'تحویل دهنده'
+        'delivier'                  => 'تحویل دهنده',
+        'province_id'                  => 'استان',
+        'city_id'                  => 'شهر',
+        'no'                  => 'پلاک',
+        'province_id'                  => 'استان',
+        'unit'                  => 'واحد',
+        'recipient_first_name'   => 'نام گیرنده',
+        'recipient_last_name'   => 'نام خانوادگی گیرنده',
+        'payment_type' => 'نوع پرداخت'
+
     ],
 ];

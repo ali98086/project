@@ -7,6 +7,13 @@
 
 <!-- start slideshow -->
 <section class="container-xxl my-4">
+
+    @if(session('success'))
+
+    <p class="alert alert-success">{{session('success')}}</p>
+
+    @endif
+
     <section class="row">
         <section class="col-md-8 pe-md-1 ">
             <section id="slideshow" class="owl-carousel owl-theme">
@@ -111,7 +118,7 @@
                                             <section class="product-name">
                                                 <h3>{{$mostVisitedProduct->name}}</h3>
                                             </section>
-                                            <section class="product-price-wrapper d-flex align-items-center">
+                                            <section class="product-price-wrapper d-flex align-items-center justify-content-between">
 
                                                 <section class="product-price price">{{number_format($mostVisitedProduct->price).' تومان'}} </section>
 
@@ -125,7 +132,7 @@
                                                     @endif
 
                                                 </section>
-                                                
+
                                             </section>
                                             <section class="product-colors">
 
@@ -238,7 +245,7 @@
                                             <section class="product-name">
                                                 <h3>{{$productOffer->name}}</h3>
                                             </section>
-                                            <section class="product-price-wrapper d-flex align-items-center">
+                                            <section class="product-price-wrapper d-flex align-items-center justify-content-between">
 
                                                 <section class="product-price price">{{number_format($productOffer->price).' تومان'}} </section>
 

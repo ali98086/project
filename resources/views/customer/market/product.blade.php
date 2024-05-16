@@ -305,7 +305,7 @@
                                             <section class="product-name">
                                                 <h3>{{$relatedProduct->name}}</h3>
                                             </section>
-                                            <section class="product-price-wrapper d-flex align-items-center">
+                                            <section class="product-price-wrapper d-flex align-items-center justify-content-between">
 
                                                 <section class="product-price price">{{number_format($relatedProduct->price).' تومان'}} </section>
 

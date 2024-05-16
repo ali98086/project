@@ -26,7 +26,7 @@ return new class extends Migration
             $table->tinyInteger('delivery_status')->default(0);
             $table->timestamp('delivery_date')->nullable();
             $table->decimal('order_final_amount' , 20 , 3)->nullable();
-            $table->decimal('order_discount_amount' , 20 , 3)->nullable();
+            $table->decimal('order_discount_amount' , 20 , 3)->nullable()->comment('Amount of Product AmazingSale');
             $table->foreignId('copan_id')->nullable()->constrained('copans')->onDelete('cascade')->onUpdate('cascade');
             $table->longText('copan_object')->nullable();
             $table->decimal('order_copan_discount_amount' , 20 , 3)->nullable();
