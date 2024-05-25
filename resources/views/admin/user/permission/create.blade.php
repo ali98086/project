@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 
-@section('title','ایجاد نقش جدید')
+@section('title','ایجاد دسترسی جدید')
 
 
 
@@ -13,8 +13,8 @@
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#"> بخش کاربران</a></li>
         <li class="breadcrumb-item "><a href="#"> سطوح دسترسی</a></li>
-        <li class="breadcrumb-item"> <a href="#">مدیریت نقش ها</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> ایجاد نقش جدید</li>
+        <li class="breadcrumb-item "><a href="#"> مدیریت دسترسی ها</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> ایجاد دسترسی جدید</li>
     </ol>
 </nav>
 
@@ -23,7 +23,7 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                    ایجاد نقش جدید
+                    ایجاد دسترسی جدید
                 </h5>
             </section>
 
@@ -32,13 +32,13 @@
             </section>
 
             <section>
-                <form action="{{route('admin.user.role.store')}}" method="post">
+                <form action="{{route('admin.user.permission.store')}}" method="post">
                     @csrf
                     <section class="row">
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="">عنوان نقش</label>
+                                <label for="">عنوان دسترسی</label>
                                 <input type="text" class="form-control form-control-sm" name="name" value="{{old('name')}}">
                             </div>
                             @error('name')
@@ -50,7 +50,7 @@
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="">توضیح نقش</label>
+                                <label for="">توضیح دسترسی</label>
                                 <input type="text" class="form-control form-control-sm" name="description" value="{{old('description')}}">
                             </div>
                             @error('description')
@@ -63,22 +63,6 @@
                         <section class="col-12 mt-3 border-bottom pb-3">
                             <button class="btn btn-primary btn-sm">ثبت</button>
                         </section>
-
-                        @foreach($permissions as $key=>$permission)
-                        <section class="col-md-3 mt-3">
-                            <section class="form-check">
-
-                            <input type="checkbox" class="form-check-input" name="permissions[]" id="{{$permission->id}}" value="{{$permission->id}}"/>
-                            <label for="{{$permission->id}}" class="form-check-label mr-3 font-size-14px">{{$permission->name}}</label>
-
-                        </section>
-                        @error('permissions.'.$key)
-                            <span class="text-white bg-danger rounded">
-                                {{$message}}
-                            </span>
-                            @enderror
-                        </section>
-                        @endforeach
 
                         
                         </section>

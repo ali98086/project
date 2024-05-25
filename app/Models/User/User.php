@@ -5,8 +5,11 @@ namespace App\Models\User;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Address;
+use App\Models\Market\Order;
 use App\Models\Market\Payment;
+use App\Models\Market\Product;
 use App\Models\Ticket\TicketAdmin;
+use App\Traits\Permissions\HasPermissionsTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,6 +27,7 @@ class User extends Authenticatable
     use Notifiable;
     use SoftDeletes;
     use TwoFactorAuthenticatable;
+    use HasPermissionsTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -82,6 +86,12 @@ class User extends Authenticatable
         );
     }
 
+    public function orders(){
+
+        return $this->hasMany(Order::class);
+
+    }
+
     public function ticketAdmin(){
 
         return $this->hasOne(TicketAdmin::class);
@@ -99,5 +109,21 @@ class User extends Authenticatable
 
     }
 
+    public function products(){
 
+        return $this->belongsToMany(Product::class);
+
+    }
+
+    public function permissions(){
+
+        return $this->belongsToMany(Permission::class);
+
+    }
+
+    public function roles(){
+
+        return $this->belongsToMany(Role::class);
+
+    }
 }

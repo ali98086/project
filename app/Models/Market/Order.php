@@ -57,4 +57,39 @@ class Order extends Model
 
     }
 
+
+    public function paymentStatus(){
+
+        $paymentSts= $this->payment_status;
+        $status = '';
+
+        if(auth()->check()){
+
+            if($paymentSts == 0){
+
+                $status = 'پرداخت نشده';
+
+            }
+            if($paymentSts == 1){
+
+                $status = 'پرداخت شده';
+
+            }
+            if($paymentSts == 2){
+
+                $status = 'لغو شده';
+
+            }
+            if($paymentSts == 3){
+
+                $status = 'برگشت داده شده';
+
+            }
+
+            return $status;
+
+        }
+
+    }
+
 }

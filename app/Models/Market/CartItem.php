@@ -11,7 +11,7 @@ class CartItem extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable= ['user_id','color_id','product_id','guarante_id','number'];
+    protected $guarded= ['id'];
 
 
     public function user(){

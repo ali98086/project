@@ -218,7 +218,8 @@
                             <section class="">
 
                                 @if($product->marketable_number > 0)
-                                <button id="next-level" type="submit" class="btn btn-danger d-block w-100">افزودن به سبد خرید</button>
+                                <button id="next-level" type="submit" class="btn btn-danger my-2 d-block w-100">افزودن به سبد خرید</button>
+                                <a href="{{route('customer.salesProcess.cart')}}" class="btn btn-primary d-block w-100">مشاهده سبد خرید</a>
                                 @else
                                 <p id="next-level" class="btn btn-secondary d-block disabled">محصول ناموجود می باشد</p>
                                 @endif

@@ -44,7 +44,8 @@
                             <th class="text-center width-16-rem">شماره موبایل</th>
                             <th class="text-center width-16-rem">فعال سازی</th>
                             <th class="text-center width-16-rem">وضعیت</th>
-                            <th class="text-center width-16-rem">نقش</th>
+                            <th class="text-center width-16-rem">نقش ها</th>
+                            <th class="text-center width-16-rem">دسترسی ها</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
@@ -55,18 +56,50 @@
                             <td class="text-center">{{$admin->first_name}}</td>
                             <td class="text-center">{{$admin->last_name}}</td>
                             <td class="text-center">{{$admin->email}}</td>
-                            <td class="text-center">{{$admin->national_code}}</td>
-                            <td class="text-center">{{$admin->mobile}}</td>
+                            <td class="text-center ncode">{{$admin->national_code}}</td>
+                            <td class="text-center mobile">{{$admin->mobile}}</td>
                             <td class="text-center">
                                 <input type="checkbox" id="{{$admin->id}}" onchange="changeActivationStatus('{{ $admin->id }}')" data-url="{{route('admin.user.admin.activation', $admin->id)}}" @if($admin->activation===1) {{'checked'}} @endif />
                             </td>
                             <td class="text-center">
                                 <input type="checkbox" id="{{'status'.$admin->id}}" onchange="changeStatus('{{ $admin->id }}')" data-url="{{route('admin.user.admin.status', $admin->id)}}" @if($admin->status===1) {{'checked'}} @endif />
                             </td>
-                            <td class="text-center">سوپر ادمین</td>
+                            <td class="text-center">
+                                @forelse($admin->roles as $role)
+                                
+                                {{$role->name}}
+
+                                @empty
+
+                                <section class="d-flex text-danger justify-content-center">
+
+                                فاقد نقش
+                                
+                                </section>
+
+                                @endforelse
+                            </td>
+
+                            <td class="text-center">
+                                @forelse($admin->permissions as $permission)
+                                
+                                {{$permission->name}}
+
+                                @empty
+
+                                <section class="d-flex text-danger justify-content-center">
+
+                                فاقد دسترسی
+                                
+                                </section>
+
+                                @endforelse
+                            </td>
+
                             <td class="text-center w-25">
 
-                                    <a class="btn btn-sm btn-warning" href="#"><i class="fa fa-edit" aria-hidden="true"></i> نقش</a>
+                                    <a class="btn btn-sm btn-success" href="{{route('admin.user.admin.permission', $admin->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> دسترسی ها</a>
+                                    <a class="btn btn-sm btn-warning" href="{{route('admin.user.admin.role', $admin->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> نقش ها</a>
                                     <a class="btn btn-sm btn-primary" href="{{route('admin.user.admin.edit', $admin->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
                                     <form action="{{route('admin.user.admin.destroy', $admin->id)}}" method="post" class="d-inline">
                                         @csrf
@@ -90,6 +123,28 @@
 <script>
     var arabicNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
     $('.date').text(function(i, v) {
+        var chars = v.split('');
+        for (var i = 0; i < chars.length; i++) {
+            if (/\d/.test(chars[i])) {
+                chars[i] = arabicNumbers[chars[i]];
+            }
+        }
+        return chars.join('');
+    })
+
+    var arabicNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    $('.ncode').text(function(i, v) {
+        var chars = v.split('');
+        for (var i = 0; i < chars.length; i++) {
+            if (/\d/.test(chars[i])) {
+                chars[i] = arabicNumbers[chars[i]];
+            }
+        }
+        return chars.join('');
+    })
+
+    var arabicNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    $('.mobile').text(function(i, v) {
         var chars = v.split('');
         for (var i = 0; i < chars.length; i++) {
             if (/\d/.test(chars[i])) {

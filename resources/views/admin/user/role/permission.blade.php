@@ -13,6 +13,7 @@
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش کاربران</a></li>
         <li class="breadcrumb-item"> <a href="#">سطوح دسترسی</a></li>
+        <li class="breadcrumb-item"> <a href="#">مدیریت نقش ها</a></li>
         <li class="breadcrumb-item active" aria-current="page"> دسترسی ها</li>
     </ol>
 </nav>
@@ -54,7 +55,7 @@
             @endphp
 
             <p class="pt-3">سطوح دسترسی</p>
-            <section class="d-flex">
+            <section class="d-flex flex-column">
             @foreach($permissions as $key=>$permission)
                         <section class="col-md-3 mt-2">
                             <section class="form-check">

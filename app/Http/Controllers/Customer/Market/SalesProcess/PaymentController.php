@@ -9,6 +9,7 @@ use App\Models\Market\Copan;
 use App\Models\Market\OfflinePayment;
 use App\Models\Market\OnlinePayment;
 use App\Models\Market\Order;
+use App\Models\Market\OrderItem;
 use App\Models\Market\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -137,15 +138,29 @@ class PaymentController extends Controller
 
             }
 
-            $payment = $targetModel::create([
+            if($targetModel == CashPayment::class){
+                
+                $payment = $targetModel::create([
 
-                'amount_price' => $order->order_final_amount,
-                'receiver_name' => $receiver_name,
-                'user_id' => auth()->user()->id,
-                'status'=> 1,
-                'pay_date' => now()
+                    'amount_price' => $order->order_final_amount,
+                    'receiver_name' => $receiver_name,
+                    'user_id' => auth()->user()->id,
+                    'status'=> 1,
+                    'pay_date' => now()
+    
+                ]);
+            }else{
 
-            ]);
+                $payment = $targetModel::create([
+
+                    'amount_price' => $order->order_final_amount,
+                    'user_id' => auth()->user()->id,
+                    'status'=> 1,
+                    'pay_date' => now()
+    
+                ]);
+
+            }
 
             Payment::create([
 
@@ -164,6 +179,22 @@ class PaymentController extends Controller
 
             foreach($cartItems as $cartItem){
 
+                OrderItem::create([
+
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'product_object'=> $cartItem->product,
+                    'number' => $cartItem->number,
+                    'amazing_sale_id' => $cartItem->product->activeAmazingSales()->id ?? null,
+                    'amazing_sale_object' =>$cartItem->product->activeAmazingSales() ?? null,
+                    'amazing_sale_discount_amount' =>empty($cartItem->product->activeAmazingSales()) ? 0 : ($cartItem->cartItemsProductDiscount() * $cartItem->number),
+                    'final_product_price'=> $cartItem->product->activeAmazingSales() ? $cartItem->cartItemsProductPrice() - ($cartItem->cartItemsProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100)) :  $cartItem->cartItemsProductPrice(),
+                    'final_total_price' => $cartItem->product->activeAmazingSales() ? $cartItem->number * ($cartItem->cartItemsProductPrice() - ($cartItem->cartItemsProductPrice() * ($cartItem->product->activeAmazingSales()->percentage / 100))) :  $cartItem->number * $cartItem->cartItemsProductPrice(),
+                    'guarante_id' => $cartItem->guarante_id ?? null,
+                    'color_id' => $cartItem->color_id ?? null
+
+                ]);
+
                 $cartItem->delete();
 
             }
@@ -176,7 +207,5 @@ class PaymentController extends Controller
             return redirect()->route('auth.customer.login-register-form');
 
         }
-
-
     }
 }

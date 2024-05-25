@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 
-@section('title','ویرایش نقش')
+@section('title','ویرایش دسترسی')
 
 
 
@@ -13,8 +13,8 @@
         <li class="breadcrumb-item"><a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item"> <a href="#">بخش کاربران</a></li>
         <li class="breadcrumb-item"> <a href="#">سطوح دسترسی</a></li>
-        <li class="breadcrumb-item"> <a href="#">مدیریت نقش ها</a></li>
-        <li class="breadcrumb-item active" aria-current="page"> ویرایش نقش</li>
+        <li class="breadcrumb-item"> <a href="#">مدیریت دسترسی ها</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> ویرایش دسترسی</li>
     </ol>
 </nav>
 
@@ -23,27 +23,27 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                ویرایش نقش
+                ویرایش دسترسی
                 </h5>
             </section>
 
             <section class="d-flex justify-content-between align-items-center border-bottom mt-4 mb-3 pb-2">
-                <a href="{{route('admin.user.role.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
+                <a href="{{route('admin.user.permission.index')}}" class="btn btn-primary btn-sm">بازگشت</a>
                 <div class="width-16-rem">
                     <input class="form-control form-control-sm form-text" list="datalistOptions" id="exampleDataList" placeholder="جستجو">
                 </div>
             </section>
 
             <section>
-                <form action="{{route('admin.user.role.update', $role->id)}}" id="form" method="post">
+                <form action="{{route('admin.user.permission.update', $permission->id)}}" id="form" method="post">
                     @csrf
                     @method('put')
                     <section class="row">
 
                     <section class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="">عنوان نقش</label>
-                                <input type="text" class="form-control form-control-sm" name="name" value="{{$role->name}}">
+                                <label for="">عنوان دسترسی</label>
+                                <input type="text" class="form-control form-control-sm" name="name" value="{{$permission->name}}">
                             </div>
                             @error('name')
                             <span class="text-white bg-danger rounded">
@@ -54,8 +54,8 @@
 
                         <section class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="">توضیح نقش</label>
-                                <input type="text" class="form-control form-control-sm" name="description" value="{{$role->description}}">
+                                <label for="">توضیح دسترسی</label>
+                                <input type="text" class="form-control form-control-sm" name="description" value="{{$permission->description}}">
                             </div>
                             @error('description')
                             <span class="text-white bg-danger rounded">

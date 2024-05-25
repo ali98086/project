@@ -35,11 +35,16 @@ use App\Http\Controllers\Admin\Ticket\TicketController;
 use App\Http\Controllers\Admin\Ticket\TicketPriorityController;
 use App\Http\Controllers\Admin\User\AdminUserController;
 use App\Http\Controllers\Admin\User\CustomerController;
+use App\Http\Controllers\Admin\User\PermissionController;
 use App\Http\Controllers\Admin\User\RoleController;
 use App\Http\Controllers\Auth\Customer\LoginRegisterController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Customer\Market\ProductController as CustomerProductController;
+use App\Http\Controllers\Customer\Market\Profile\AddressController as ProfileAddressController;
+use App\Http\Controllers\Customer\Market\Profile\FavoriteController;
 use App\Http\Controllers\Customer\Market\Profile\ProfileController;
+use App\Http\Controllers\Customer\Market\Profile\ProfileOrderController;
+use App\Http\Controllers\Customer\Market\Profile\UserProfileController;
 use App\Http\Controllers\Customer\Market\SalesProcess\AddressController;
 use App\Http\Controllers\Customer\Market\SalesProcess\CartController;
 use App\Http\Controllers\Customer\Market\SalesProcess\PaymentController as CustomerPaymentController;
@@ -311,6 +316,10 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::delete('/destroy/{user}', [AdminUserController::class, 'destroy'])->name('admin.user.admin.destroy');
             Route::get('/activation/{user}', [AdminUserController::class, 'activation'])->name('admin.user.admin.activation');
             Route::get('/status/{user}', [AdminUserController::class, 'status'])->name('admin.user.admin.status');
+            Route::get('role/{user}',[AdminUserController::class, 'role'])->name('admin.user.admin.role');
+            Route::post('addRole/{user}',[AdminUserController::class, 'addRole'])->name('admin.user.admin.addRole');
+            Route::get('permission/{user}',[AdminUserController::class, 'permission'])->name('admin.user.admin.permission');
+            Route::post('addPermission/{user}',[AdminUserController::class, 'addPermission'])->name('admin.user.admin.addPermission');
         });
 
         Route::prefix('customer')->group(function () {
@@ -335,6 +344,18 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::delete('/destroy/{role}', [RoleController::class, 'destroy'])->name('admin.user.role.destroy');
             Route::get('/show-permission/{role}', [RoleController::class, 'permission'])->name('admin.user.role.permission');
             Route::put('/update-permission/{role}', [RoleController::class, 'updatePermission'])->name('admin.user.role.update-permission');
+        });
+
+
+        Route::prefix('permission')->group(function () {
+
+            Route::get('/', [PermissionController::class, 'index'])->name('admin.user.permission.index');
+            Route::get('/create', [PermissionController::class, 'create'])->name('admin.user.permission.create');
+            Route::post('/store', [PermissionController::class, 'store'])->name('admin.user.permission.store');
+            Route::get('/edit/{permission}', [PermissionController::class, 'edit'])->name('admin.user.permission.edit');
+            Route::put('/update/{permission}', [PermissionController::class, 'update'])->name('admin.user.permission.update');
+            Route::delete('/destroy/{permission}', [PermissionController::class, 'destroy'])->name('admin.user.permission.destroy');
+
         });
     });
 
@@ -494,10 +515,44 @@ Route::prefix('salesProcess')->group(function () {
 
         Route::get('/profile', 'profile')->name('customer.salesProcess.profile');
         Route::post('/profile/complete', 'completeProfile')->name('customer.salesProcess.profile.completeProfile');
+
     });
+
+
+    //profileOrder
+    Route::controller(ProfileOrderController::class)->group(function () {
+
+        Route::get('/profile/orders', 'index')->name('customer.salesProcess.profileOrder.index');
+
+    });
+
+    //profile-favorites
+    Route::controller(FavoriteController::class)->group(function () {
+
+        Route::get('/profile/favorites', 'index')->name('customer.salesProcess.profile-favorites.index');
+        Route::get('/profile/removeToFavorite/{product}', 'removeToFavorites')->name('customer.salesProcess.profile-favorites.remove-to-favorites');
+
+    });
+
+    //user-profile
+    Route::controller(UserProfileController::class)->group(function () {
+
+        Route::get('/profile', 'index')->name('customer.salesProcess.profile.index');
+        Route::put('/profile/update', 'update')->name('customer.profile.profile.update');
+            
+    });
+
+
 });
 
 
+
+        //profile-address
+        Route::controller(ProfileAddressController::class)->group(function () {
+
+            Route::get('/profile/addresses', 'addresses')->name('customer.profile.addresses');
+                
+        });
 
 
 

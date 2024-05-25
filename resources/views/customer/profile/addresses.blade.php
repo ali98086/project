@@ -2,7 +2,7 @@
 
 @section('title')
 
-تکمیل اطلاعات ارسال کالا
+آدرس های من
 
 @endsection
 
@@ -10,10 +10,13 @@
 
 @section('content')
 
-
 <section class="mb-4">
     <section class="container-xxl">
         <section class="row">
+
+        @include('customer.layouts.partials.profile-sidebar')
+
+
             <section class="col">
                 <!-- start vontent header -->
                 <section class="content-header">
@@ -68,7 +71,7 @@
 
                             <section class="address-select">
 
-                                @foreach(auth()->user()->addresses as $address)
+                                @foreach($addresses as $address)
 
                                 <input type="radio" name="address_id" form="address-delivery" value="{{$address->id}}" id="address-{{$address->id}}" /> <!--checked="checked"-->
                                 <label for="address-{{$address->id}}" class="address-wrapper mb-2 p-2">
@@ -90,7 +93,7 @@
                                     </section>
 
                                     <a class="address-edit-button" data-bs-toggle="modal" data-bs-target="#edit-address-{{$address->id}}"><i class="fa fa-edit"></i> ویرایش آدرس</a>
-                                    <span class="address-selected">کالاها به این آدرس ارسال می شوند</span>
+
                                 </label>
 
                                 <section class="address-add-wrapper">
@@ -298,99 +301,8 @@
                             </section>
                         </section>
 
-
-                        <section class="content-wrapper bg-white p-3 rounded-2 mb-4">
-
-                            <!-- start vontent header -->
-                            <section class="content-header mb-3">
-                                <section class="d-flex justify-content-between align-items-center">
-                                    <h2 class="content-header-title content-header-title-small">
-                                        انتخاب نحوه ارسال
-                                    </h2>
-                                    <section class="content-header-link">
-                                        <!--<a href="#">مشاهده همه</a>-->
-                                    </section>
-                                </section>
-                            </section>
-                            <section class="delivery-select ">
-
-                                <section class="address-alert alert alert-primary d-flex align-items-center p-2" role="alert">
-                                    <i class="fa fa-info-circle flex-shrink-0 me-2"></i>
-                                    <secrion>
-                                        نحوه ارسال کالا را انتخاب کنید. هنگام انتخاب لطفا مدت زمان ارسال را در نظر بگیرید.
-                                    </secrion>
-                                </section>
-
-                                @foreach($deliveries as $delivery)
-
-                                <input type="radio" name="delivery_id" form="address-delivery" value="{{$delivery->id}}" id="delivery-{{$delivery->id}}" />
-                                <label for="delivery-{{$delivery->id}}" class="col-12 col-md-4 delivery-wrapper mb-2 pt-2">
-                                    <section class="mb-2">
-                                        <i class="fa fa-shipping-fast mx-1"></i>
-                                        {{$delivery->name}}
-                                    </section>
-                                    <section class="mb-2">
-                                        <i class="fa fa-calendar-alt mx-1"></i>
-                                        ارسال کالا از {{$delivery->delivery_time}} {{$delivery->delivery_time_unit}} کاری آینده
-                                    </section>
-                                </label>
-
-                                @endforeach
-
-
-                            </section>
-                        </section>
-
                     </section>
 
-                    @php
-                    $totalProductsPrice = 0;
-                    $totalProductsDiscount = 0;
-                    @endphp
-
-                    @foreach($cartItems as $cartItem)
-
-                    @php
-
-                    $totalProductsPrice += $cartItem->cartItemsProductPrice() * $cartItem->number;
-                    $totalProductsDiscount += $cartItem->discountProducts();
-
-                    @endphp
-
-                    @endforeach
-
-                    <section class="col-md-3">
-                        <section class="content-wrapper bg-white p-3 rounded-2 cart-total-price">
-                            <section class="d-flex justify-content-between align-items-center">
-                                <p class="text-muted price">قیمت کالاها ({{$cartItems->count()}})</p>
-                                <p class="text-muted price" id="totalProductPrice">{{number_format($totalProductsPrice)}} تومان</p>
-                            </section>
-
-                            <section class="d-flex justify-content-between align-items-center">
-                                        <p class="text-muted">تخفیف کالاها</p>
-                                        <p class="text-danger fw-bolder price" id="totalProductDiscount">{{number_format($totalProductsDiscount)}} تومان</p>
-                                    </section>
-                                    <section class="border-bottom mb-3"></section>
-                                    <section class="d-flex justify-content-between align-items-center">
-                                        <p class="text-muted">جمع سبد خرید</p>
-                                        <p class="fw-bolder price" id="totalProductsFinalPrice">{{number_format($totalProductsPrice - $totalProductsDiscount)}} تومان</p>
-                                    </section>
-
-                                    <p class="my-3">
-                                        <i class="fa fa-info-circle me-1"></i>کاربر گرامی  خرید شما هنوز نهایی نشده است. برای ثبت سفارش و تکمیل خرید باید ابتدا آدرس خود را انتخاب کنید و سپس نحوه ارسال را انتخاب کنید. نحوه ارسال انتخابی شما محاسبه و به این مبلغ اضافه شده خواهد شد. و در نهایت پرداخت این سفارش صورت میگیرد.
-                                    </p>
-
-
-                            <form id="address-delivery" action="{{route('customer.salesProcess.chooseAddressDelivery')}}" method="post">
-                                @csrf
-                            </form>
-
-                            <section class="d-flex justify-content-center">
-                                <button class="btn btn-danger text-white d-block w-100" onclick="document.getElementById('address-delivery').submit();">تکمیل فرآیند خرید</button>
-                            </section>
-
-                        </section>
-                    </section>
                 </section>
             </section>
         </section>
@@ -481,7 +393,7 @@
 <script>
     $(document).ready(function() {
         // edit
-        var addresses = {!! auth()->user()->addresses !!}
+        var addresses = {!!auth()->user()->addresses!!}
         // console.log(addresses);
         addresses.map(function(address) {
             var id = address.id;

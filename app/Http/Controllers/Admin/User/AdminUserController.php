@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\AdminUserRequest;
 use App\Http\Services\File\FileService;
+use App\Models\User\Permission;
+use App\Models\User\Role;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -171,6 +173,44 @@ class AdminUserController extends Controller
             return response()->json(['status'=> false]);
 
         }
+
+    }
+
+
+    public function role(User $user){
+
+        $roles= Role::all();
+        return view('admin.user.admin.role', compact('user','roles'));
+
+    }
+
+    public function addRole(Request $request, User $user){
+
+        $request->validate([
+            'roles'=>'exists:roles,id|array'
+        ]);
+
+        $user->roles()->sync($request->roles);
+        return redirect()->route('admin.user.admin.index')->with('swal-success','نقش ادمین با موفقیت ویرایش شد.');
+
+    }
+
+
+    public function permission(User $user){
+
+        $permissions= Permission::all();
+        return view('admin.user.admin.permission', compact('user','permissions'));
+
+    }
+
+    public function addPermission(Request $request, User $user){
+
+        $request->validate([
+            'permissions'=>'exists:permissions,id|array'
+        ]);
+
+        $user->permissions()->sync($request->permissions);
+        return redirect()->route('admin.user.admin.index')->with('swal-success','دسترسی ادمین با موفقیت ویرایش شد.');
 
     }
 }
