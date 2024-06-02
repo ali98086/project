@@ -41,6 +41,7 @@ use App\Http\Controllers\Auth\Customer\LoginRegisterController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Customer\Market\ProductController as CustomerProductController;
 use App\Http\Controllers\Customer\Market\Profile\AddressController as ProfileAddressController;
+use App\Http\Controllers\Customer\Market\Profile\CustomerTicketController;
 use App\Http\Controllers\Customer\Market\Profile\FavoriteController;
 use App\Http\Controllers\Customer\Market\Profile\ProfileController;
 use App\Http\Controllers\Customer\Market\Profile\ProfileOrderController;
@@ -316,10 +317,10 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::delete('/destroy/{user}', [AdminUserController::class, 'destroy'])->name('admin.user.admin.destroy');
             Route::get('/activation/{user}', [AdminUserController::class, 'activation'])->name('admin.user.admin.activation');
             Route::get('/status/{user}', [AdminUserController::class, 'status'])->name('admin.user.admin.status');
-            Route::get('role/{user}',[AdminUserController::class, 'role'])->name('admin.user.admin.role');
-            Route::post('addRole/{user}',[AdminUserController::class, 'addRole'])->name('admin.user.admin.addRole');
-            Route::get('permission/{user}',[AdminUserController::class, 'permission'])->name('admin.user.admin.permission');
-            Route::post('addPermission/{user}',[AdminUserController::class, 'addPermission'])->name('admin.user.admin.addPermission');
+            Route::get('role/{user}', [AdminUserController::class, 'role'])->name('admin.user.admin.role');
+            Route::post('addRole/{user}', [AdminUserController::class, 'addRole'])->name('admin.user.admin.addRole');
+            Route::get('permission/{user}', [AdminUserController::class, 'permission'])->name('admin.user.admin.permission');
+            Route::post('addPermission/{user}', [AdminUserController::class, 'addPermission'])->name('admin.user.admin.addPermission');
         });
 
         Route::prefix('customer')->group(function () {
@@ -355,7 +356,6 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::get('/edit/{permission}', [PermissionController::class, 'edit'])->name('admin.user.permission.edit');
             Route::put('/update/{permission}', [PermissionController::class, 'update'])->name('admin.user.permission.update');
             Route::delete('/destroy/{permission}', [PermissionController::class, 'destroy'])->name('admin.user.permission.destroy');
-
         });
     });
 
@@ -463,6 +463,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/', [HomeController::class, 'home'])->name('customer.home');
+Route::get('/products', [HomeController::class, 'products'])->name('customer.products');
+
 
 // Route::get('/d', function(){
 
@@ -470,12 +472,15 @@ Route::get('/', [HomeController::class, 'home'])->name('customer.home');
 
 // });
 
+
 Route::prefix('product')->controller(CustomerProductController::class)->group(function () {
 
     Route::get('/{product}', 'product')->name('customer.market.product');
     Route::post('/addComment/{product}', 'addComment')->name('customer.market.product.addComment');
     Route::get('/addToFavorite/{product}', 'addToFavorite')->name('customer.market.product.addToFavorite');
 });
+
+
 
 //sell bascket
 Route::prefix('salesProcess')->group(function () {
@@ -489,25 +494,23 @@ Route::prefix('salesProcess')->group(function () {
     });
 
     //address and delivery
-        Route::middleware('profile.complete')->group(function(){
+    Route::middleware('profile.complete')->group(function () {
 
-            Route::get('/address-and-delivery', [AddressController::class, 'addressAndDelivery'])->name('customer.salesProcess.address-and-delivery');
-            Route::post('/add-address', [AddressController::class, 'addAddress'])->name('customer.salesProcess.add-address');
-            Route::put('/update-address/{address}', [AddressController::class, 'updateAddress'])->name('customer.salesProcess.update-address');
-            Route::get('/address/getCities/{province}', [AddressController::class, 'getCities'])->name('customer.salesProcess.getCities');
-            Route::post('/chooseAddressDelivery' , [AddressController::class, 'chooseAddressDelivery'])->name('customer.salesProcess.chooseAddressDelivery');
-
-        });
+        Route::get('/address-and-delivery', [AddressController::class, 'addressAndDelivery'])->name('customer.salesProcess.address-and-delivery');
+        Route::post('/add-address', [AddressController::class, 'addAddress'])->name('customer.salesProcess.add-address');
+        Route::put('/update-address/{address}', [AddressController::class, 'updateAddress'])->name('customer.salesProcess.update-address');
+        Route::get('/address/getCities/{province}', [AddressController::class, 'getCities'])->name('customer.salesProcess.getCities');
+        Route::post('/chooseAddressDelivery', [AddressController::class, 'chooseAddressDelivery'])->name('customer.salesProcess.chooseAddressDelivery');
+    });
 
     //payment
 
-        Route::controller(CustomerPaymentController::class)->group(function(){
+    Route::controller(CustomerPaymentController::class)->group(function () {
 
-            Route::get('/payment', 'payment')->name('customer.salesProcess.payment');
-            Route::post('/payment/copanDiscount', 'copanDiscount')->name('customer.salesProcess.payment.copanDiscount');
-            Route::post('/payment/paymentSubmit' , 'paymentSubmit')->name('customer.salesProcess.payment.paymentSubmit');
-
-        });
+        Route::get('/payment', 'payment')->name('customer.salesProcess.payment');
+        Route::post('/payment/copanDiscount', 'copanDiscount')->name('customer.salesProcess.payment.copanDiscount');
+        Route::post('/payment/paymentSubmit', 'paymentSubmit')->name('customer.salesProcess.payment.paymentSubmit');
+    });
 
 
     //profile
@@ -515,46 +518,60 @@ Route::prefix('salesProcess')->group(function () {
 
         Route::get('/profile', 'profile')->name('customer.salesProcess.profile');
         Route::post('/profile/complete', 'completeProfile')->name('customer.salesProcess.profile.completeProfile');
-
     });
-
-
-    //profileOrder
-    Route::controller(ProfileOrderController::class)->group(function () {
-
-        Route::get('/profile/orders', 'index')->name('customer.salesProcess.profileOrder.index');
-
-    });
-
-    //profile-favorites
-    Route::controller(FavoriteController::class)->group(function () {
-
-        Route::get('/profile/favorites', 'index')->name('customer.salesProcess.profile-favorites.index');
-        Route::get('/profile/removeToFavorite/{product}', 'removeToFavorites')->name('customer.salesProcess.profile-favorites.remove-to-favorites');
-
-    });
-
-    //user-profile
-    Route::controller(UserProfileController::class)->group(function () {
-
-        Route::get('/profile', 'index')->name('customer.salesProcess.profile.index');
-        Route::put('/profile/update', 'update')->name('customer.profile.profile.update');
-            
-    });
-
 
 });
 
 
-
-        //profile-address
-        Route::controller(ProfileAddressController::class)->group(function () {
-
-            Route::get('/profile/addresses', 'addresses')->name('customer.profile.addresses');
-                
-        });
+Route::prefix('profile')->group(function () {
 
 
+//profileOrder
+Route::controller(ProfileOrderController::class)->group(function () {
+
+    Route::get('orders', 'index')->name('customer.profileOrder.index');
+});
+
+
+
+//profile-favorites
+Route::controller(FavoriteController::class)->group(function () {
+
+    Route::get('favorites', 'index')->name('customer.profile.profile-favorites.index');
+    Route::get('removeToFavorite/{product}', 'removeToFavorites')->name('customer.profile.profile-favorites.remove-to-favorites');
+});
+
+
+//profile-address
+Route::controller(ProfileAddressController::class)->group(function () {
+
+    Route::get('addresses', 'addresses')->name('customer.profile.addresses');
+});
+
+
+
+//profile-tickets
+Route::controller(CustomerTicketController::class)->group(function () {
+
+    Route::get('tickets', 'index')->name('customer.profile.ticket.index');
+    Route::get('showTicket/{ticket}', 'showTicket')->name('customer.profile.ticket.showTicket');
+    Route::get('changeStatus/{ticket}', 'changeStatus')->name('customer.profile.ticket.changeStatus');
+    Route::post('answerTicket/{ticket}', 'answerTicket')->name('customer.profile.ticket.answerTicket');
+    Route::get('addTicket', 'createTicket')->name('customer.profile.ticket.createTicket');
+    Route::post('storeTicket', 'storeTicket')->name('customer.profile.ticket.storeTicket');
+    Route::post('ticketFile/download/{ticket}' , 'download')->name('customer.profile.ticket.downloadFile');
+});
+
+
+
+//user-profile
+Route::controller(UserProfileController::class)->group(function () {
+
+    Route::get('', 'index')->name('customer.profile.index');
+    Route::put('update', 'update')->name('customer.profile.update');
+});
+
+});
 
 
 

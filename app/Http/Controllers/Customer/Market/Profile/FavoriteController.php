@@ -17,7 +17,7 @@ class FavoriteController extends Controller
     public function removeToFavorites(Product $product){
 
         auth()->user()->products()->detach($product->id);
-        return redirect()->route('customer.salesProcess.profile-favorites.index')->with('success','محصول با موفقیت از علاقمندی ها حذف شد.');
+        return redirect()->route('customer.profile.profile-favorites.index')->with('success','محصول با موفقیت از علاقمندی ها حذف شد.');
 
     }
 }

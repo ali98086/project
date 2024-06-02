@@ -2,6 +2,11 @@
     <section class="sidebar-container">
         <section class="sidebar-wrapper">
 
+            <a href="{{route('customer.home')}}" class="sidebar-link border-bottom">
+                <i class="fas fa-home"></i>
+                <span>فروشگاه</span>
+            </a>
+
             <a href="{{route('admin.home')}}" class="sidebar-link">
                 <i class="fas fa-home"></i>
                 <span>خانه</span>
@@ -29,7 +34,7 @@
                 <section class="sidebar-dropdown-toggle">
                     <i class="fas fa-chart-bar icon"></i>
                     <span>سفارشات</span>
-                    <i class="fas fa-angle-left angle"></i>
+                    <i class="fas fa-angle-left angle"></i> 
                 </section>
                 <section class="sidebar-dropdown">
                     <a href="{{route('admin.market.order.newOrders')}}"> جدید</a>
@@ -136,6 +141,12 @@
             </section>
 
             <section class="sidebar-part-title">تیکت</section>
+
+            <a href="{{route('admin.ticket.index')}}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>همه تیکت ها</span>
+            </a>
+
             <a href="{{route('admin.ticket.category.index')}}" class="sidebar-link">
                 <i class="fas fa-bars"></i>
                 <span>دسته بندی تیکت ها</span>

@@ -25,6 +25,6 @@ class UserProfileController extends Controller
         ];
 
         auth()->user()->update($inputs);
-        return redirect()->route('customer.salesProcess.profile.index')->with('success', 'پروفایل کاربری شما با موفقیت ویرایش شد');
+        return redirect()->route('customer.profile.index')->with('success', 'پروفایل کاربری شما با موفقیت ویرایش شد');
     }
 }

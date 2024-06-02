@@ -50,11 +50,11 @@
                             <td class="text-center">{{$admin->email}}</td>
                             <td class="text-center w-25">
 
-                                <a href="{{route('admin.ticket.admin.set', $admin->id)}}" class="btn btn-sm btn-{{$admin->ticketAdmin == null ? 'warning' : 'danger'}}">
+                                <a href="{{route('admin.ticket.admin.set', $admin->id)}}" class="btn btn-sm btn-{{$admin->admin == null ? 'warning' : 'danger'}}">
                                     
-                                    <i class="fa fa-{{$admin->ticketAdmin == null ? 'check' : 'times'}}" aria-hidden="false"></i> 
+                                    <i class="fa fa-{{$admin->admin == null ? 'check' : 'times'}}" aria-hidden="false"></i> 
                             
-                                    {{$admin->ticketAdmin == null ? 'اضافه کردن' : 'حذف'}}
+                                    {{$admin->admin == null ? 'اضافه کردن' : 'حذف'}}
 
                                 </a>
 

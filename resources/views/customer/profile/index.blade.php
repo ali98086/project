@@ -93,7 +93,7 @@
                                     </section>
                                     <section class="modal-body">
                                         <form class="row" method="post"
-                                            action="{{ route('customer.profile.profile.update') }}">
+                                            action="{{ route('customer.profile.update') }}">
                                             @csrf
                                             @method('PUT')
 

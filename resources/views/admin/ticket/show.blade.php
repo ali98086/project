@@ -49,6 +49,45 @@
 
             </section>
 
+
+            @foreach($ticket->children as $child)
+
+            <section class="card mr-5">
+
+                <section class="card-header bg-light d-flex justify-content-between">
+
+                    <h6 class="mb-0 text-dark name">
+                        <small>
+                            <b>
+
+                                @if($child->admin)
+
+                                {{$child->admin ? 'ادمین '.$child->admin->user->first_name.' '.$child->admin->user->last_name.' در پاسخ به ' : ''}}{{$child->user->first_name.' '.$child->user->last_name}}
+                    </h6>
+
+                    @else
+
+                    {{$child->user->first_name.' '.$child->user->last_name}}</h6>
+
+                    @endif
+
+                            </b>
+                        </small>
+
+                    <small class="mb-0 text-dark name date">{{jdate($child->created_at)->format('H:i:s Y-m-d')}}</small>
+
+                </section>
+                <section class="card-body">
+
+                    <p class="mb-0"><small>{{$child->description}}</small></p>
+
+                </section>
+
+
+            </section>
+
+            @endforeach
+
             <section>
 
                 <form action="{{route('admin.ticket.answer', $ticket->id)}}" method="post">
@@ -57,7 +96,7 @@
                     <section class="row">
                         <section class="col-12 mt-3">
                             <section class="form-group">
-                                
+
                                 <label for="">پاسخ ادمین</label>
                                 <textarea class="form-control form-control-sm mb-3" name="description" id="" rows="4">{{old('description')}}</textarea>
                                 @error('description')

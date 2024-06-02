@@ -34,13 +34,13 @@
 
 
                 <section class="d-flex justify-content-center my-4">
-                    <a class="btn btn-outline-primary btn-sm mx-1" href="{{route('customer.salesProcess.profileOrder.index')}}">همه</a>
-                    <a class="btn btn-info btn-sm mx-1" href="{{route('customer.salesProcess.profileOrder.index' , 'type=0')}}">منتظر تایید</a>
-                    <a class="btn btn-warning btn-sm mx-1" href="{{route('customer.salesProcess.profileOrder.index' , 'type=1')}}">تایید نشده</a>
-                    <a class="btn btn-success btn-sm mx-1" href="{{route('customer.salesProcess.profileOrder.index' , 'type=2')}}">تایید شده</a>
-                    <a class="btn btn-dark btn-sm mx-1" href="{{route('customer.salesProcess.profileOrder.index' , 'type=3')}}">لغو شده</a>
-                    <a class="btn btn-danger btn-sm mx-1" href="{{route('customer.salesProcess.profileOrder.index' , 'type=4')}}">مرجوعی</a>
-                    <a class="btn btn-outline-danger btn-sm mx-1" href="{{route('customer.salesProcess.profileOrder.index' , 'type=5')}}">بررسی نشده</a>
+                    <a class="btn btn-outline-primary btn-sm mx-1" href="{{route('customer.profileOrder.index')}}">همه</a>
+                    <a class="btn btn-info btn-sm mx-1" href="{{route('customer.profileOrder.index' , 'type=0')}}">منتظر تایید</a>
+                    <a class="btn btn-warning btn-sm mx-1" href="{{route('customer.profileOrder.index' , 'type=1')}}">تایید نشده</a>
+                    <a class="btn btn-success btn-sm mx-1" href="{{route('customer.profileOrder.index' , 'type=2')}}">تایید شده</a>
+                    <a class="btn btn-dark btn-sm mx-1" href="{{route('customer.profileOrder.index' , 'type=3')}}">لغو شده</a>
+                    <a class="btn btn-danger btn-sm mx-1" href="{{route('customer.profileOrder.index' , 'type=4')}}">مرجوعی</a>
+                    <a class="btn btn-outline-danger btn-sm mx-1" href="{{route('customer.profileOrder.index' , 'type=5')}}">بررسی نشده</a>
 
                 </section>
 

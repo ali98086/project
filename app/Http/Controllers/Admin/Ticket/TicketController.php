@@ -12,7 +12,7 @@ class TicketController extends Controller
 
     public function index(){
 
-        $tickets= Ticket::all();
+        $tickets= Ticket::whereNull('parent_id')->get();
         return view('admin.ticket.index', compact('tickets'));
 
     }
@@ -71,11 +71,13 @@ class TicketController extends Controller
 
     public function answer(TicketRequest $request,Ticket $ticket){
 
+        $ticketAdmin= auth()->user()->admin;
+
         $inputs= $request->all();
         $inputs['subject']= $ticket->subject;
         $inputs['seen']= 1;
-        $inputs['user_id']= 5;
-        $inputs['reference_id']= $ticket->reference_id;
+        $inputs['user_id']= $ticket->user_id;
+        $inputs['reference_id']= $ticketAdmin->id;
         $inputs['parent_id']= $ticket->id;
         $inputs['category_id']= $ticket->category_id;
         $inputs['priority_id']= $ticket->priority_id;

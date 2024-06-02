@@ -47,7 +47,7 @@
                         <section class="align-self-start w-100">
                             <p class="fw-bold">{{$product->name}} {{$product->brand->persian_name}} {{$product->brand->orginal_name}}</p>
                             <section>
-                                <a class="text-decoration-none cart-delete" href="{{route('customer.salesProcess.profile-favorites.remove-to-favorites', $product->id)}}"><i class="fa fa-trash-alt"></i> حذف از لیست علاقه ها</a>
+                                <a class="text-decoration-none cart-delete" href="{{route('customer.profile.profile-favorites.remove-to-favorites', $product->id)}}"><i class="fa fa-trash-alt"></i> حذف از لیست علاقه ها</a>
                             </section>
                         </section>
                         <section class="align-self-end flex-shrink-1">

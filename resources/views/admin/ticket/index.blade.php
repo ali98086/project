@@ -40,7 +40,7 @@
                             <th class="text-center width-16-rem">عنوان تیکت</th>
                             <th class="text-center width-16-rem">دسته تیکت</th>
                             <th class="text-center width-16-rem">اولویت تیکت</th>
-                            <th class="text-center width-16-rem">ارجاع شده از</th>
+                            <th class="text-center width-16-rem">پاسخ دهنده</th>
                             <th class="text-center width-16-rem">پاسخ به تیکت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
@@ -53,7 +53,7 @@
                             <td class="text-center">{{$ticket->subject}}</td>
                             <td class="text-center">{{$ticket->category->name}}</td>
                             <td class="text-center">{{$ticket->priority->name}}</td>
-                            <td class="text-center">{{$ticket->admin->user->first_name.' '.$ticket->admin->user->last_name}}</td>
+                            <td class="text-center">{{$ticket->admin ? $ticket->admin->user->first_name.' '.$ticket->admin->user->last_name : '_'}}</td>
                             <td class="text-center">{{$ticket->parent->subject ?? '_'}}</td>
                             <td class="text-center w-25">
 

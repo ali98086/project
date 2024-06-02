@@ -85,7 +85,7 @@ class FileService{
 
 
 
-    public function getSizeFile($filePath , $placeSave){
+    public function getSizeFile($filePath , $placeSave = "public"){
 
 
         if($placeSave == 'public'){

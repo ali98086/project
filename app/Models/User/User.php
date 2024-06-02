@@ -8,6 +8,7 @@ use App\Models\Address;
 use App\Models\Market\Order;
 use App\Models\Market\Payment;
 use App\Models\Market\Product;
+use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketAdmin;
 use App\Traits\Permissions\HasPermissionsTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -92,9 +93,14 @@ class User extends Authenticatable
 
     }
 
-    public function ticketAdmin(){
+    public function admin(){
 
         return $this->hasOne(TicketAdmin::class);
+    }
+
+    public function tickets(){
+
+        return $this->hasMany(Ticket::class);
     }
 
     public function payments(){
