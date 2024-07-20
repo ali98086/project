@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Content\Comment;
 use App\Models\Market\CartItem;
 use App\Models\Notification;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;

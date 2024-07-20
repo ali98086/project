@@ -62,7 +62,7 @@
                                 <span>پربازدیدترین کالاها</span>
                             </h2>
                             <section class="content-header-link">
-                                <a href="#">مشاهده همه</a>
+                                <a href="{{route('customer.products',['sort'=> 4])}}">مشاهده همه</a>
                             </section>
                         </section>
                     </section>
@@ -189,7 +189,7 @@
                                 <span>پیشنهاد آمازون به شما</span>
                             </h2>
                             <section class="content-header-link">
-                                <a href="#">مشاهده همه</a>
+                                <a href="{{route('customer.products',['sort'=> 5])}}">مشاهده همه</a>
                             </section>
                         </section>
                     </section>
@@ -329,7 +329,7 @@
 
                         <section class="item">
                             <section class="brand-item">
-                                <img class="rounded-2" src="{{$brand->logo}}" alt="{{$brand->persian_name.$brand->orginal_name}}">
+                                <a href="{{route('customer.products' , ['brands[]'=> $brand->id])}}"><img class="rounded-2" src="{{$brand->logo}}" alt="{{$brand->persian_name.$brand->orginal_name}}"></a>
                             </section>
                         </section>
 
@@ -344,7 +344,7 @@
 <!-- end brand part-->
 
 
-<section class="position-fixed p-4 flex-row-reverse d-none" style="z-index: 909999999; left: 0; top: 3rem; width: 26rem; max-width: 80%;">
+<section class="position-fixed p-4 flex-row-reverse d-none" style="z-index: 999999999; left: 0; top: 3rem; width: 26rem; max-width: 80%;">
     <div class="toast" data-delay="7000" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <strong class="me-auto">فروشگاه</strong>

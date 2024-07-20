@@ -3,6 +3,6 @@
 @section('content')
 
 <h2>{{ $metadata['title'] }}</h2>
-<p>{{ $metadata['body'] }}</p>
+<p>{!! $metadata['body'] !!}</p>
 
 @endsection

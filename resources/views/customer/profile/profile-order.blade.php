@@ -60,9 +60,19 @@
 
                                     @foreach($order->orderItems as $orderItem)
 
-                                    <a><img src="{{asset($orderItem->product->image)}}" alt=""></a>
+                                    <a><img src="{{asset($orderItem->product->image)}}" width="50px" height="50px" alt=""></a>
+
+                                    @forelse($orderItem->product->images as $image)
+
+                                    <a><img src="{{asset($image->image)}}" width="50px" height="50px" alt=""></a>
+
+                                    @empty
+
+                                    @endforelse
 
                                     @endforeach
+
+
 
                                 </section>
                             </section>

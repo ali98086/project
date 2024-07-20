@@ -4,6 +4,13 @@
 @section('title','ایجاد دسته بندی')
 
 
+@section('head-tag')
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
+{!! htmlScriptTagJsApi() !!}
+
+@endsection
+
 
 @section('content')
 
@@ -36,6 +43,9 @@
             <section>
                 <form action="{{route('admin.market.category.store')}}" id="form" method="post" enctype="multipart/form-data">
                     @csrf
+
+                    
+
                     <section class="row">
 
                         <section class="col-12 col-md-6">
@@ -151,6 +161,20 @@
                             </section>
 
                         </section>
+
+
+                        <section class="col-12 col-md-6 my-2">
+                            <div class="form-group">
+                                {!! htmlFormSnippet() !!}
+                            </div>
+                            @error('g-recaptcha-response')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
+
+                        </section>
+
 
                         <section class="col-12">
                             <button class="btn btn-primary btn-sm">ثبت</button>

@@ -30,6 +30,7 @@ class ProductCategoryRequest extends FormRequest
                 'show_in_menu' => 'required|numeric|in:0,1',
                 'tags' => 'required',
                 'parent_id' => 'nullable|min:1|max:100000000|regex:/^[0-9]+$/u|exists:product_categories,id',
+                'g-recaptcha-response' => 'recaptcha',
             ];
         }
         else{

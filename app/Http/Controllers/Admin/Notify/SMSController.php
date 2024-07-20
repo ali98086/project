@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Notify;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Notify\SMSRequest;
+use App\Jobs\SendSmsToUsers;
 use App\Models\Notify\SMS;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
@@ -105,4 +106,11 @@ class SMSController extends Controller
         }
 
     }
+
+
+    public function sendSms(SMS $sms){
+
+        SendSmsToUsers::dispatch($sms);
+        return redirect()->route('admin.notify.sms.index')->with('swal-success','اطلاعیه پیامکی مورد نظر با موفقیت ارسال شد');
+}
 }

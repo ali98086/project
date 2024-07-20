@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Content\Banner;
+use App\Models\Content\Page;
 use App\Models\Market\Brand;
 use App\Models\Market\Product;
 use App\Models\Market\ProductCategory;
@@ -20,8 +21,8 @@ class HomeController extends Controller
         $middleSlideShowBanners = Banner::where('position' , 2)->where('status', 1)->take(2)->get();
         $bottomBanner = Banner::where('position' , 3)->where('status', 1)->first();
 
-        $mostVisitedProducts = Product::latest()->take(10)->get();
-        $productOffers = Product::latest()->take(10)->get();
+        $mostVisitedProducts = Product::orderBy('view','desc')->take(10)->get();
+        $productOffers = Product::orderBy('sold_number', 'desc')->take(10)->get();
         $brands = Brand::all();
 
         return view('customer.home', compact('slideShowBanners', 'topSlideShowBanners', 'middleSlideShowBanners', 'bottomBanner', 'mostVisitedProducts', 'productOffers', 'brands' ));
@@ -29,7 +30,21 @@ class HomeController extends Controller
     }
 
 
-    public function products(Request $request){
+    public function products(Request $request, ProductCategory $category = null){
+
+        //show Products of each Category
+
+        if($category){
+
+            $productModel = $category->products();
+
+        }
+        else{
+
+            $productModel = new Product();
+
+        }
+
 
         //brands
         $brands= Brand::all();
@@ -82,12 +97,12 @@ class HomeController extends Controller
         //search
         if($request->search){
 
-            $query= Product::where('name','LIKE','%'.$request->search.'%')->orderBy($column , $direction);
+            $query= $productModel->where('name','LIKE','%'.$request->search.'%')->orderBy($column , $direction);
 
         }
         else{
 
-            $query= Product::orderBy($column , $direction);
+            $query= $productModel->orderBy($column , $direction);
 
         }
 
@@ -118,7 +133,14 @@ class HomeController extends Controller
             $products= $products->paginate(3);
             $products->appends($request->query());
 
-        return view('customer.market.products', compact('products','brands','categories'));
+        return view('customer.market.products', compact('products','brands','categories','category'));
+
+    }
+
+
+    public function page(Page $page){
+
+        return view('customer.page.page', compact('page'));
 
     }
 }

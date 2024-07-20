@@ -10,12 +10,16 @@ class Menu extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable= ['name','url','status','parent_id'];
+    protected $fillable = ['name', 'url', 'status', 'parent_id'];
 
-public function parent(){
+    public function parent()
+    {
+        return $this->belongsTo(Menu::class, 'parent_id')->with('parent');
+    }
 
-    return $this->belongsTo(Menu::class,'parent_id')->with('parent');
+    public function children(){
 
-}
+        return $this->hasMany(Menu::class, 'parent_id');
 
+    }
 }

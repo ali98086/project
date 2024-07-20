@@ -94,7 +94,7 @@ class LoginRegisterController extends Controller
         $newOtp= Otp::create($newOpt);
 
 
-        //if 1 send sms otp code to mobile 
+        //if 0 send sms otp code to mobile 
 
         if($type == 0){
 
@@ -106,7 +106,7 @@ class LoginRegisterController extends Controller
             $messageService= new MessageService($sms);
 
         }
-        //if 0 send email otp code
+        //if 1 send email otp code
 
         elseif($type == 1){
 

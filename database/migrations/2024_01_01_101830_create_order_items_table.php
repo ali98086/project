@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->longText('product_object');
+            $table->longText('product_object')->nullable();
             $table->integer('number')->default(1);
             $table->foreignId('amazing_sale_id')->nullable()->constrained('amazing_sales')->onDelete('cascade')->onUpdate('cascade');
             $table->longText('amazing_sale_object')->nullable();

@@ -6,6 +6,7 @@ namespace App\Models\User;
 
 use App\Models\Address;
 use App\Models\Market\Order;
+use App\Models\Market\OrderItem;
 use App\Models\Market\Payment;
 use App\Models\Market\Product;
 use App\Models\Ticket\Ticket;
@@ -19,6 +20,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Nagy\LaravelRating\Traits\CanRate;
 
 class User extends Authenticatable
 {
@@ -29,6 +31,7 @@ class User extends Authenticatable
     use SoftDeletes;
     use TwoFactorAuthenticatable;
     use HasPermissionsTrait;
+    use CanRate;
 
     /**
      * The attributes that are mass assignable.
@@ -93,6 +96,12 @@ class User extends Authenticatable
 
     }
 
+    public function orderItems(){
+
+        return $this->hasManyThrough(OrderItem::class, Order::class);
+
+    }
+
     public function admin(){
 
         return $this->hasOne(TicketAdmin::class);
@@ -130,6 +139,21 @@ class User extends Authenticatable
     public function roles(){
 
         return $this->belongsToMany(Role::class);
+
+    }
+
+    public function isBuyProductUser($product){
+
+        $productsIds = collect();
+
+            foreach (auth()->user()->orderItems as $orderItem) {
+
+                $productsIds->push($orderItem->product_id);
+            }
+
+            $productsIds = $productsIds->unique();
+
+            return $productsIds->contains($product->id);
 
     }
 }

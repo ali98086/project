@@ -16,6 +16,7 @@
 
     @include('customer.alerts.alert-message.success')
     @include('customer.alerts.alert-message.error')
+    @include('customer.alerts.alert-message.info')
 
     <main id="main-body-one-col" class="main-body">
 

@@ -371,6 +371,7 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::put('/update/{email}', [EmailController::class, 'update'])->name('admin.notify.email.update');
             Route::delete('/destroy/{email}', [EmailController::class, 'destroy'])->name('admin.notify.email.destroy');
             Route::get('/status/{email}', [EmailController::class, 'status'])->name('admin.notify.email.status');
+            Route::get('/send/{email}', [EmailController::class, 'sendMail'])->name('admin.notify.email.sendMail');
         });
 
         Route::prefix('email-file')->group(function () {
@@ -393,6 +394,7 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::put('/update/{sms}', [SMSController::class, 'update'])->name('admin.notify.sms.update');
             Route::delete('/destroy/{sms}', [SMSController::class, 'destroy'])->name('admin.notify.sms.destroy');
             Route::get('/status/{sms}', [SMSController::class, 'status'])->name('admin.notify.sms.status');
+            Route::get('/send/{sms}', [SMSController::class, 'sendSms'])->name('admin.notify.sms.send-sms');
         });
     });
 
@@ -463,7 +465,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/', [HomeController::class, 'home'])->name('customer.home');
-Route::get('/products', [HomeController::class, 'products'])->name('customer.products');
+Route::get('/products/{category?}', [HomeController::class, 'products'])->name('customer.products');
+Route::get('/page/{page:slug}', [HomeController::class, 'page'])->name('customer.page');
 
 
 // Route::get('/d', function(){
@@ -478,6 +481,7 @@ Route::prefix('product')->controller(CustomerProductController::class)->group(fu
     Route::get('/{product}', 'product')->name('customer.market.product');
     Route::post('/addComment/{product}', 'addComment')->name('customer.market.product.addComment');
     Route::get('/addToFavorite/{product}', 'addToFavorite')->name('customer.market.product.addToFavorite');
+    Route::post('/addRate/{product}', 'addRate')->name('customer.market.product.addRate');
 });
 
 

@@ -13,12 +13,13 @@ class EmailService implements MessageInterface{
     protected $from = [];
     protected $subject;
     protected $to = [];
+    protected $emailFiles= [];
 
 
     public function sendMessage()
     {
 
-        Mail::to($this->to)->send(new EmailViewProvider($this->contents));
+        Mail::to($this->to)->send(new EmailViewProvider($this->contents, $this->emailFiles));
         return true;
 
     }
@@ -69,10 +70,21 @@ class EmailService implements MessageInterface{
 
     }
 
-
     public function getTo(){
 
         return $this->to;
+
+    }
+
+    public function setEmailFiles($emailFiles){
+
+        $this->emailFiles= $emailFiles;
+
+    }
+
+    public function getEmailFiles(){
+
+        return $this->emailFiles;
 
     }
 }

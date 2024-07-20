@@ -6,6 +6,61 @@
 
 @endsection
 
+
+@section('head-tag')
+
+<style>
+    /***
+ *  Simple Pure CSS Star Rating Widget Bootstrap 4 
+ * 
+ *  www.TheMastercut.co
+ *  
+ ***/
+
+    @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+    /* Styling h1 and links
+––––––––––––––––––––––––––––––––– */
+    h1[alt="Simple"] {
+        color: white;
+    }
+
+    .starrating>input {
+        display: none;
+    }
+
+    /* Remove radio buttons */
+
+    .starrating>label:before {
+        content: "\f005";
+        /* Star */
+        margin: 2px;
+        font-size: 2em;
+        font-family: FontAwesome;
+        display: inline-block;
+    }
+
+    .starrating>label {
+        color: #222222;
+        /* Start color when not clicked */
+    }
+
+    .starrating>input:checked~label {
+        color: #ffca08;
+    }
+
+    /* Set yellow color when star checked */
+
+    .starrating>input:hover~label {
+        color: #ffca08;
+    }
+
+    /* Set yellow color when star hover */
+</style>
+
+@endsection
+
+
 @section('content')
 
 
@@ -258,7 +313,8 @@
                     <section class="lazyload-wrapper">
                         <section class="lazyload light-owl-nav owl-carousel owl-theme">
 
-                            @foreach($relatedProducts as $relatedProduct)
+                            @forelse($relatedProducts as $relatedProduct)
+
                             <section class="item border">
                                 <section class="lazyload-item-wrapper">
                                     <section class="product">
@@ -320,7 +376,7 @@
                                                     @endif
 
                                                 </section>
-                                                
+
                                             </section>
                                             <section class="product-colors">
                                                 @foreach($relatedProduct->colors as $color)
@@ -333,8 +389,14 @@
                                     </section>
                                 </section>
                             </section>
-                            @endforeach
+
+                            @empty
+
+                            
+                            @endforelse
+
                         </section>
+
                     </section>
                 </section>
             </section>
@@ -356,6 +418,7 @@
                                         <span class="me-2"><a class="text-decoration-none text-dark" href="#introduction">معرفی</a></span>
                                         <span class="me-2"><a class="text-decoration-none text-dark" href="#features">ویژگی ها</a></span>
                                         <span class="me-2"><a class="text-decoration-none text-dark" href="#comments">دیدگاه ها</a></span>
+                                        <span class="me-2"><a class="text-decoration-none text-dark" href="#rates">امتیازات</a></span>
                                     </h2>
                                     <section class="content-header-link">
                                         <!--<a href="#">مشاهده همه</a>-->
@@ -466,15 +529,6 @@
 
                                                     <form class="row" action="{{route('customer.market.product.addComment' , $product->id)}}" method="post">
                                                         @csrf
-                                                        <!-- <section class="col-6 mb-2">
-                                                                <label for="first_name" class="form-label mb-1">نام</label>
-                                                                <input type="text" class="form-control form-control-sm" id="first_name" placeholder="نام ...">
-                                                            </section>
-
-                                                            <section class="col-6 mb-2">
-                                                                <label for="last_name" class="form-label mb-1">نام خانوادگی</label>
-                                                                <input type="text" class="form-control form-control-sm" id="last_name" placeholder="نام خانوادگی ...">
-                                                            </section> -->
 
                                                         <section class="col-12 mb-2">
                                                             <label for="comment" class="form-label mb-1">دیدگاه شما</label>
@@ -508,8 +562,7 @@
 
                                 <section class="product-comment">
                                     <section class="product-comment-header d-flex justify-content-start">
-                                        <section class="product-comment-date date">{{jdate($activeProductComment->created_at)->format('s:i:H Y/m/d')}}</section>
-                                        <section class="product-comment-title">
+                                        <section class="product-comment-title mx-3">
 
                                             @if(empty($activeProductComment->user->first_name) && empty($activeProductComment->user->last_name))
 
@@ -522,8 +575,11 @@
                                             @endif
 
                                         </section>
+
+                                        <section class="product-comment-date date">{{jdate($activeProductComment->created_at)->format('s:i:H Y/m/d')}}</section>
+
                                     </section>
-                                    <section class="product-comment-body">
+                                    <section class="product-comment-body ms-3">
                                         {{$activeProductComment->body}}
                                     </section>
 
@@ -533,8 +589,8 @@
 
                                     <section class="product-comment ms-5 border border-bottom-5 border-black">
                                         <section class="product-comment-header d-flex justify-content-start">
-                                            <section class="product-comment-date">{{jdate($answer->created_at)->format('s:i:H Y/m/d')}}</section>
-                                            <section class="product-comment-title">
+
+                                            <section class="product-comment-title mx-3">
 
                                                 @if(empty($answer->user->first_name) && empty($answer->user->last_name))
 
@@ -547,8 +603,11 @@
                                                 @endif
 
                                             </section>
+
+                                            <section class="product-comment-date">{{jdate($answer->created_at)->format('s:i:H Y/m/d')}}</section>
+
                                         </section>
-                                        <section class="product-comment-body">
+                                        <section class="product-comment-body ms-3">
                                             {{$answer->body}}
                                         </section>
                                     </section>
@@ -563,6 +622,53 @@
 
 
                             </section>
+
+                            <section id="rates" class="content-header mt-2 mb-4">
+                                <section class="d-flex justify-content-between align-items-center">
+                                    <h2 class="content-header-title content-header-title-small mt-4">
+                                        امتیازات
+                                    </h2>
+                                </section>
+
+                            </section>
+                        
+                            @auth
+
+                            @if(auth()->user()->isBuyProductUser($product))
+
+                            <section>
+
+                                <p>لطفا به این محصول امتیاز بدهید.</p>
+
+                            </section>
+
+                            <div class="container d-flex flex-column">
+                                <form action="{{route('customer.market.product.addRate', $product->id)}}" method="post">
+                                    @csrf
+                                    <div class="starrating risingstar d-flex justify-content-end flex-row-reverse">
+                                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title=" پنج امتیاز"></label>
+                                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title=" چهار امتیاز"></label>
+                                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title=" سه امتیاز"></label>
+                                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title=" دو امتیاز"></label>
+                                        <input type="radio" id="star1" name="rating" value="1" checked /><label for="star1" title="یک امتیاز"></label>
+                                    </div>
+                                    <div class="d-flex ms-5 my-3">
+
+                                        <button class="btn btn-sm btn-info" type="submit">ثبت امتیاز</button>
+
+                                    </div>
+                                    </form>
+                            @endif        
+
+                            @endauth
+                                    <div class="d-flex ms-3 price">
+
+                                        <p type="submit">مجموع امتیاز محصول : {{$product->ratingsCount()}}</p>
+
+                                    </div>
+                                
+                            </div>
+
                         </section>
 
                     </section>

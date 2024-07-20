@@ -65,6 +65,8 @@
                                     @method('delete')
                                 <button class="btn btn-sm btn-danger delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
                                 </form>
+
+                                <a href="{{route('admin.notify.email.sendMail', $email->id)}}" class="btn btn-sm btn-primary" type="submit">ارسال به همه</a>
                             </td>
                         </tr>
                         @endforeach

@@ -8,10 +8,11 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Nagy\LaravelRating\Traits\Rateable;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes, Sluggable;
+    use HasFactory, SoftDeletes, Sluggable, Rateable;
 
     
     protected $fillable= ['name','description','slug','image','tags','status','weight','length','width','height','price','marketable','marketable_number','sold_number','frozen_number','brand_id','category_id','published_at'];

@@ -2,11 +2,13 @@
 
 <section class="sidebar-nav-sub-wrapper">
 
-    <section class="sidebar-nav-sub-item">
+    <section class="sidebar-nav-sub-item mx-3">
 
-    @foreach($category->children as $subCategory)
+    @foreach($categories as $category)
 
-        <span class="sidebar-nav-sub-item-title"><a href="#">{{$subCategory->name}}</a><i class="fa fa-angle-left"></i></span>
+        <span class="sidebar-nav-sub-item-title"><a href="{{route('customer.products', ['category'=> $category->id ,'search' => request()->search, 'sort'=>request()->sort, 'min_price'=>request()->min_price ,'max_price'=>request()->max_price, 'brands'=>request()->brands])}}" class="d-inline">{{$category->name}}</a> @if($category->children->count() > 0)<i class="fa fa-angle-left"></i>@endif</span>
+
+        @include('customer.layouts.partials.sub-categories', ['categories'=> $category->children])
 
     @endforeach    
     
