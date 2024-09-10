@@ -56,7 +56,7 @@
                         <tr>
                             <th class="text-center">{{++$key}}</th>
                             <td class="text-center">{{$value->product->name}}</td>
-                            <td class="text-center">{{$value->categoryAttribute->name}}</td>
+                            <td class="text-center">{{empty($value->categoryAttribute) ? '_' : $value->categoryAttribute->name}}</td>
                             <td class="text-center">{{json_decode($value->value)->value}}</td>
                             <td class="text-center">{{json_decode($value->value)->price_increase.' تومان'}}</td>
                             <td class="text-center">{{$categoryAttribute->category->name}}</td>

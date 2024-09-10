@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 
 class EmailController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -22,6 +25,9 @@ class EmailController extends Controller
         return view('admin.notify.email.index', compact('emails'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -30,6 +36,9 @@ class EmailController extends Controller
         return view('admin.notify.email.create');
     }
 
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -43,14 +52,9 @@ class EmailController extends Controller
         return redirect()->route('admin.notify.email.index')->with('swal-success','اطلاعیه ایمیلی مورد نظر با موفقیت ثبت شد');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -59,6 +63,9 @@ class EmailController extends Controller
         return view('admin.notify.email.edit', compact('email'));
     }
 
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -72,6 +79,9 @@ class EmailController extends Controller
         return redirect()->route('admin.notify.email.index')->with('swal-success','اطلاعیه ایمیلی مورد نظر با موفقیت ویرایش شد');
     }
 
+
+
+    
     /**
      * Remove the specified resource from storage.
      */
@@ -81,6 +91,9 @@ class EmailController extends Controller
         return redirect()->route('admin.notify.email.index')->with('swal-success','اطلاعیه ایمیلی مورد نظر با موفقیت حذف شد');
     }
 
+
+
+    
     public function status(Email $email){
 
         $email->status= $email->status == 0 ? 1 : 0 ;
@@ -108,6 +121,9 @@ class EmailController extends Controller
 
     }
 
+
+
+    
     public function sendMail(Email $email){
 
             SendMailToUsers::dispatch($email);

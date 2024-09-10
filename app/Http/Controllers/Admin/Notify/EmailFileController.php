@@ -9,6 +9,7 @@ use App\Models\Notify\Email;
 use App\Models\Notify\EmailFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class EmailFileController extends Controller
 {
@@ -42,7 +43,7 @@ class EmailFileController extends Controller
                 
                 $fileService->checkExistsDirectory(public_path('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR));
                 $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
-                $fileService->setNameFile($request->file('file'));
+                $fileService->setNameEmailFile($request->file('file'));
                 $resultUpload= $fileService->saveFileToPublic($request->file('file'));
                 $fullFilePath= $fileService->fullPath();
 
@@ -57,7 +58,7 @@ class EmailFileController extends Controller
         elseif($request->placeSave == 'storage'){
 
             $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
-            $fileService->setNameFile($request->file('file'));
+            $fileService->setNameEmailFile($request->file('file'));
             $resultUpload= $fileService->saveFileToStorage($request->file('file'));
             $fullFilePath= $fileService->fullPath();
 
@@ -82,14 +83,6 @@ class EmailFileController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(EmailFile $file)
@@ -109,7 +102,7 @@ class EmailFileController extends Controller
             if($request->placeSave == 'public'){
 
                 $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
-                $fileService->setNameFile($request->file('file'));
+                $fileService->setNameEmailFile($request->file('file'));
                 $resultUpload= $fileService->saveFileToPublic($request->file('file'));
                 $fileService->deleteFile($file->file_path);
                 $fullPath= $fileService->fullPath();
@@ -118,7 +111,7 @@ class EmailFileController extends Controller
             elseif($request->placeSave == 'storage'){
 
                 $fileService->setPathFile('files'.DIRECTORY_SEPARATOR.'notify'.DIRECTORY_SEPARATOR.'email-notify'.DIRECTORY_SEPARATOR);
-                $fileService->setNameFile($request->file('file'));
+                $fileService->setNameEmailFile($request->file('file'));
                 $resultUpload= $fileService->saveFileToStorage($request->file('file'));
                 $fileService->deleteFile($file->file_path);
                 $fullPath= $fileService->fullPath();
@@ -155,11 +148,23 @@ class EmailFileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EmailFile $file)
+    public function destroy(EmailFile $file, FileService $fileService)
     {
-        $file->delete();
-        return redirect()->route('admin.notify.email-file.index' , $file->email->id)->with('swal-success','فایل مورد نظر با موفقیت حذف شد');
+        $deletedFile = $file->forceDelete();
+
+        if($deletedFile){
+
+            $fileService->deleteFile($file->file_path);
+            return redirect()->route('admin.notify.email-file.index' , $file->email->id)->with('swal-success','فایل مورد نظر با موفقیت حذف شد');
+
+        }
+        else{
+            
+            return back();
+
+        }
     }
+        
 
     public function status(EmailFile $file){
 
@@ -186,5 +191,38 @@ class EmailFileController extends Controller
 
         }
 
+    }
+
+
+    public function download(EmailFile $file, FileService $fileService)
+    {
+
+        if($fileService->checkPlaceSavedFile($file->file_path) == 'storage'){
+
+            return Response::download(storage_path($file->file_path));
+
+        }else{
+
+            return Response::download(public_path($file->file_path));
+
+        }
+        
+    }
+
+
+
+    public function seeFile(EmailFile $file, FileService $fileService)
+    {
+
+        if($fileService->checkPlaceSavedFile($file->file_path) == 'storage'){
+
+            return Response::file(storage_path('app'.DIRECTORY_SEPARATOR.$file->file_path));
+
+        }else{
+
+            return Response::file(public_path($file->file_path));
+
+        }
+        
     }
 }

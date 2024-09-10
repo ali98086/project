@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class DeliveryController extends Controller
 {
+
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -18,6 +22,10 @@ class DeliveryController extends Controller
         return view('admin.market.delivery.index', compact('delivery_methods'));
     }
 
+
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -26,6 +34,10 @@ class DeliveryController extends Controller
         return view('admin.market.delivery.create');
     }
 
+
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -36,6 +48,10 @@ class DeliveryController extends Controller
         return redirect()->route('admin.market.delivery.index')->with('swal-success','روش ارسال با موفقیت ایجاد شد');
     }
 
+
+
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -44,6 +60,10 @@ class DeliveryController extends Controller
         return view('admin.market.delivery.edit', compact('delivery'));
     }
 
+
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -54,6 +74,10 @@ class DeliveryController extends Controller
         return redirect()->route('admin.market.delivery.index')->with('swal-success','روش ارسال مورد نظر با موفقیت ویرایش شد');
     }
 
+
+
+
+    
     /**
      * Remove the specified resource from storage.
      */
@@ -63,6 +87,10 @@ class DeliveryController extends Controller
         return redirect()->route('admin.market.delivery.index')->with('swal-success','روش ارسال مورد نظر با موفقیت حذف شد');
     }
 
+
+
+
+    
     public function status(Delivery $delivery){
 
         $delivery->status= $delivery->status == 0 ? 1 : 0 ;

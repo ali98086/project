@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\User\AdminUserController;
 use App\Http\Controllers\Admin\User\CustomerController;
 use App\Http\Controllers\Admin\User\PermissionController;
 use App\Http\Controllers\Admin\User\RoleController;
+use App\Http\Controllers\Auth\Admin\LoginController;
 use App\Http\Controllers\Auth\Customer\LoginRegisterController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Customer\Market\ProductController as CustomerProductController;
@@ -51,6 +52,8 @@ use App\Http\Controllers\Customer\Market\SalesProcess\CartController;
 use App\Http\Controllers\Customer\Market\SalesProcess\PaymentController as CustomerPaymentController;
 use App\Models\Market\Product;
 use App\Models\Ticket\Ticket;
+use App\Models\User\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,7 +68,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::prefix('admin')->namespace('Admin')->group(function () {
+Route::prefix('admin')->namespace('Admin')->middleware('AdminAuth')->group(function () {
 
     Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.home');
 
@@ -383,6 +386,8 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::put('/update/{file}', [EmailFileController::class, 'update'])->name('admin.notify.email-file.update');
             Route::delete('/destroy/{file}', [EmailFileController::class, 'destroy'])->name('admin.notify.email-file.destroy');
             Route::get('/status/{file}', [EmailFileController::class, 'status'])->name('admin.notify.email-file.status');
+            Route::get('/download/{file}', [EmailFileController::class, 'download'])->name('admin.notify.email-file.download');
+            Route::get('/see/{file}', [EmailFileController::class, 'seeFile'])->name('admin.notify.email-file.seeFile');
         });
 
         Route::prefix('sms')->group(function () {
@@ -433,14 +438,10 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::get('/show/{ticket}', [TicketController::class, 'show'])->name('admin.ticket.show');
         Route::get('/change/{ticket}', [TicketController::class, 'change'])->name('admin.ticket.change');
 
-        // Route::get('/d', function(){
-
-        //     $ticket =Ticket::find(2);
-        //     $ticket->forceDelete();
-
-        // });
 
     });
+
+
 
     Route::prefix('setting')->namespace('Setting')->group(function () {
 
@@ -449,31 +450,43 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::put('/update/{setting}', [SettingController::class, 'update'])->name('admin.setting.update');
     });
 
+
     Route::post('/notification/readAll', [NotificationController::class, 'readAll'])->name('admin.notification.readAll');
 });
 
+
+
 Route::prefix('auth')->group(function () {
+
+    Route::prefix('panel')->group(function(){
+
+        Route::get('/login',[LoginController::class , 'login'])->name('auth.panel.login');
+        Route::post('/authenticate', [LoginController::class , 'authenticate'])->name('auth.panel.authenticate');
+        Route::get('/logout', [LoginController::class , 'logout'])->name('auth.panel.logout');
+
+    });
+
+
 
     Route::get('/login-register-form', [LoginRegisterController::class, 'LoginRegisterForm'])->name('auth.customer.login-register-form');
     Route::post('/login-register', [LoginRegisterController::class, 'LoginRegister'])->middleware('throttle:login-register-limiter')->name('auth.customer.login-register');
 
+
     Route::get('/login-register-confirm/{token}', [LoginRegisterController::class, 'LoginRegisterConfirm'])->name('auth.customer.login-register-confirm');
     Route::post('/login-confirm/{token}', [LoginRegisterController::class, 'LoginConfirm'])->middleware('throttle:login-confirm-limiter')->name('auth.customer.login-confirm');
+
 
     Route::get('login-resend-otp/{token}', [LoginRegisterController::class, 'resendOtp'])->middleware('throttle:login-resend-limiter')->name('auth.customer.login-resend-otp');
     Route::get('logout', [LoginRegisterController::class, 'logout'])->name('auth.customer.logout');
 });
+
+
 
 Route::get('/', [HomeController::class, 'home'])->name('customer.home');
 Route::get('/products/{category?}', [HomeController::class, 'products'])->name('customer.products');
 Route::get('/page/{page:slug}', [HomeController::class, 'page'])->name('customer.page');
 
 
-// Route::get('/d', function(){
-
-//     return 'test';
-
-// });
 
 
 Route::prefix('product')->controller(CustomerProductController::class)->group(function () {
@@ -576,7 +589,6 @@ Route::controller(UserProfileController::class)->group(function () {
 });
 
 });
-
 
 
 

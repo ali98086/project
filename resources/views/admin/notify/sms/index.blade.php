@@ -57,15 +57,15 @@
                             </td>
                             <td class="text-center w-25">
 
-                                <a href="{{route('admin.notify.sms.edit', $sms->id)}}" class="btn btn-warning" href="#"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
+                                <a href="{{route('admin.notify.sms.edit', $sms->id)}}" class="btn btn-warning btn-sm" href="#"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
 
                                 <form action="{{route('admin.notify.sms.destroy', $sms->id)}}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
-                                <button class="btn btn-danger delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
+                                <button class="btn btn-danger btn-sm delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
                                 </form>
 
-                                <a href="{{route('admin.notify.sms.send-sms', $sms->id)}}" class="btn btn-primary">ارسال به همه</a>
+                                <a href="{{route('admin.notify.sms.send-sms', $sms->id)}}" class="btn btn-primary btn-sm">ارسال به همه</a>
                             </td>
                         </tr>
                         @endforeach

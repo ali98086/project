@@ -12,6 +12,9 @@ use Morilog\Jalali\Jalalian;
 
 class SMSController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      */
@@ -21,6 +24,9 @@ class SMSController extends Controller
         return view('admin.notify.sms.index', compact('allSms'));
     }
 
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -28,6 +34,9 @@ class SMSController extends Controller
     {
         return view('admin.notify.sms.create');
     }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -42,13 +51,7 @@ class SMSController extends Controller
         return redirect()->route('admin.notify.sms.index')->with('swal-success','اطلاعیه پیامکی مورد نظر با موفقیت ثبت شد');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -57,6 +60,9 @@ class SMSController extends Controller
     {
         return view('admin.notify.sms.edit', compact('sms'));
     }
+
+
+
 
     /**
      * Update the specified resource in storage.
@@ -71,6 +77,9 @@ class SMSController extends Controller
         return redirect()->route('admin.notify.sms.index')->with('swal-success','اطلاعیه پیامکی مورد نظر با موفقیت ویرایش شد');
     }
 
+
+
+
     /**
      * Remove the specified resource from storage.
      */
@@ -79,6 +88,9 @@ class SMSController extends Controller
         $sms->delete();
         return redirect()->route('admin.notify.sms.index')->with('swal-success','اطلاعیه پیامکی مورد نظر با موفقیت حذف شد');
     }
+
+
+
 
     public function status(SMS $sms){
 
@@ -96,8 +108,6 @@ class SMSController extends Controller
                 return response()->json(['status'=> true , 'checked'=>true]);
 
             }
-
-
         }
         else{
 
@@ -106,6 +116,7 @@ class SMSController extends Controller
         }
 
     }
+
 
 
     public function sendSms(SMS $sms){

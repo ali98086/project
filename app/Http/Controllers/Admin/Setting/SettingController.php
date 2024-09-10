@@ -15,6 +15,10 @@ use Intervention\Image\ImageManager;
 
 class SettingController extends Controller
 {
+
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -27,8 +31,8 @@ class SettingController extends Controller
                 'title' => 'عنوان سایت',
                 'description' => 'توضیحات سایت',
                 'keywords' => 'کلمات کلیدی سایت',
-                'logo' => 'pic.jpg',
-                'icon' => 'pic.jpg'
+                'logo' => 'logo',
+                'icon' => 'icon'
             ]);
 
             $setting = Setting::first();
@@ -37,6 +41,10 @@ class SettingController extends Controller
         return view('admin.setting.index', compact('setting'));
     }
 
+
+
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -46,6 +54,10 @@ class SettingController extends Controller
         return view('admin.setting.edit', compact('setting'));
     }
 
+
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -98,8 +110,9 @@ class SettingController extends Controller
             $imageService->setPathSettingImage('images'.DIRECTORY_SEPARATOR.'setting'.DIRECTORY_SEPARATOR);
             $imageService->checkExistsDirectory(public_path($imageService->getPathImage()));
             $imageService->setSettingLogoImageName($request->file('logo'));
-            $resultUpload= $imageService->saveSettingImageToPublic($request->file('logo'), $request->size);
+            $resultUpload= $imageService->saveSettingImageToPublic($request->file('logo'));
             $fullLogoPath= $imageService->fullPath();
+            $imageService->deleteImage($setting->logo);
             $inputs['logo'] = $fullLogoPath;
 
             if(!$resultUpload){
@@ -114,8 +127,9 @@ class SettingController extends Controller
             $imageService->setPathSettingImage('images'.DIRECTORY_SEPARATOR.'setting'.DIRECTORY_SEPARATOR);
             $imageService->checkExistsDirectory(public_path($imageService->getPathImage()));
             $imageService->setSettingIconImageName($request->file('icon'));
-            $resultUpload= $imageService->saveSettingImageToPublic($request->file('icon'), $request->size);
+            $resultUpload= $imageService->saveSettingImageToPublic($request->file('icon'));
             $fullIconPath= $imageService->fullPath();
+            $imageService->deleteImage($setting->icon);
             $inputs['icon'] = $fullIconPath;
 
             if(!$resultUpload){

@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class PageMakerController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -18,6 +21,9 @@ class PageMakerController extends Controller
         return view('admin.content.page-maker.index', compact('pages'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -26,6 +32,9 @@ class PageMakerController extends Controller
         return view('admin.content.page-maker.create');
     }
 
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -36,14 +45,9 @@ class PageMakerController extends Controller
         return redirect()->route('admin.content.page-maker.index')->with('swal-success','پیج مورد نظر ایجاد شد');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -52,6 +56,9 @@ class PageMakerController extends Controller
         return view('admin.content.page-maker.edit', compact('page'));
     }
 
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -63,6 +70,9 @@ class PageMakerController extends Controller
         return redirect()->route('admin.content.page-maker.index')->with('swal-success','پیج مورد نظر با موفقیت ویرایش شد');
     }
 
+
+
+    
     /**
      * Remove the specified resource from storage.
      */
@@ -72,6 +82,9 @@ class PageMakerController extends Controller
         return redirect()->route('admin.content.page-maker.index')->with('swal-success','پیج مورد نظر با موفقیت حذف شد');
     }
 
+
+
+    
     public function status(Page $page){
 
         $page->status= $page->status == 0 ? 1 : 0 ;

@@ -850,17 +850,6 @@
                             <section class="navbar-item"><a href="{{$parentMenu->url}}">{{$parentMenu->name}}</a></section>
 
                             <!-- </section> -->
-                            @if($parentMenu->children())
-
-                            @foreach($parentMenu->children as $childMenu)
-
-                            <section>
-                                <section><a href="{{$childMenu->url}}">{{$childMenu->name}}</a></section>
-                            </section>
-
-                            @endforeach
-
-                            @endif
 
                         </section>
                         @endforeach

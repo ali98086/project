@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class FAQController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -18,6 +21,9 @@ class FAQController extends Controller
         return view('admin.content.faq.index' , compact('faqs'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -26,6 +32,9 @@ class FAQController extends Controller
         return view('admin.content.faq.create');
     }
 
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -36,14 +45,9 @@ class FAQController extends Controller
         return redirect()->route('admin.content.faq.index')->with('swal-success','سوال مورد نظر با موفقیت درج شد');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -52,6 +56,9 @@ class FAQController extends Controller
         return view('admin.content.faq.edit', compact('faq'));
     }
 
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -63,6 +70,9 @@ class FAQController extends Controller
         return redirect()->route('admin.content.faq.index')->with('swal-success','ویرایش سوال با موفقیت انجام شد');
     }
 
+
+
+    
     /**
      * Remove the specified resource from storage.
      */
@@ -72,6 +82,9 @@ class FAQController extends Controller
         return redirect()->route('admin.content.faq.index')->with('swal-success','سوال مورد نظر با موفقیت حذف شد');
     }
 
+
+
+    
     public function status(FAQ $faq){
 
         $faq->status= $faq->status == 0 ? 1 : 0 ;

@@ -4,16 +4,14 @@ namespace App\Http\Controllers\Admin\Market;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Market\ProductCategoryRequest;
-use App\Http\Services\File\FileService;
 use App\Http\Services\Image\ImageService;
 use App\Models\Market\ProductCategory;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
+
 
 class CategoryController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
@@ -23,6 +21,8 @@ class CategoryController extends Controller
         return view('admin.market.category.index', compact('productCategories'));
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -31,6 +31,8 @@ class CategoryController extends Controller
         $productCategories = ProductCategory::all();
         return view('admin.market.category.create', compact('productCategories'));
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -59,6 +61,8 @@ class CategoryController extends Controller
             return redirect()->route('admin.market.category.index')->with('swal-success', 'دسته بندی مورد نظر با موفقیت ثبت شد');
     }
 
+
+
     /**
      * Display the specified resource.
      */
@@ -66,6 +70,8 @@ class CategoryController extends Controller
     {
         //
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -77,6 +83,8 @@ class CategoryController extends Controller
         return view('admin.market.category.edit', compact('productcategory' , 'productCategories'));
         
     }
+
+
 
     /**
      * Update the specified resource in storage.
@@ -106,6 +114,8 @@ class CategoryController extends Controller
         $productcategory->update($inputs);
         return redirect()->route('admin.market.category.index')->with('swal-success', 'دسته بندی مورد نظر با موفقیت ویرایش شد');
     }
+
+
 
     /**
      * Remove the specified resource from storage.

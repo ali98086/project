@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class ProductGalleryController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      */
@@ -18,6 +21,9 @@ class ProductGalleryController extends Controller
         return view('admin.market.product.gallery.index', compact('product'));
     }
 
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -25,6 +31,9 @@ class ProductGalleryController extends Controller
     {
         return view('admin.market.product.gallery.create', compact('product'));
     }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -59,6 +68,9 @@ class ProductGalleryController extends Controller
         return redirect()->route('admin.market.product.gallery.index', $product->id)->with('swal-success','عکس مورد نظر با موفقیت ایجاد شد');
 
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.

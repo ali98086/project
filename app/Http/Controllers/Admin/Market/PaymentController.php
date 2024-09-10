@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+
+    
     public function index(){
 
         $payments = Payment::all();
@@ -18,6 +20,8 @@ class PaymentController extends Controller
 
     }
 
+
+    
     public function onlinePayments(){
 
         $onlinePayments = Payment::where('paymentable_type','App\Models\Market\OnlinePayment')->get(); 
@@ -25,6 +29,8 @@ class PaymentController extends Controller
 
     }
 
+
+    
     public function offlinePayments(){
 
         $offlinePayments = Payment::where('paymentable_type','App\Models\Market\OfflinePayment')->get();
@@ -32,6 +38,8 @@ class PaymentController extends Controller
 
     }
 
+
+    
     public function cashPayments(){
 
         $cashPayments = Payment::where('paymentable_type','App\Models\Market\CashPayment')->get();
@@ -39,12 +47,16 @@ class PaymentController extends Controller
 
     }
 
+
+    
     public function show(Payment $payment){
 
         return view('admin.market.payment.show', compact('payment'));
 
     }
 
+
+    
     public function canceled(Payment $payment){
 
         $payment->status = 2;
@@ -53,6 +65,8 @@ class PaymentController extends Controller
 
     }
 
+
+    
     public function returned(Payment $payment){
 
         $payment->status = 3;

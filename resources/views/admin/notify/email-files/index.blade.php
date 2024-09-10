@@ -40,8 +40,8 @@
                     <tr>
                             <th class="text-center width-16-rem">#</th>
                             <th class="text-center width-16-rem">عنوان ایمیل</th>
+                            <th class="text-center width-16-rem">نام فایل</th>
                             <th class="text-center width-16-rem">سایز فایل</th>
-                            <th class="text-center width-16-rem">نوع فایل</th>
                             <th class="text-center width-16-rem">وضعیت</th>
                             <th class="text-center width-16-rem"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
@@ -51,19 +51,29 @@
                         <tr>
                             <th class="text-center">{{++$key}}</th>
                             <td class="text-center">{{$email->subject}}</td>
+                            <td class="text-center">{{Str::of($file->file_path)->afterLast('\\')}}</td>
                             <td class="text-center">{{$file->file_size}}</td>
-                            <td class="text-center">{{$file->file_type}}</td>
                             <td class="text-center">
                                 <input type="checkbox" id="{{$file->id}}" onchange="changeStatus('{{ $file->id }}')" data-url="{{route('admin.notify.email-file.status', $file->id)}}" @if($file->status===1) {{'checked'}} @endif/>
                             </td>
                             <td class="text-center w-25">
 
-                                <a href="{{route('admin.notify.email-file.edit', $file->id)}}" class="btn btn-primary"><i class="fa fa-edit" aria-hidden="true"></i> ویرایش</a>
+                                <a href="{{route('admin.notify.email-file.seeFile', $file)}}" class="btn btn-info btn-sm">
+                                    مشاهده
+                                </a>
+
+                                <a href="{{route('admin.notify.email-file.download', $file)}}" class="btn btn-success btn-sm">
+                                    دانلود
+                                </a>
+
+                                <a href="{{route('admin.notify.email-file.edit', $file->id)}}" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-edit" aria-hidden="true"></i> ویرایش
+                                </a>
 
                                 <form action="{{route('admin.notify.email-file.destroy', $file->id)}}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
-                                <button class="btn btn-danger delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
+                                <button class="btn btn-danger btn-sm delete" type="submit"><i class="fa fa-trash-alt" aria-hidden="true"></i> حذف</button>
                                 </form>
                             </td>
                         </tr>

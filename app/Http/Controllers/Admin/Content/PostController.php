@@ -14,6 +14,9 @@ use Intervention\Image\ImageManager;
 
 class PostController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -23,6 +26,9 @@ class PostController extends Controller
         return view('admin.content.post.index', compact('posts'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -32,6 +38,9 @@ class PostController extends Controller
         return view('admin.content.post.create', compact('postCategories'));
     }
 
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -72,14 +81,10 @@ class PostController extends Controller
         Post::create($inputs);
         return redirect()->route('admin.content.post.index')->with('swal-success','پست مورد نظر با موفقیت ثبت شد');
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
+
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -89,6 +94,9 @@ class PostController extends Controller
         return view('admin.content.post.edit', compact('post','postCategories'));   
     }
 
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -100,6 +108,7 @@ class PostController extends Controller
 
         if($request->hasFile('image')){
 
+            //sample update image without imageService Class
 
             unlink(public_path($post->image));
             $manager = new ImageManager(new Driver()); 
@@ -151,6 +160,9 @@ class PostController extends Controller
     return redirect()->route('admin.content.post.index')->with('swal-success','پست با موفقیت ویرایش شد');
 }
 
+
+
+
     /**
      * Remove the specified resource from storage.
      */
@@ -160,6 +172,9 @@ class PostController extends Controller
         return redirect()->route('admin.content.post.index')->with('swal-success','پست مورد نظر با موفقیت حذف شد');
     }
 
+
+
+    
     public function status(Post $post){
 
         $post->status= $post->status == 0 ? 1 : 0 ;
@@ -187,6 +202,9 @@ class PostController extends Controller
 
     }
 
+
+
+    
     public function commentable(Post $post){
 
         $post->commentable= $post->commentable == 0 ? 1 : 0 ;

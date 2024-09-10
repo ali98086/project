@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin\Content;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Content\PostCategoryRequest;
+use App\Http\Services\Image\ImageService;
 use App\Models\Content\PostCategory;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
+
 
 
 class CategoryController extends Controller
@@ -19,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         $user= auth()->user();
-        // dd($user->hasRole('operator'));
+
         if($user->can('view-category')){
 
             $postCategories = PostCategory::orderBy('created_at', 'desc')->paginate(15);
@@ -34,6 +32,8 @@ class CategoryController extends Controller
 
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -42,49 +42,36 @@ class CategoryController extends Controller
         return view('admin.content.category.create');
     }
 
+
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostCategoryRequest $request)
+    public function store(PostCategoryRequest $request, ImageService $imageService )
     { 
         $inputs = $request->all();
 
-        if (!File::isDirectory(public_path('images'.DIRECTORY_SEPARATOR.'post-categories'))) {
+        if($request->hasFile('image')){
 
-            File::makeDirectory(public_path('images'.DIRECTORY_SEPARATOR.'post-categories'),0755,true);
-        }
+            $imageService->setPathImage('images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR);
+            $imageService->checkExistsDirectory(public_path($imageService->getPathImage()));
+            $imageService->setNameImage($request->file('image'));
+            $resultUpload= $imageService->saveImageToPublic($request->file('image'), $request->size);
+            $fullImagePath= $imageService->fullPath();
+            $inputs['image'] = $fullImagePath;
 
-        if ($request->hasFile('image')) {
-            
-            $manager = new ImageManager(new Driver()); 
-            $img = $manager->read($request->file('image'));
-            $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            if($request->size == 'small'){
-                $img->resize(160,120);
-            }
-            if($request->size == 'medium'){
-                $img->resize(320,240);
-            }
-            if($request->size == 'large'){
-                $img->resize(800,600);
-            }
-            $img->save(public_path('images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR.$imageName));
-            $imagePath = 'images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR.$imageName;
-            $inputs['image'] = $imagePath;
+            if(!$resultUpload){
 
-        }
+                return redirect()->route('admin.market.category.index')->with('swal-error','خطا در آپلود تصویر!');
+
+            }
+    }
             PostCategory::create($inputs);
             return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی مورد نظر با موفقیت ثبت شد');
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(PostCategory $postCategory)
-    {
-        //
-    }
     
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -94,65 +81,40 @@ class CategoryController extends Controller
         return view('admin.content.category.edit', compact('postCategory'));
     }
 
+
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostCategoryRequest $request, PostCategory $postCategory)
+    public function update(PostCategoryRequest $request, ImageService $imageService , PostCategory $postCategory)
     {        
         $inputs = $request->all();
 
         if($request->hasFile('image')){
 
-            File::delete(public_path($postCategory->image));
-            $manager = new ImageManager(new Driver()); 
-            $img = $manager->read($request->file('image'));
-            $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            if($request->size == 'small'){
-                $img->resize(160,120);
-            }
-            if($request->size == 'medium'){
-                $img->resize(320,240);
-            }
-            if($request->size == 'large'){
-                $img->resize(800,600);
-            }
-            $img->save(public_path('images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR.$imageName));
-            $imagePath = 'images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR.$imageName;
-            $inputs['image'] = $imagePath;
+            $imageService->setPathImage('images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR);
+            $imageService->setNameImage($request->file('image'));
+            $imageService->checkExistsDirectory(public_path($imageService->getPathImage()));
+            $resultUpload= $imageService->saveImageToPublic($request->file('image'), $request->size);
+            $fullImagePath= $imageService->fullPath();
+            $imageService->deleteImage($postCategory->image);
+            $inputs['image'] = $fullImagePath;
 
-        }
-        else{
 
-            $request['image']= $postCategory->image;
-            $manager = new ImageManager(new Driver()); 
-            $img = $manager->read($request->image); 
-            $format = Str::of($request->image)->after('.');
-            $imageName = uniqid() . '.' . $format;
+            if(!$resultUpload){
 
-            if($request->size){
-            
-                File::delete(public_path($postCategory->image));   
+                return redirect()->route('admin.market.category.index')->with('swal-error','خطا در آپلود تصویر!');
 
-            if($request->size == 'small'){
-                $img->resize(160,120);
-            }
-            if($request->size == 'medium'){
-                $img->resize(320,240);
-            }
-            if($request->size == 'large'){
-                $img->resize(800,600);
             }
         }
-            $img->save(public_path('images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR.$imageName));
-            $imagePath = 'images'.DIRECTORY_SEPARATOR.'post-categories'.DIRECTORY_SEPARATOR.$imageName;
-            $inputs['image'] = $imagePath;
 
-        }
         $inputs['slug']= null;
         $postCategory->update($inputs);
 
         return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی با موفقیت ویرایش شد');
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -162,6 +124,8 @@ class CategoryController extends Controller
         $postCategory->delete();
         return redirect()->route('admin.content.category.index')->with('swal-success', 'دسته بندی با موفقیت حذف شد');
     }
+
+
 
     public function status(PostCategory $postCategory)
     {

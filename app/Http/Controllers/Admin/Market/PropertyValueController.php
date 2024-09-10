@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 class PropertyValueController extends Controller
 {
     
+
+
     public function index(CategoryAttribute $categoryAttribute){
 
         
@@ -18,11 +20,15 @@ class PropertyValueController extends Controller
 
     }
 
+
+
     public function create(CategoryAttribute $categoryAttribute){
 
         return view('admin.market.property.property-value.create', compact('categoryAttribute'));
         
     }
+
+
 
     public function store(CategoryValueRequest $request, CategoryAttribute $categoryAttribute){
 
@@ -35,11 +41,15 @@ class PropertyValueController extends Controller
 
     }
 
+
+
     public function edit(CategoryAttribute $categoryAttribute , CategoryValue $value){
 
         return view('admin.market.property.property-value.edit', compact('categoryAttribute','value'));
         
     }
+
+
 
     public function update(CategoryValueRequest $request, CategoryAttribute $categoryAttribute , CategoryValue $value){
 
@@ -49,6 +59,8 @@ class PropertyValueController extends Controller
         return redirect()->route('admin.market.property.value.index', $categoryAttribute->id)->with('swal-success','مقدار فرم مورد نظر با موفقیت ویرایش شد');
         
     }
+
+
 
     public function destroy(CategoryAttribute $categoryAttribute , CategoryValue $value){
 

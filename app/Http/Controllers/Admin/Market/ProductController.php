@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -24,6 +27,9 @@ class ProductController extends Controller
         return view('admin.market.product.index', compact('products'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -34,6 +40,9 @@ class ProductController extends Controller
         return view('admin.market.product.create', compact('productCategories','brands'));
     }
 
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -77,13 +86,9 @@ class ProductController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+
+
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -95,6 +100,9 @@ class ProductController extends Controller
         return view('admin.market.product.edit', compact('product','productCategories','brands'));
     }
 
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -178,6 +186,9 @@ class ProductController extends Controller
 
     }
 
+
+
+    
     /**
      * Remove the specified resource from storage.
      */

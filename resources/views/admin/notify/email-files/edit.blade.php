@@ -39,10 +39,12 @@
                     @method('put')
                     <section class="row">
 
-                    <section class="col-12 col-md-6 my-2">
+                        <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
-                                <label for="">فایل</label>
-                                <input type="file" name="file" class="form-control form-control-sm">
+                                <label for="">فایل آپلود شده : </label>
+                                <span>
+                                    {{Str::of($file->file_path)->afterLast('\\')}}
+                                </span>
                             </div>
                             @error('file')
                             <span class="text-white bg-danger rounded">
@@ -50,6 +52,23 @@
                             </span>
                             @enderror
                         </section>
+
+
+                        <section class="col-12 col-md-6 my-2">
+                            <div class="form-group">
+                                <label for="" class="mb-3">مکان ذخیره سازی فایل :</label>
+                                <section class="d-flex">
+                                    ذخیره در Public <input type="radio" id="public" name="placeSave" class="ml-3" value="public" @if(File::exists(public_path($file->file_path))) checked @endif>
+                                    ذخیره در Storage <input type="radio" id="storage" name="placeSave" value="storage" @if(Storage::exists($file->file_path)) checked @endif>
+                                </section>
+                            </div>
+                            @error('placeSave')
+                            <span class="text-white bg-danger rounded">
+                                {{$message}}
+                            </span>
+                            @enderror
+                        </section>
+
 
                         <section class="col-12 col-md-6 my-2">
                             <div class="form-group">
@@ -66,20 +85,7 @@
                             @enderror
                         </section>
 
-                        <section class="col-12 col-md-6 my-2">
-                            <div class="form-group">
-                                <label for="" class="mb-3">مکان ذخیره سازی فایل :</label>
-                                <section class="d-flex">
-                               ذخیره در Public <input type="radio" id="public" name="placeSave" class="ml-3" value="public" @if(File::exists(public_path($file->file_path))) checked @endif>
-                               ذخیره در Storage <input type="radio" id="storage" name="placeSave" value="storage" @if(Storage::exists($file->file_path)) checked @endif>
-                               </section>
-                            </div>
-                            @error('placeSave')
-                            <span class="text-white bg-danger rounded">
-                                {{$message}}
-                            </span>
-                            @enderror
-                        </section>
+
 
                         <section class="col-12 mt-4">
                             <button class="btn btn-primary btn-sm">ثبت</button>

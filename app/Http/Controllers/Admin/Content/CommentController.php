@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -23,6 +26,9 @@ class CommentController extends Controller
         return view('admin.content.comment.index', compact('comments'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -32,6 +38,9 @@ class CommentController extends Controller
     }
 
 
+
+
+    
     public function status(Comment $comment)
     {
         $comment->status = $comment->status == 0 ? 1 : 0;
@@ -51,6 +60,9 @@ class CommentController extends Controller
         }
     }
 
+
+
+    
     public function approved(Comment $comment)
     {
         $comment->approved = $comment->approved == 1 ? 0 : 1;
@@ -64,6 +76,9 @@ class CommentController extends Controller
         }
     }
 
+
+
+    
     public function answer(CommentRequest $request, Comment $comment)
     {
 

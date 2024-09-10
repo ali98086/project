@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Market\BrandRequest;
 use App\Http\Services\Image\ImageService;
 use App\Models\Market\Brand;
-use Illuminate\Http\Request;
+
 
 class BrandController extends Controller
 {

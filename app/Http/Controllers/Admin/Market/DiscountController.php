@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
@@ -24,6 +26,8 @@ class DiscountController extends Controller
         return view('admin.market.discount.copan', compact('copans'));
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -32,6 +36,8 @@ class DiscountController extends Controller
         $users= User::all();
         return view('admin.market.discount.copan-create', compact('users'));
     }
+
+
 
     public function copanDiscountStore(CopanRequest $request)
     {
@@ -52,6 +58,8 @@ class DiscountController extends Controller
 
     }
 
+
+
     public function copanDiscountEdit(Copan $copan)
     {
 
@@ -59,6 +67,8 @@ class DiscountController extends Controller
         return view('admin.market.discount.copan-edit', compact('users','copan'));
 
     }
+
+
 
     public function copanDiscountUpdate(CopanRequest $request , Copan $copan)
     {
@@ -80,11 +90,15 @@ class DiscountController extends Controller
     }
 
 
+
+
     public function copanDiscountDestroy(Copan $copan)
     {
         $copan->delete();
         return redirect()->route('admin.market.discount.copanDiscount')->with('swal-success','کوپن تخفیف مورد نظر با موفقیت حذف شد');
     }
+
+
 
 
 
@@ -95,10 +109,14 @@ class DiscountController extends Controller
     }
 
 
+
+
     public function commonDiscountCreate()
     {
         return view('admin.market.discount.common-create');
     }
+
+
 
 
     public function commonDiscountStore(CommonDiscountRequest $request)
@@ -114,10 +132,14 @@ class DiscountController extends Controller
     }
 
 
+
+
     public function commonDiscountEdit(CommonDiscount $commonDiscount)
     {
         return view('admin.market.discount.common-edit' , compact('commonDiscount'));
     }
+
+
 
 
     public function commonDiscountUpdate(CommonDiscountRequest $request, CommonDiscount $commonDiscount)
@@ -133,12 +155,16 @@ class DiscountController extends Controller
     }
 
 
+
+
     public function commonDiscountDestroy(CommonDiscount $commonDiscount)
     {
         $commonDiscount->delete();
         return redirect()->route('admin.market.discount.commonDiscount')->with('swal-success','تخفیف عمومی مورد نظر با موفقیت حذف شد');
     }
     
+
+
 
   
     public function amazingSale()
@@ -148,11 +174,15 @@ class DiscountController extends Controller
     }
 
 
+
+
     public function amazingSaleCreate()
     {
         $products = Product::all();
         return view('admin.market.discount.amazing-create', compact('products'));
     }
+
+
 
 
     public function amazingSaleStore(AmazingSaleRequest $request)
@@ -168,6 +198,8 @@ class DiscountController extends Controller
     }
 
 
+
+
     public function amazingSaleUpdate(AmazingSaleRequest $request, AmazingSale $amazingSale)
     {
         $inputs= $request->all();
@@ -181,11 +213,15 @@ class DiscountController extends Controller
     }
 
 
+
+
     public function amazingSaleEdit(AmazingSale $amazingSale)
     {
         $products = Product::all();
         return view('admin.market.discount.amazing-edit', compact('products', 'amazingSale'));
     }
+
+
 
 
     public function amazingSaleDestroy(AmazingSale $amazingSale)

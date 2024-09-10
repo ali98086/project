@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Log;
 
 class StoreController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -19,6 +22,9 @@ class StoreController extends Controller
         return view('admin.market.store.index', compact('products'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -27,6 +33,9 @@ class StoreController extends Controller
         return view('admin.market.store.create', compact('product'));
     }
 
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -39,6 +48,9 @@ class StoreController extends Controller
         return redirect()->route('admin.market.store.index')->with('swal-success','افزایش موجودی کالا با موفقیت انجام شد');
     }
 
+
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -47,6 +59,9 @@ class StoreController extends Controller
         return view('admin.market.store.edit', compact('product'));
     }
 
+
+
+    
     /**
      * Update the specified resource in storage.
      */

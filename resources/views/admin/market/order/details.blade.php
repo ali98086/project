@@ -60,8 +60,8 @@
                     
                             <td class="text-center">{{ $key += 1 }}</td>
                             <td class="text-center">{{ $item->product->name ?? '_'}}</td>
-                            <td class="text-center">{{ $item->amazingSale->percentage.'%' ?? '_'}}</td>
-                            <td class="text-center">{{ number_format($item->amazing_sale_discount_amount).' تومان' ?? '_' }}</td>
+                            <td class="text-center">{{ empty($item->amazingSale) ? '_' : $item->amazingSale->percentage.'%'}}</td>
+                            <td class="text-center">{{ empty($item->amazingSale) ? '_' : number_format($item->amazing_sale_discount_amount).'تومان' }}</td>
                             <td class="text-center">{{ $item->number ?? '_'}}</td>
                             <td class="text-center">{{ number_format($item->final_product_price).' تومان' ?? '_'}}</td>
                             <td class="text-center">{{ number_format($item->final_total_price).' تومان' ?? '_'}}</td>

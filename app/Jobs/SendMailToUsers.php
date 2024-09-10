@@ -34,23 +34,24 @@ class SendMailToUsers implements ShouldQueue
 
         foreach($users as $user){
 
-        $emailService= new EmailService();
-        $contents= ['title'=> $this->email->subject ,'body'=>$this->email->body];
-        $emailService->setContents($contents);
-        $emailService->setFrom('noreply@example.com', 'example');
-        $emailService->setSubject('کد احراز هویت');
-        $emailService->setTo($user->email);
-        $emailFiles = $this->email->files;
-        $mailFiles = [];
-        foreach($emailFiles as $emailFile){
+            $emailService= new EmailService();
+            $contents= ['title'=> $this->email->subject ,'body'=>$this->email->body];
+            $emailService->setContents($contents);
+            $emailService->setFrom('noreply@example.com', 'example');
+            $emailService->setSubject('کد احراز هویت');
+            $emailService->setTo($user->email);
+            $emailFiles = $this->email->files;
+            $mailFiles = [];
 
-            array_push($mailFiles, $emailFile->file_path);
+            foreach($emailFiles as $emailFile){
 
-        }
-        $emailService->setEmailFiles($mailFiles);
+                array_push($mailFiles, $emailFile->file_path);
 
-        $messageService= new MessageService($emailService);
-        $messageService->send();
+            }
+
+            $emailService->setEmailFiles($mailFiles);
+            $messageService= new MessageService($emailService);
+            $messageService->send();
 
         }
     }

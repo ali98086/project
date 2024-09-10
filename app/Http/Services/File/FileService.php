@@ -48,6 +48,13 @@ class FileService{
     }
 
 
+    public function setNameEmailFile($file){
+
+        $this->nameFile= $file->getClientOriginalName();
+
+    }
+
+
 
     public function getNameFile(){
 

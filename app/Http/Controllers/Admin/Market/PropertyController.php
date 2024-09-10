@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      */
@@ -19,6 +21,8 @@ class PropertyController extends Controller
         return view('admin.market.property.index', compact('categoryAttributes'));
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -27,6 +31,8 @@ class PropertyController extends Controller
         $ProductCategories= ProductCategory::all();
         return view('admin.market.property.create', compact('ProductCategories'));
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,11 +44,15 @@ class PropertyController extends Controller
         return redirect()->route('admin.market.property.index')->with('swal-success','فرم مورد نظر با موفقیت ایجاد شد');
     }
 
+
+
     public function edit(CategoryAttribute $categoryAttribute)
     {
         $ProductCategories= ProductCategory::all();
         return view('admin.market.property.edit', compact('categoryAttribute','ProductCategories'));
     }
+
+
 
     /**
      * Update the specified resource in storage.
@@ -53,6 +63,8 @@ class PropertyController extends Controller
         $categoryAttribute->update($inputs);
         return redirect()->route('admin.market.property.index')->with('swal-success','فرم مورد نظر با موفقیت ویرایش شد');
     }
+
+
 
     /**
      * Remove the specified resource from storage.

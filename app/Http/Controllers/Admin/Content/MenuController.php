@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
+
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -18,6 +21,9 @@ class MenuController extends Controller
         return view('admin.content.menu.index',compact('menus'));
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -27,6 +33,9 @@ class MenuController extends Controller
         return view('admin.content.menu.create', compact('menus'));
     }
 
+
+
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -37,14 +46,9 @@ class MenuController extends Controller
         return redirect()->route('admin.content.menu.index')->with('swal-success','منوی مورد نظر با موفقیت درج شد');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
+
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -54,6 +58,9 @@ class MenuController extends Controller
         return view('admin.content.menu.edit', compact('parent_menus','menu'));
     }
 
+
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -64,6 +71,9 @@ class MenuController extends Controller
         return redirect()->route('admin.content.menu.index')->with('swal-success','منوی مورد نظر با موفقیت ویرایش شد');
     }
 
+
+
+    
     /**
      * Remove the specified resource from storage.
      */
@@ -73,6 +83,9 @@ class MenuController extends Controller
         return redirect()->route('admin.content.menu.index')->with('swal-success','منوی مورد نظر با موفقیت حذف شد');
     }
 
+
+
+    
     public function status(Menu $menu){
 
         $menu->status= $menu->status == 0 ? 1 : 0 ;

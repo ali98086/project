@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -25,10 +27,12 @@ class CommentController extends Controller
 
 
 
+
     public function show(Comment $comment)
     {
         return view('admin.market.comment.show', compact('comment'));
     }
+
 
 
 
@@ -53,6 +57,7 @@ class CommentController extends Controller
 
 
 
+
     public function approved(Comment $comment)
     {
         $comment->approved = $comment->approved == 1 ? 0 : 1;
@@ -65,6 +70,7 @@ class CommentController extends Controller
             return redirect()->route('admin.market.comment.index')->with('swal-error', 'تغییر وضعیت نظر با شکست مواجه شد');
         }
     }
+
 
 
 

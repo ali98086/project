@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Market\Order;
 use Illuminate\Http\Request;
 
+
+
 class OrderController extends Controller
 {
+
+
+
     public function newOrders()
     {
         $orders= Order::where('order_status', 0)->get();
@@ -20,11 +25,17 @@ class OrderController extends Controller
         return view('admin.market.order.order', compact('orders'));
     }
 
+
+
+
     public function sendingOrders()
     {
         $orders = Order::where('delivery_status', 1)->get();
         return view('admin.market.order.order', compact('orders'));
     }
+
+
+
 
     public function unpaidOrders()
     {
@@ -32,11 +43,17 @@ class OrderController extends Controller
         return view('admin.market.order.order' , compact('orders'));
     }
 
+
+
+
     public function invalidOrders()
     {
         $orders = Order::where('order_status', 3)->get();
         return view('admin.market.order.order', compact('orders'));
     }
+
+
+
 
     public function returnedOrders()
     {
@@ -44,11 +61,17 @@ class OrderController extends Controller
         return view('admin.market.order.order', compact('orders'));
     }
 
+
+
+
     public function allOrders()
     {
         $orders= Order::all();
         return view('admin.market.order.order', compact('orders'));
     }
+
+
+
 
     public function seeFactor(Order $order){
 
@@ -56,11 +79,17 @@ class OrderController extends Controller
 
     }
 
+
+
+
     public function details(Order $order){
 
         return view('admin.market.order.details', compact('order'));
 
     }
+
+
+
 
     public function changeStatusSend(Order $order){
 
@@ -99,6 +128,9 @@ class OrderController extends Controller
 
 
     }
+
+
+
 
     public function changeStatusOrder(Order $order){
 
@@ -151,6 +183,9 @@ class OrderController extends Controller
         }
 
     }
+
+
+
 
     public function invalidOrder(Order $order){
 

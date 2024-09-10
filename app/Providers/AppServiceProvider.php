@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        auth()->loginUsingId(7);
+        // auth()->loginUsingId(7);
 
         View::composer('admin.layouts.header', function($view){
 

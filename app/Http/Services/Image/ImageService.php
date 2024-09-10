@@ -120,17 +120,10 @@ class ImageService{
 
 
 
-    public function saveSettingImageToPublic($image, $size = null){
+    public function saveSettingImageToPublic($image){
 
         $manager = new ImageManager(new Driver()); 
         $img = $manager->read($image);
-        
-        if($size != null){
-
-            $this->setSizeImage($img, $size);
-
-        }
-
         $save= $img->save($this->getPathImage().$this->getSettingImageName());
         return $save ? true : false;
 

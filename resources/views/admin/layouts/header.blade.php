@@ -26,23 +26,31 @@
             </section>
             <section>
                 <span class="ml-2 ml-md-4 position-relative">
+
                     <span id="header-notification-toggle" class="pointer" id="notification" onclick="readAll()">
-                        <i class="far fa-bell"></i>
 
                         @if($notifications->count() != 0)
 
                         <sup class="badge badge-danger" id="notification-badge">
 
-                             {{ $notifications->count() }}
-                        
-                        </sup> 
+                            {{ $notifications->count()}}
+
+                        </sup>
 
                         @endif
+
+                        <i class="far fa-bell"></i>
+
                     </span>
+                
+
+
+                    @if($notifications->count() != 0)
+
                     <section id="header-notification" class="header-notifictation rounded">
                         <section class="d-flex justify-content-between">
                             <span class="px-2">
-                                نوتیفیکیشن ها
+                                اعلان ها
                             </span>
                             <span class="px-2">
                                 <span class="badge badge-danger">جدید</span>
@@ -51,7 +59,7 @@
 
                         <ul class="list-group rounded px-0">
 
-                        @foreach($notifications as $notification)
+                            @foreach($notifications as $notification)
                             <li class="list-group-item list-group-item-action">
                                 <section class="media">
                                     <section class="media-body pr-1">
@@ -61,13 +69,20 @@
                                     </section>
                                 </section>
                             </li>
-                        @endforeach
+                            @endforeach
 
                         </ul>
                     </section>
-                </span>
-                <section id="header-comment" class="header-comment">
 
+                    @endif
+
+                </span>
+
+
+
+                @if($unSeenComments->count() != 0)
+
+                <section id="header-comment" class="header-comment">
 
                     <section class="header-comment-wrapper">
                         <ul class="list-group rounded px-0">
@@ -91,41 +106,41 @@
                                 </section>
                             </li>
                             @endforeach
-
+                        </ul>
                     </section>
-
                 </section>
+
+
+                @endif
+
+                
+
                 <span class="ml-2 ml-md-4 position-relative">
                     <span id="header-comment-toggle" class="pointer">
-                        <i class="far fa-comment-alt"></i>
 
-                            <sup class="badge badge-danger">{{$unSeenComments->count() != 0 ? $unSeenComments->count() : ''}}</sup>
+                    @if($unSeenComments->count() != 0)
+
+                        <sup class="badge badge-danger">{{$unSeenComments->count()}}</sup>
+
+                    @endif    
+                            <i class="far fa-comment-alt"></i>
 
                     </span>
 
-
                 </span>
+
+                
+
+
                 <span class="ml-3 ml-md-5 position-relative">
                     <span id="header-profile-toggle" class="pointer">
                         <img class="header-avatar" src="{{asset('admin-assets/images/avatar-2.jpg')}}" alt="">
-                        <span class="header-username">کامران محمدی</span>
+                        <span class="header-username">{{auth()->user()->first_name.' عزیز خوش آمدید! '}}</span>
                         <i class="fas fa-angle-down"></i>
                     </span>
                     <section id="header-profile" class="header-profile rounded">
                         <section class="list-group rounded">
-                            <a href="#" class="list-group-item list-group-item-action header-profile-link">
-                                <i class="fas fa-cog"></i>تنظیمات
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action header-profile-link">
-                                <i class="fas fa-user"></i>کاربر
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action header-profile-link">
-                                <i class="far fa-envelope"></i>پیام ها
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action header-profile-link">
-                                <i class="fas fa-lock"></i>قفل صفحه
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action header-profile-link">
+                            <a href="{{route('auth.panel.logout')}}" class="pointer">
                                 <i class="fas fa-sign-out-alt"></i>خروج
                             </a>
                         </section>

@@ -34,7 +34,7 @@
             </section>
 
             <section>
-                <form action="{{route('admin.market.property.value.update' , $categoryAttribute->id)}}" method="post">
+                <form action="{{route('admin.market.property.update' , $categoryAttribute->id)}}" method="post">
                     @csrf
                     @method('put')
                     <section class="row">
